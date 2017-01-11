@@ -17,8 +17,8 @@ auto_df = load_csv("Auto.csv")
 auto_X = auto_df[auto_df.columns.difference(["mpg"])]
 auto_y = auto_df["mpg"]
 
-auto_lgbm = LGBMRegressor(objective = "regression", n_estimators = 31)
-auto_lgbm.fit(auto_X, auto_y, feature_name = auto_X.columns.values)
+auto_lgbm = LGBMRegressor(n_estimators = 31)
+auto_lgbm.fit(auto_X, auto_y, feature_name = auto_X.columns.values, categorical_feature = ["cylinders", "model_year", "origin"])
 
 store_lgbm(auto_lgbm, "RegressionAuto.txt")
 
@@ -29,7 +29,7 @@ housing_df = load_csv("Housing.csv")
 housing_X = housing_df[housing_df.columns.difference(["MEDV"])]
 housing_y = housing_df["MEDV"]
 
-housing_lgbm = LGBMRegressor(objective = "regression", n_estimators = 31)
+housing_lgbm = LGBMRegressor(n_estimators = 31)
 housing_lgbm.fit(housing_X, housing_y, feature_name = housing_X.columns.values)
 
 store_lgbm(housing_lgbm, "RegressionHousing.txt")

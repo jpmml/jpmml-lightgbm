@@ -42,7 +42,7 @@ lgbm.booster_.save_model("lightgbm.txt")
 
 ### The JPMML-LightGBM side of operations
 
-Converting the model file `lightgbm.txt` to a PMML file `lightgbm.pmml`:
+Converting the text file `lightgbm.txt` to a PMML file `lightgbm.pmml`:
 ```
 java -jar target/converter-executable-1.0-SNAPSHOT.jar --lgbm-input lightgbm.txt --pmml-output lightgbm.pmml
 ```

@@ -21,6 +21,8 @@ package org.jpmml.lightgbm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
@@ -109,8 +111,21 @@ public class GBDT {
 		List<Feature> features = new ArrayList<>();
 
 		String[] activeFields = this.feature_names_;
-		for(String activeField : activeFields){
-			DataField dataField = encoder.createDataField(FieldName.create(activeField), OpType.CONTINUOUS, DataType.DOUBLE);
+		for(int i = 0; i < activeFields.length; i++){
+			String activeField = activeFields[i];
+
+			OpType opType;
+
+			Set<Double> categories = getCategories(i);
+			if(categories != null && categories.size() > 0){
+				opType = OpType.CATEGORICAL;
+			} else
+
+			{
+				opType = OpType.CONTINUOUS;
+			}
+
+			DataField dataField = encoder.createDataField(FieldName.create(activeField), opType, DataType.DOUBLE);
 
 			MissingValueDecorator decorator = new MissingValueDecorator()
 				.setMissingValueReplacement("0");
@@ -145,6 +160,26 @@ public class GBDT {
 			.setSegmentation(MiningModelUtil.createSegmentation(Segmentation.MultipleModelMethod.SUM, treeModels));
 
 		return miningModel;
+	}
+
+	Set<Double> getCategories(int feature){
+		Set<Double> result = null;
+
+		Tree[] trees = this.models_;
+		for(Tree tree : trees){
+			Set<Double> categories = tree.getCategories(feature);
+
+			if(categories != null && categories.size() > 0){
+
+				if(result == null){
+					result = new TreeSet<>();
+				}
+
+				result.addAll(categories);
+			}
+		}
+
+		return result;
 	}
 
 	static

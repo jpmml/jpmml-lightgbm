@@ -18,7 +18,9 @@
  */
 package org.jpmml.lightgbm;
 
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.Predicate;
@@ -81,7 +83,7 @@ public class Tree {
 		return treeModel;
 	}
 
-	private void encodeNode(Node parent, int index, Schema schema){
+	public void encodeNode(Node parent, int index, Schema schema){
 		parent.setId(String.valueOf(index));
 
 		// Non-leaf (aka internal) node
@@ -91,24 +93,31 @@ public class Tree {
 
 			Feature feature = schema.getFeature(this.split_feature_real_[index]);
 
-			Predicate leftPredicate;
-			Predicate rightPredicate;
+			ContinuousFeature continuousFeature = feature.toContinuousFeature();
 
-			if(this.decision_type_[index] == 0){
-				ContinuousFeature continuousFeature = feature.toContinuousFeature();
+			SimplePredicate.Operator leftOperator;
+			SimplePredicate.Operator rightOperator;
 
-				String value = ValueUtil.formatValue(this.threshold_[index]);
-
-				leftPredicate = new SimplePredicate(continuousFeature.getName(), SimplePredicate.Operator.LESS_OR_EQUAL)
-					.setValue(value);
-
-				rightPredicate = new SimplePredicate(continuousFeature.getName(), SimplePredicate.Operator.GREATER_THAN)
-					.setValue(value);
-			} else
-
-			{
-				throw new IllegalArgumentException();
+			switch(this.decision_type_[index]){
+				case SPLIT_NUMERIC:
+					leftOperator = SimplePredicate.Operator.LESS_OR_EQUAL;
+					rightOperator = SimplePredicate.Operator.GREATER_THAN;
+					break;
+				case SPLIT_CATEGORICAL:
+					leftOperator = SimplePredicate.Operator.EQUAL;
+					rightOperator = SimplePredicate.Operator.NOT_EQUAL;
+					break;
+				default:
+					throw new IllegalArgumentException();
 			}
+
+			String value = ValueUtil.formatValue(this.threshold_[index]);
+
+			Predicate leftPredicate = new SimplePredicate(continuousFeature.getName(), leftOperator)
+				.setValue(value);
+
+			Predicate rightPredicate = new SimplePredicate(continuousFeature.getName(), rightOperator)
+				.setValue(value);
 
 			Node leftChild = new Node()
 				.setPredicate(leftPredicate);
@@ -131,4 +140,26 @@ public class Tree {
 			parent.setRecordCount((double)this.leaf_count_[index]);
 		}
 	}
+
+	Set<Double> getCategories(int feature){
+		Set<Double> result = null;
+
+		for(int i = 0; i < this.split_feature_real_.length; i++){
+
+			if(this.split_feature_real_[i] == feature && this.decision_type_[i] == Tree.SPLIT_CATEGORICAL){
+
+				if(result == null){
+					result = new LinkedHashSet<>();
+				}
+
+				result.add(this.threshold_[i]);
+			}
+		}
+
+		return result;
+	}
+
+
+	private static final int SPLIT_NUMERIC = 0;
+	private static final int SPLIT_CATEGORICAL = 1;
 }
