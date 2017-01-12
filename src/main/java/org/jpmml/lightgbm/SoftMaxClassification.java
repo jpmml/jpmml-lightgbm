@@ -54,7 +54,11 @@ public class SoftMaxClassification extends ObjectiveFunction {
 
 	@Override
 	public Label encodeLabel(FieldName name, PMMLEncoder encoder){
-		List<String> categories = createCategories(this.num_class_);
+		List<String> categories = new ArrayList<>();
+
+		for(int i = 0; i < this.num_class_; i++){
+			categories.add(String.valueOf(i));
+		}
 
 		DataField dataField = encoder.createDataField(name, OpType.CATEGORICAL, DataType.STRING, categories);
 
@@ -83,7 +87,7 @@ public class SoftMaxClassification extends ObjectiveFunction {
 	}
 
 	static
-	public Output createOutput(String targetCategory){
+	private Output createOutput(String targetCategory){
 		Output output = new Output();
 
 		OutputField lgbmValue = new OutputField(FieldName.create("lgbmValue_" + targetCategory), DataType.DOUBLE)
@@ -109,17 +113,6 @@ public class SoftMaxClassification extends ObjectiveFunction {
 			E value = values.get((i * rows) + index);
 
 			result.add(value);
-		}
-
-		return result;
-	}
-
-	static
-	private List<String> createCategories(int size){
-		List<String> result = new ArrayList<>();
-
-		for(int i = 0; i < size; i++){
-			result.add(String.valueOf(i));
 		}
 
 		return result;

@@ -26,4 +26,9 @@ public class ClassificationTest extends LightGBMTest {
 	public void evaluateIris() throws Exception {
 		evaluate("Classification", "Iris");
 	}
+
+	@Test
+	public void evaluateVersicolor() throws Exception {
+		evaluate("Classification", "Versicolor");
+	}
 }

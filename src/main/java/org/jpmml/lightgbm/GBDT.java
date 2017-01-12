@@ -180,6 +180,8 @@ public class GBDT {
 		switch(objective){
 			case "regression":
 				return new Regression();
+			case "binary":
+				return new LogisticClassification(num_class, sigmoid);
 			case "multiclass":
 				return new SoftMaxClassification(num_class);
 			default:

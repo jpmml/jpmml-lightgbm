@@ -32,6 +32,25 @@ species_proba = DataFrame(iris_lgbm.predict_proba(iris_X), columns = ["probabili
 store_csv(pandas.concat((species, species_proba), axis = 1), "ClassificationIris.csv")
 
 #
+# Binary classification
+#
+
+versicolor_df = load_csv("Versicolor.csv")
+
+versicolor_X = versicolor_df[versicolor_df.columns.difference(["Species"])]
+versicolor_y = versicolor_df["Species"]
+
+versicolor_lgbm = LGBMClassifier(objective = "binary", n_estimators = 11)
+versicolor_lgbm.fit(versicolor_X, versicolor_y, feature_name = versicolor_X.columns.values)
+
+store_lgbm(versicolor_lgbm, "ClassificationVersicolor.txt")
+
+versicolor = DataFrame(versicolor_lgbm.predict(versicolor_X), columns = ["_target"])
+versicolor_proba = DataFrame(versicolor_lgbm.predict_proba(versicolor_X), columns = ["probability_0", "probability_1"])
+
+store_csv(pandas.concat((versicolor, versicolor_proba), axis = 1), "ClassificationVersicolor.csv")
+
+#
 # Regression
 #
 
