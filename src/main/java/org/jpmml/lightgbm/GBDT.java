@@ -178,7 +178,19 @@ public class GBDT {
 	public ObjectiveFunction parseObjectiveFunction(String objective, int num_class, double sigmoid){
 
 		switch(objective){
+			// RegressionL2loss
 			case "regression":
+			case "regression_l2":
+			case "mean_squared_error":
+			case "mse":
+			// RegressionL1loss
+			case "regression_l1":
+			case "mean_absolute_error":
+			case "mae":
+			// RegressionHuberLoss
+			case "huber":
+			// RegressionFairLoss
+			case "fair":
 				return new Regression();
 			case "binary":
 				return new LogisticClassification(num_class, sigmoid);
