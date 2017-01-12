@@ -1,4 +1,4 @@
-from lightgbm import LGBMRegressor
+from lightgbm import LGBMClassifier, LGBMRegressor
 from pandas import DataFrame
 
 import pandas
@@ -12,6 +12,29 @@ def store_csv(df, name):
 def store_lgbm(lgbm, name):
 	lgbm.booster_.save_model("lgbm/" + name)
 
+#
+# Multi-class classification
+#
+
+iris_df = load_csv("Iris.csv")
+
+iris_X = iris_df[iris_df.columns.difference(["Species"])]
+iris_y = iris_df["Species"]
+
+iris_lgbm = LGBMClassifier(objective = "multiclass", n_estimators = 11)
+iris_lgbm.fit(iris_X, iris_y, feature_name = iris_X.columns.values, eval_metric = "multi_logloss")
+
+store_lgbm(iris_lgbm, "ClassificationIris.txt")
+
+species = DataFrame(iris_lgbm.predict(iris_X), columns = ["_target"]).replace("setosa", "0").replace("versicolor", "1").replace("virginica", "2")
+species_proba = DataFrame(iris_lgbm.predict_proba(iris_X), columns = ["probability_0", "probability_1", "probability_2"])
+
+store_csv(pandas.concat((species, species_proba), axis = 1), "ClassificationIris.csv")
+
+#
+# Regression
+#
+
 auto_df = load_csv("Auto.csv")
 
 auto_X = auto_df[auto_df.columns.difference(["mpg"])]
@@ -22,7 +45,9 @@ auto_lgbm.fit(auto_X, auto_y, feature_name = auto_X.columns.values, categorical_
 
 store_lgbm(auto_lgbm, "RegressionAuto.txt")
 
-store_csv(DataFrame(auto_lgbm.predict(auto_X), columns = ["_target"]), "RegressionAuto.csv")
+mpg = DataFrame(auto_lgbm.predict(auto_X), columns = ["_target"])
+
+store_csv(mpg, "RegressionAuto.csv")
 
 housing_df = load_csv("Housing.csv")
 
@@ -34,4 +59,6 @@ housing_lgbm.fit(housing_X, housing_y, feature_name = housing_X.columns.values)
 
 store_lgbm(housing_lgbm, "RegressionHousing.txt")
 
-store_csv(DataFrame(housing_lgbm.predict(housing_X), columns = ["_target"]), "RegressionHousing.csv")
+medv = DataFrame(housing_lgbm.predict(housing_X), columns = ["_target"])
+
+store_csv(medv, "RegressionHousing.csv")

@@ -20,26 +20,35 @@ package org.jpmml.lightgbm;
 
 import java.util.List;
 
+import org.dmg.pmml.DataField;
+import org.dmg.pmml.DataType;
 import org.dmg.pmml.FieldName;
+import org.dmg.pmml.MiningFunction;
+import org.dmg.pmml.OpType;
 import org.dmg.pmml.mining.MiningModel;
-import org.dmg.pmml.mining.Segmentation;
 import org.dmg.pmml.tree.TreeModel;
+import org.jpmml.converter.ContinuousLabel;
 import org.jpmml.converter.Label;
+import org.jpmml.converter.ModelUtil;
 import org.jpmml.converter.PMMLEncoder;
 import org.jpmml.converter.Schema;
-import org.jpmml.converter.mining.MiningModelUtil;
 
-abstract
-public class ObjectiveFunction {
+public class Regression extends ObjectiveFunction {
 
-	abstract
-	public Label encodeLabel(FieldName name, PMMLEncoder encoder);
+	@Override
+	public Label encodeLabel(FieldName name, PMMLEncoder encoder){
+		DataField dataField = encoder.createDataField(name, OpType.CONTINUOUS, DataType.DOUBLE);
 
-	abstract
-	public MiningModel encodeMiningModel(List<TreeModel> treeModels, Schema schema);
+		Label label = new ContinuousLabel(dataField);
 
-	static
-	public Segmentation createSegmentation(List<TreeModel> treeModels){
-		return MiningModelUtil.createSegmentation(Segmentation.MultipleModelMethod.SUM, treeModels);
+		return label;
+	}
+
+	@Override
+	public MiningModel encodeMiningModel(List<TreeModel> treeModels, Schema schema){
+		MiningModel miningModel = new MiningModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(schema))
+			.setSegmentation(createSegmentation(treeModels));
+
+		return miningModel;
 	}
 }

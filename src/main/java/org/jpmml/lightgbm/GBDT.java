@@ -27,20 +27,15 @@ import java.util.TreeSet;
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
 import org.dmg.pmml.FieldName;
-import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.PMML;
 import org.dmg.pmml.mining.MiningModel;
-import org.dmg.pmml.mining.Segmentation;
 import org.dmg.pmml.tree.TreeModel;
 import org.jpmml.converter.ContinuousFeature;
-import org.jpmml.converter.ContinuousLabel;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.MissingValueDecorator;
-import org.jpmml.converter.ModelUtil;
 import org.jpmml.converter.Schema;
-import org.jpmml.converter.mining.MiningModelUtil;
 
 public class GBDT {
 
@@ -74,7 +69,7 @@ public class GBDT {
 			this.label_idx_ = Integer.parseInt(block.get("label_index"));
 			this.feature_names_ = LightGBMUtil.parseStringArray(this.max_feature_idx_ + 1, block.get("feature_names"));
 
-			this.object_function_ = parseObjectiveFunction(block.get("objective"));
+			this.object_function_ = parseObjectiveFunction(block.get("objective"), this.num_class_, this.sigmoid_);
 		}
 
 		List<Tree> trees = new ArrayList<>();
@@ -103,9 +98,7 @@ public class GBDT {
 		{
 			String targetField = "_target";
 
-			DataField dataField = encoder.createDataField(FieldName.create(targetField), OpType.CONTINUOUS, DataType.DOUBLE);
-
-			label = new ContinuousLabel(dataField);
+			label = this.object_function_.encodeLabel(FieldName.create(targetField), encoder);
 		}
 
 		List<Feature> features = new ArrayList<>();
@@ -116,8 +109,8 @@ public class GBDT {
 
 			OpType opType;
 
-			Set<Double> categories = getCategories(i);
-			if(categories != null && categories.size() > 0){
+			Set<Double> featureCategories = getFeatureCategories(i);
+			if(featureCategories != null && featureCategories.size() > 0){
 				opType = OpType.CATEGORICAL;
 			} else
 
@@ -156,18 +149,17 @@ public class GBDT {
 			treeModels.add(treeModel);
 		}
 
-		MiningModel miningModel = new MiningModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(schema))
-			.setSegmentation(MiningModelUtil.createSegmentation(Segmentation.MultipleModelMethod.SUM, treeModels));
+		MiningModel miningModel = this.object_function_.encodeMiningModel(treeModels, schema);
 
 		return miningModel;
 	}
 
-	Set<Double> getCategories(int feature){
+	Set<Double> getFeatureCategories(int feature){
 		Set<Double> result = null;
 
 		Tree[] trees = this.models_;
 		for(Tree tree : trees){
-			Set<Double> categories = tree.getCategories(feature);
+			Set<Double> categories = tree.getFeatureCategories(feature);
 
 			if(categories != null && categories.size() > 0){
 
@@ -183,11 +175,13 @@ public class GBDT {
 	}
 
 	static
-	public ObjectiveFunction parseObjectiveFunction(String objective){
+	public ObjectiveFunction parseObjectiveFunction(String objective, int num_class, double sigmoid){
 
 		switch(objective){
 			case "regression":
-				return null;
+				return new Regression();
+			case "multiclass":
+				return new SoftMaxClassification(num_class);
 			default:
 				throw new IllegalArgumentException(objective);
 		}

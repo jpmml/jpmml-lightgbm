@@ -18,28 +18,12 @@
  */
 package org.jpmml.lightgbm;
 
-import java.util.List;
+import org.junit.Test;
 
-import org.dmg.pmml.FieldName;
-import org.dmg.pmml.mining.MiningModel;
-import org.dmg.pmml.mining.Segmentation;
-import org.dmg.pmml.tree.TreeModel;
-import org.jpmml.converter.Label;
-import org.jpmml.converter.PMMLEncoder;
-import org.jpmml.converter.Schema;
-import org.jpmml.converter.mining.MiningModelUtil;
+public class ClassificationTest extends LightGBMTest {
 
-abstract
-public class ObjectiveFunction {
-
-	abstract
-	public Label encodeLabel(FieldName name, PMMLEncoder encoder);
-
-	abstract
-	public MiningModel encodeMiningModel(List<TreeModel> treeModels, Schema schema);
-
-	static
-	public Segmentation createSegmentation(List<TreeModel> treeModels){
-		return MiningModelUtil.createSegmentation(Segmentation.MultipleModelMethod.SUM, treeModels);
+	@Test
+	public void evaluateIris() throws Exception {
+		evaluate("Classification", "Iris");
 	}
 }

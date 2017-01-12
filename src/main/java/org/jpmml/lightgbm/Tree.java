@@ -141,7 +141,7 @@ public class Tree {
 		}
 	}
 
-	Set<Double> getCategories(int feature){
+	Set<Double> getFeatureCategories(int feature){
 		Set<Double> result = null;
 
 		for(int i = 0; i < this.split_feature_real_.length; i++){
