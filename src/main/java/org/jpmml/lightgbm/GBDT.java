@@ -20,7 +20,6 @@ package org.jpmml.lightgbm;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -54,37 +53,42 @@ public class GBDT {
 	private Tree[] models_;
 
 
-	public void load(List<Map<String, String>> blocks){
+	public void load(List<Section> sections){
+		int index = 0;
 
 		{
-			Map<String, String> block = blocks.get(0);
+			Section section = sections.get(index);
 
-			if(!block.containsKey("tree")){
+			if(!("tree").equals(section.id())){
 				throw new IllegalArgumentException();
 			}
 
-			this.max_feature_idx_ = Integer.parseInt(block.get("max_feature_idx"));
-			this.num_class_ = Integer.parseInt(block.get("num_class"));
-			this.sigmoid_ = Double.parseDouble(block.get("sigmoid"));
-			this.label_idx_ = Integer.parseInt(block.get("label_index"));
-			this.feature_names_ = LightGBMUtil.parseStringArray(this.max_feature_idx_ + 1, block.get("feature_names"));
+			this.max_feature_idx_ = section.getInt("max_feature_idx");
+			this.num_class_ = section.getInt("num_class");
+			this.sigmoid_ = section.getDouble("sigmoid");
+			this.label_idx_ = section.getInt("label_index");
+			this.feature_names_ = section.getStringArray("feature_names", this.max_feature_idx_ + 1);
 
-			this.object_function_ = parseObjectiveFunction(block.get("objective"), this.num_class_, this.sigmoid_);
+			this.object_function_ = parseObjectiveFunction(section.getString("objective"), this.num_class_, this.sigmoid_);
+
+			index++;
 		}
 
 		List<Tree> trees = new ArrayList<>();
 
-		for(int i = 1; i < (blocks.size() - 2); i++){
-			Map<String, String> block = blocks.get(i);
+		while(index < sections.size()){
+			Section section = sections.get(index);
 
-			if(!(String.valueOf(i - 1)).equals(block.get("Tree"))){
-				throw new IllegalArgumentException();
+			if(!("Tree=" + String.valueOf(index - 1)).equals(section.id())){
+				break;
 			}
 
 			Tree tree = new Tree();
-			tree.load(block);
+			tree.load(section);
 
 			trees.add(tree);
+
+			index++;
 		}
 
 		this.models_ = trees.toArray(new Tree[trees.size()]);

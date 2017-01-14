@@ -19,7 +19,6 @@
 package org.jpmml.lightgbm;
 
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.dmg.pmml.MiningFunction;
@@ -57,18 +56,18 @@ public class Tree {
 	private int[] internal_count_;
 
 
-	public void load(Map<String, String> block){
-		this.num_leaves_ = Integer.parseInt(block.get("num_leaves"));
+	public void load(Section section){
+		this.num_leaves_ = section.getInt("num_leaves");
 
-		this.left_child_ = LightGBMUtil.parseIntArray(this.num_leaves_ - 1, block.get("left_child"));
-		this.right_child_ = LightGBMUtil.parseIntArray(this.num_leaves_ - 1, block.get("right_child"));
-		this.split_feature_real_ = LightGBMUtil.parseIntArray(this.num_leaves_ - 1, block.get("split_feature"));
-		this.threshold_ = LightGBMUtil.parseDoubleArray(this.num_leaves_ - 1, block.get("threshold"));
-		this.decision_type_ = LightGBMUtil.parseIntArray(this.num_leaves_ - 1, block.get("decision_type"));
-		this.leaf_value_ = LightGBMUtil.parseDoubleArray(this.num_leaves_, block.get("leaf_value"));
-		this.leaf_count_ = LightGBMUtil.parseIntArray(this.num_leaves_, block.get("leaf_count"));
-		this.internal_value_ = LightGBMUtil.parseDoubleArray(this.num_leaves_ - 1, block.get("internal_value"));
-		this.internal_count_ = LightGBMUtil.parseIntArray(this.num_leaves_ - 1, block.get("internal_count"));
+		this.left_child_ = section.getIntArray("left_child", this.num_leaves_ - 1);
+		this.right_child_ = section.getIntArray("right_child", this.num_leaves_ - 1);
+		this.split_feature_real_ = section.getIntArray("split_feature", this.num_leaves_ - 1);
+		this.threshold_ = section.getDoubleArray("threshold", this.num_leaves_ - 1);
+		this.decision_type_ = section.getIntArray("decision_type", this.num_leaves_ - 1);
+		this.leaf_value_ = section.getDoubleArray("leaf_value", this.num_leaves_);
+		this.leaf_count_ = section.getIntArray("leaf_count", this.num_leaves_);
+		this.internal_value_ = section.getDoubleArray("internal_value", this.num_leaves_ - 1);
+		this.internal_count_ = section.getIntArray("internal_count", this.num_leaves_ - 1);
 	}
 
 	public TreeModel encodeTreeModel(Schema schema){

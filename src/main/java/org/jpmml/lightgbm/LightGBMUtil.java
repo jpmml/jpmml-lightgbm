@@ -22,10 +22,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class LightGBMUtil {
 
@@ -34,40 +34,35 @@ public class LightGBMUtil {
 
 	static
 	public GBDT loadGBDT(InputStream is) throws IOException {
-		List<Map<String, String>> blocks = loadText(is);
+		return loadGBDT(parseText(is));
+	}
+
+	static
+	public GBDT loadGBDT(Iterator<String> lines){
+		List<Section> sections = loadText(lines);
 
 		GBDT gbdt = new GBDT();
-		gbdt.load(blocks);
+		gbdt.load(sections);
 
 		return gbdt;
 	}
 
 	static
-	private List<Map<String, String>> loadText(InputStream is) throws IOException {
-		List<Map<String, String>> result = new ArrayList<>();
+	private List<Section> loadText(Iterator<String> lines){
+		List<Section> sections = new ArrayList<>();
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is, "US-ASCII")){
-
-			@Override
-			public void close(){
-			}
-		};
-
-		Map<String, String> map = new LinkedHashMap<>();
+		Section section = new Section();
 
 		loop:
-		while(true){
-			String line = reader.readLine();
-			if(line == null){
-				break;
-			} // End if
+		while(lines.hasNext()){
+			String line = lines.next();
 
 			if(("").equals(line)){
 
-				if(map.size() > 0){
-					result.add(map);
+				if(section.size() > 0){
+					sections.add(section);
 
-					map = new LinkedHashMap<>();
+					section = new Section();
 				}
 
 				continue loop;
@@ -87,20 +82,52 @@ public class LightGBMUtil {
 				value = null;
 			}
 
-			map.put(key, value);
+			section.put(key, value);
 		}
 
-		if(map.size() > 0){
-			result.add(map);
+		if(section.size() > 0){
+			sections.add(section);
 		}
 
-		reader.close();
-
-		return result;
+		return sections;
 	}
 
 	static
-	public String[] parseStringArray(int length, String string){
+	public Iterator<String> parseText(InputStream is) throws IOException {
+		Reader reader = new InputStreamReader(is, "US-ASCII");
+
+		return parseText(reader);
+	}
+
+	static
+	public Iterator<String> parseText(Reader reader) throws IOException {
+		BufferedReader bufferedReader = new BufferedReader(reader){
+
+			@Override
+			public void close(){
+			}
+		};
+
+		try {
+			List<String> lines = new ArrayList<>();
+
+			while(true){
+				String line = bufferedReader.readLine();
+				if(line == null){
+					break;
+				}
+
+				lines.add(line);
+			}
+
+			return lines.iterator();
+		} finally {
+			bufferedReader.close();
+		}
+	}
+
+	static
+	public String[] parseStringArray(String string, int length){
 		String[] result = string.split("\\s");
 
 		if(result.length != length){
@@ -111,10 +138,10 @@ public class LightGBMUtil {
 	}
 
 	static
-	public int[] parseIntArray(int length, String string){
+	public int[] parseIntArray(String string, int length){
 		int[] result = new int[length];
 
-		String[] values = parseStringArray(length, string);
+		String[] values = parseStringArray(string, length);
 		for(int i = 0; i < length; i++){
 			result[i] = Integer.parseInt(values[i]);
 		}
@@ -123,10 +150,10 @@ public class LightGBMUtil {
 	}
 
 	static
-	public double[] parseDoubleArray(int length, String string){
+	public double[] parseDoubleArray(String string, int length){
 		double[] result = new double[length];
 
-		String[] values = parseStringArray(length, string);
+		String[] values = parseStringArray(string, length);
 		for(int i = 0; i < length; i++){
 			result[i] = Double.parseDouble(values[i]);
 		}
