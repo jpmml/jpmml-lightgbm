@@ -21,8 +21,8 @@ iris_df = load_csv("Iris.csv")
 iris_X = iris_df[iris_df.columns.difference(["Species"])]
 iris_y = iris_df["Species"]
 
-iris_lgbm = LGBMClassifier(objective = "multiclass", n_estimators = 11)
-iris_lgbm.fit(iris_X, iris_y, feature_name = iris_X.columns.values, eval_metric = "multi_logloss")
+iris_lgbm = LGBMClassifier(n_estimators = 11)
+iris_lgbm.fit(iris_X, iris_y)
 
 store_lgbm(iris_lgbm, "ClassificationIris.txt")
 
@@ -40,8 +40,8 @@ versicolor_df = load_csv("Versicolor.csv")
 versicolor_X = versicolor_df[versicolor_df.columns.difference(["Species"])]
 versicolor_y = versicolor_df["Species"]
 
-versicolor_lgbm = LGBMClassifier(objective = "binary", n_estimators = 11)
-versicolor_lgbm.fit(versicolor_X, versicolor_y, feature_name = versicolor_X.columns.values)
+versicolor_lgbm = LGBMClassifier(n_estimators = 11)
+versicolor_lgbm.fit(versicolor_X, versicolor_y)
 
 store_lgbm(versicolor_lgbm, "ClassificationVersicolor.txt")
 
@@ -56,11 +56,12 @@ store_csv(pandas.concat((versicolor, versicolor_proba), axis = 1), "Classificati
 
 auto_df = load_csv("Auto.csv")
 
-auto_X = auto_df[auto_df.columns.difference(["mpg"])]
+#auto_X = auto_df[auto_df.columns.difference(["mpg"])]
+auto_X = auto_df[["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"]]
 auto_y = auto_df["mpg"]
 
 auto_lgbm = LGBMRegressor(n_estimators = 31)
-auto_lgbm.fit(auto_X, auto_y, feature_name = auto_X.columns.values, categorical_feature = ["cylinders", "model_year", "origin"])
+auto_lgbm.fit(auto_X.as_matrix(), auto_y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"], categorical_feature = ["cylinders", "model_year", "origin"])
 
 store_lgbm(auto_lgbm, "RegressionAuto.txt")
 
@@ -74,7 +75,7 @@ housing_X = housing_df[housing_df.columns.difference(["MEDV"])]
 housing_y = housing_df["MEDV"]
 
 housing_lgbm = LGBMRegressor(n_estimators = 31)
-housing_lgbm.fit(housing_X, housing_y, feature_name = housing_X.columns.values)
+housing_lgbm.fit(housing_X, housing_y)
 
 store_lgbm(housing_lgbm, "RegressionHousing.txt")
 

@@ -74,7 +74,7 @@ public class GBDT {
 
 		List<Tree> trees = new ArrayList<>();
 
-		for(int i = 1; i < (blocks.size() - 1); i++){
+		for(int i = 1; i < (blocks.size() - 2); i++){
 			Map<String, String> block = blocks.get(i);
 
 			if(!(String.valueOf(i - 1)).equals(block.get("Tree"))){

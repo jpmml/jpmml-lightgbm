@@ -507,3 +507,9 @@ Petal.Length=120
 Petal.Width=54
 Sepal.Width=34
 Sepal.Length=27
+
+feature information:
+Petal.Length=[1,6.9]
+Petal.Width=[0.1,2.5]
+Sepal.Length=[4.3,7.9]
+Sepal.Width=[2,4.4]
