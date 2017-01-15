@@ -19,19 +19,25 @@
 package org.jpmml.lightgbm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
 import org.dmg.pmml.FieldName;
+import org.dmg.pmml.MiningField;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.PMML;
 import org.dmg.pmml.mining.MiningModel;
 import org.dmg.pmml.tree.TreeModel;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
+import org.jpmml.converter.FieldDecorator;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.MissingValueDecorator;
 import org.jpmml.converter.Schema;
@@ -52,11 +58,13 @@ public class GBDT {
 
 	private Tree[] models_;
 
+	private Map<String, String> feature_importances = Collections.emptyMap();
+
 
 	public void load(List<Section> sections){
 		int index = 0;
 
-		{
+		if(true){
 			Section section = sections.get(index);
 
 			if(!("tree").equals(section.id())){
@@ -92,6 +100,19 @@ public class GBDT {
 		}
 
 		this.models_ = trees.toArray(new Tree[trees.size()]);
+
+		feature_importances:
+		if(index < sections.size()){
+			Section section = sections.get(index);
+
+			if(!("feature importances:").equals(section.id())){
+				break feature_importances;
+			}
+
+			this.feature_importances = loadFeatureSection(section);
+
+			index++;
+		}
 	}
 
 	public PMML encodePMML(){
@@ -106,6 +127,19 @@ public class GBDT {
 		}
 
 		List<Feature> features = new ArrayList<>();
+
+		FieldDecorator importanceDecorator = new FieldDecorator(){
+
+			@Override
+			public void decorate(DataField dataField, MiningField miningField){
+				FieldName name = dataField.getName();
+
+				Double importance = getFeatureImportance(name.getValue());
+				if(importance != null){
+					miningField.setImportance(importance);
+				}
+			}
+		};
 
 		String[] activeFields = this.feature_names_;
 		for(int i = 0; i < activeFields.length; i++){
@@ -124,10 +158,11 @@ public class GBDT {
 
 			DataField dataField = encoder.createDataField(FieldName.create(activeField), opType, DataType.DOUBLE);
 
-			MissingValueDecorator decorator = new MissingValueDecorator()
+			MissingValueDecorator missingValueDecorator = new MissingValueDecorator()
 				.setMissingValueReplacement("0");
 
-			encoder.addDecorator(dataField.getName(), decorator);
+			encoder.addDecorator(dataField.getName(), missingValueDecorator);
+			encoder.addDecorator(dataField.getName(), importanceDecorator);
 
 			features.add(new ContinuousFeature(encoder, dataField));
 		}
@@ -158,6 +193,10 @@ public class GBDT {
 		return miningModel;
 	}
 
+	public String[] getFeatureNames(){
+		return this.feature_names_;
+	}
+
 	Set<Double> getFeatureCategories(int feature){
 		Set<Double> result = null;
 
@@ -174,6 +213,23 @@ public class GBDT {
 				result.addAll(categories);
 			}
 		}
+
+		return result;
+	}
+
+	/**
+	 * @see #getFeatureNames()
+	 */
+	Double getFeatureImportance(String featureName){
+		String value = this.feature_importances.get(featureName);
+
+		return (value != null ? Double.valueOf(value) : null);
+	}
+
+	private Map<String, String> loadFeatureSection(Section section){
+		Map<String, String> result = new LinkedHashMap<>(section);
+
+		(result.keySet()).retainAll(Arrays.asList(this.feature_names_));
 
 		return result;
 	}
