@@ -24,8 +24,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
+import org.dmg.pmml.Interval;
 
 public class LightGBMUtil {
 
@@ -159,5 +162,47 @@ public class LightGBMUtil {
 		}
 
 		return result;
+	}
+
+	static
+	public Interval parseInterval(String string){
+
+		if(string.length() < 3){
+			throw new IllegalArgumentException();
+		}
+
+		String bounds = string.substring(0, 1) + string.substring(string.length() - 1, string.length());
+		String margins = string.substring(1, string.length() - 1);
+
+		Interval.Closure closure;
+
+		switch(bounds){
+			case "[]":
+				closure = Interval.Closure.CLOSED_CLOSED;
+				break;
+			default:
+				throw new IllegalArgumentException(bounds);
+		}
+
+		String[] values = margins.split(",");
+		if(values.length != 2){
+			throw new IllegalArgumentException(margins);
+		}
+
+		Double leftMargin = Double.valueOf(values[0]);
+		Double rightMargin = Double.valueOf(values[1]);
+
+		Interval interval = new Interval(closure)
+			.setLeftMargin(leftMargin)
+			.setRightMargin(rightMargin);
+
+		return interval;
+	}
+
+	static
+	public List<String> parseValues(String string){
+		String[] values = string.split(",");
+
+		return Arrays.asList(values);
 	}
 }

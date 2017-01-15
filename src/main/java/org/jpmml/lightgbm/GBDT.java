@@ -30,6 +30,7 @@ import java.util.TreeSet;
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
 import org.dmg.pmml.FieldName;
+import org.dmg.pmml.Interval;
 import org.dmg.pmml.MiningField;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.PMML;
@@ -40,7 +41,9 @@ import org.jpmml.converter.Feature;
 import org.jpmml.converter.FieldDecorator;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.MissingValueDecorator;
+import org.jpmml.converter.PMMLUtil;
 import org.jpmml.converter.Schema;
+import org.jpmml.converter.ValidValueDecorator;
 
 public class GBDT {
 
@@ -60,6 +63,8 @@ public class GBDT {
 
 	private Map<String, String> feature_importances = Collections.emptyMap();
 
+	private Map<String, String> feature_values = Collections.emptyMap();
+
 
 	public void load(List<Section> sections){
 		int index = 0;
@@ -67,7 +72,7 @@ public class GBDT {
 		if(true){
 			Section section = sections.get(index);
 
-			if(!("tree").equals(section.id())){
+			if(!section.checkId("tree")){
 				throw new IllegalArgumentException();
 			}
 
@@ -87,7 +92,7 @@ public class GBDT {
 		while(index < sections.size()){
 			Section section = sections.get(index);
 
-			if(!("Tree=" + String.valueOf(index - 1)).equals(section.id())){
+			if(!section.checkId("Tree=" + String.valueOf(index - 1))){
 				break;
 			}
 
@@ -105,11 +110,24 @@ public class GBDT {
 		if(index < sections.size()){
 			Section section = sections.get(index);
 
-			if(!("feature importances:").equals(section.id())){
+			if(!section.checkId("feature importances:")){
 				break feature_importances;
 			}
 
 			this.feature_importances = loadFeatureSection(section);
+
+			index++;
+		} // End if
+
+		feature_information:
+		if(index < sections.size()){
+			Section section = sections.get(index);
+
+			if(!section.checkId("feature information:")){
+				break feature_information;
+			}
+
+			this.feature_values = loadFeatureSection(section);
 
 			index++;
 		}
@@ -128,23 +146,11 @@ public class GBDT {
 
 		List<Feature> features = new ArrayList<>();
 
-		FieldDecorator importanceDecorator = new FieldDecorator(){
-
-			@Override
-			public void decorate(DataField dataField, MiningField miningField){
-				FieldName name = dataField.getName();
-
-				Double importance = getFeatureImportance(name.getValue());
-				if(importance != null){
-					miningField.setImportance(importance);
-				}
-			}
-		};
-
 		String[] activeFields = this.feature_names_;
 		for(int i = 0; i < activeFields.length; i++){
 			String activeField = activeFields[i];
 
+			final
 			OpType opType;
 
 			Set<Double> featureCategories = getFeatureCategories(i);
@@ -158,11 +164,54 @@ public class GBDT {
 
 			DataField dataField = encoder.createDataField(FieldName.create(activeField), opType, DataType.DOUBLE);
 
+			final
+			Double importance = getFeatureImportance(activeField);
+
+			FieldDecorator importanceDecorator = new FieldDecorator(){
+
+				@Override
+				public void decorate(DataField dataField, MiningField miningField){
+					miningField.setImportance(importance);
+				}
+			};
+
+			encoder.addDecorator(dataField.getName(), importanceDecorator);
+
+			final
+			String value = getFeatureValue(activeField);
+
+			ValidValueDecorator validValueDecorator = new ValidValueDecorator(){
+
+				@Override
+				public void decorate(DataField dataField, MiningField miningField){
+
+					if(value == null){
+						return;
+					}
+
+					switch(opType){
+						case CATEGORICAL:
+							List<String> values = LightGBMUtil.parseValues(value);
+
+							PMMLUtil.addValues(dataField, values);
+							break;
+						case CONTINUOUS:
+							Interval interval = LightGBMUtil.parseInterval(value);
+
+							dataField.addIntervals(interval);
+							break;
+						default:
+							throw new IllegalArgumentException();
+					}
+				}
+			};
+
+			encoder.addDecorator(dataField.getName(), validValueDecorator);
+
 			MissingValueDecorator missingValueDecorator = new MissingValueDecorator()
 				.setMissingValueReplacement("0");
 
 			encoder.addDecorator(dataField.getName(), missingValueDecorator);
-			encoder.addDecorator(dataField.getName(), importanceDecorator);
 
 			features.add(new ContinuousFeature(encoder, dataField));
 		}
@@ -224,6 +273,15 @@ public class GBDT {
 		String value = this.feature_importances.get(featureName);
 
 		return (value != null ? Double.valueOf(value) : null);
+	}
+
+	/**
+	 * @see #getFeatureNames()
+	 */
+	String getFeatureValue(String featureName){
+		String value = this.feature_values.get(featureName);
+
+		return value;
 	}
 
 	private Map<String, String> loadFeatureSection(Section section){

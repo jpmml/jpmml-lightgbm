@@ -25,6 +25,10 @@ import com.google.common.collect.Iterables;
 
 public class Section extends LinkedHashMap<String, String> {
 
+	public boolean checkId(String id){
+		return (id).equals(id());
+	}
+
 	public String id(){
 		Map.Entry<String, String> entry = Iterables.getFirst(entrySet(), null);
 
