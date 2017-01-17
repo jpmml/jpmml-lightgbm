@@ -21,7 +21,6 @@ package org.jpmml.lightgbm;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
 import org.dmg.pmml.FieldName;
 import org.dmg.pmml.OpType;
@@ -30,36 +29,18 @@ import org.dmg.pmml.regression.RegressionModel;
 import org.jpmml.converter.CategoricalLabel;
 import org.jpmml.converter.ContinuousLabel;
 import org.jpmml.converter.FortranMatrixUtil;
-import org.jpmml.converter.Label;
 import org.jpmml.converter.ModelUtil;
-import org.jpmml.converter.PMMLEncoder;
 import org.jpmml.converter.Schema;
 import org.jpmml.converter.mining.MiningModelUtil;
 
-public class SoftMaxClassification extends ObjectiveFunction {
-
-	private int num_class_;
-
+public class SoftMaxClassification extends Classification {
 
 	public SoftMaxClassification(int num_class){
-		this.num_class_ = num_class;
+		super(num_class);
 
 		if(num_class < 3){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Multi-class classification requires three or more target categories");
 		}
-	}
-
-	@Override
-	public Label encodeLabel(FieldName name, PMMLEncoder encoder){
-		List<String> categories = new ArrayList<>();
-
-		for(int i = 0; i < this.num_class_; i++){
-			categories.add(String.valueOf(i));
-		}
-
-		DataField dataField = encoder.createDataField(name, OpType.CATEGORICAL, DataType.STRING, categories);
-
-		return new CategoricalLabel(dataField);
 	}
 
 	@Override

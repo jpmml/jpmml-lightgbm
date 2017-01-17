@@ -18,47 +18,28 @@
  */
 package org.jpmml.lightgbm;
 
-import java.util.Arrays;
 import java.util.List;
 
-import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
 import org.dmg.pmml.FieldName;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.mining.MiningModel;
 import org.dmg.pmml.regression.RegressionModel;
-import org.jpmml.converter.CategoricalLabel;
 import org.jpmml.converter.ContinuousLabel;
-import org.jpmml.converter.Label;
 import org.jpmml.converter.ModelUtil;
-import org.jpmml.converter.PMMLEncoder;
 import org.jpmml.converter.Schema;
 import org.jpmml.converter.SigmoidTransformation;
 import org.jpmml.converter.mining.MiningModelUtil;
 
-public class LogisticClassification extends ObjectiveFunction {
-
-	private int num_class_;
+public class LogisticClassification extends Classification {
 
 	private double sigmoid_;
 
 
 	public LogisticClassification(int num_class, double sigmoid){
-		this.num_class_ = num_class;
+		super(2);
+
 		this.sigmoid_ = sigmoid;
-
-		if(num_class != 1){
-			throw new IllegalArgumentException();
-		}
-	}
-
-	@Override
-	public Label encodeLabel(FieldName name, PMMLEncoder encoder){
-		List<String> categories = Arrays.asList("0", "1");
-
-		DataField dataField = encoder.createDataField(name, OpType.CATEGORICAL, DataType.STRING, categories);
-
-		return new CategoricalLabel(dataField);
 	}
 
 	@Override
