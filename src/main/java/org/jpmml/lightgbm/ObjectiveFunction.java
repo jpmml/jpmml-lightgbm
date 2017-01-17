@@ -18,13 +18,16 @@
  */
 package org.jpmml.lightgbm;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.dmg.pmml.FieldName;
+import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.mining.MiningModel;
 import org.dmg.pmml.mining.Segmentation;
 import org.dmg.pmml.tree.TreeModel;
 import org.jpmml.converter.Label;
+import org.jpmml.converter.ModelUtil;
 import org.jpmml.converter.PMMLEncoder;
 import org.jpmml.converter.Schema;
 import org.jpmml.converter.mining.MiningModelUtil;
@@ -36,10 +39,23 @@ public class ObjectiveFunction {
 	public Label encodeLabel(FieldName name, PMMLEncoder encoder);
 
 	abstract
-	public MiningModel encodeMiningModel(List<TreeModel> treeModels, Schema schema);
+	public MiningModel encodeMiningModel(List<Tree> trees, Schema schema);
 
 	static
-	public Segmentation createSegmentation(List<TreeModel> treeModels){
-		return MiningModelUtil.createSegmentation(Segmentation.MultipleModelMethod.SUM, treeModels);
+	protected MiningModel createMiningModel(List<Tree> trees, Schema schema){
+		Schema segmentSchema = schema.toAnonymousSchema();
+
+		List<TreeModel> treeModels = new ArrayList<>();
+
+		for(Tree tree : trees){
+			TreeModel treeModel = tree.encodeTreeModel(segmentSchema);
+
+			treeModels.add(treeModel);
+		}
+
+		MiningModel miningModel = new MiningModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(schema))
+			.setSegmentation(MiningModelUtil.createSegmentation(Segmentation.MultipleModelMethod.SUM, treeModels));
+
+		return miningModel;
 	}
 }

@@ -24,15 +24,12 @@ import java.util.List;
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
 import org.dmg.pmml.FieldName;
-import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.OpType;
-import org.dmg.pmml.Output;
-import org.dmg.pmml.OutputField;
-import org.dmg.pmml.ResultFeature;
 import org.dmg.pmml.mining.MiningModel;
 import org.dmg.pmml.regression.RegressionModel;
-import org.dmg.pmml.tree.TreeModel;
 import org.jpmml.converter.CategoricalLabel;
+import org.jpmml.converter.ContinuousLabel;
+import org.jpmml.converter.FortranMatrixUtil;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.ModelUtil;
 import org.jpmml.converter.PMMLEncoder;
@@ -62,59 +59,24 @@ public class SoftMaxClassification extends ObjectiveFunction {
 
 		DataField dataField = encoder.createDataField(name, OpType.CATEGORICAL, DataType.STRING, categories);
 
-		Label label = new CategoricalLabel(dataField);
-
-		return label;
+		return new CategoricalLabel(dataField);
 	}
 
 	@Override
-	public MiningModel encodeMiningModel(List<TreeModel> treeModels, Schema schema){
-		Schema segmentSchema = schema.toAnonymousSchema();
+	public MiningModel encodeMiningModel(List<Tree> trees, Schema schema){
+		Schema segmentSchema = new Schema(new ContinuousLabel(null, DataType.DOUBLE), schema.getFeatures());
 
 		List<MiningModel> miningModels = new ArrayList<>();
 
 		CategoricalLabel categoricalLabel = (CategoricalLabel)schema.getLabel();
 
-		for(int i = 0, rows = categoricalLabel.size(), columns = (treeModels.size() / rows); i < rows; i++){
-			MiningModel miningModel = new MiningModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(segmentSchema))
-				.setSegmentation(createSegmentation(getRow(treeModels, i, rows, columns)))
-				.setOutput(createOutput(categoricalLabel.getValue(i)));
+		for(int i = 0, rows = categoricalLabel.size(), columns = (trees.size() / rows); i < rows; i++){
+			MiningModel miningModel = createMiningModel(FortranMatrixUtil.getRow(trees, rows, columns, i), segmentSchema)
+				.setOutput(ModelUtil.createPredictedOutput(FieldName.create("lgbmValue_" + categoricalLabel.getValue(i)), OpType.CONTINUOUS, DataType.DOUBLE));
 
 			miningModels.add(miningModel);
 		}
 
 		return MiningModelUtil.createClassification(schema, miningModels, RegressionModel.NormalizationMethod.SOFTMAX, true);
-	}
-
-	static
-	private Output createOutput(String targetCategory){
-		Output output = new Output();
-
-		OutputField lgbmValue = new OutputField(FieldName.create("lgbmValue_" + targetCategory), DataType.DOUBLE)
-			.setOpType(OpType.CONTINUOUS)
-			.setResultFeature(ResultFeature.PREDICTED_VALUE)
-			.setFinalResult(false);
-
-		output.addOutputFields(lgbmValue);
-
-		return output;
-	}
-
-	static
-	private <E> List<E> getRow(List<E> values, int index, int rows, int columns){
-
-		if((rows * columns) != values.size()){
-			throw new IllegalArgumentException();
-		}
-
-		List<E> result = new ArrayList<>();
-
-		for(int i = 0; i < columns; i++){
-			E value = values.get((i * rows) + index);
-
-			result.add(value);
-		}
-
-		return result;
 	}
 }

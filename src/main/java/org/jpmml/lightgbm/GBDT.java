@@ -30,20 +30,16 @@ import java.util.TreeSet;
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
 import org.dmg.pmml.FieldName;
-import org.dmg.pmml.Interval;
-import org.dmg.pmml.MiningField;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.PMML;
 import org.dmg.pmml.mining.MiningModel;
-import org.dmg.pmml.tree.TreeModel;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
-import org.jpmml.converter.FieldDecorator;
+import org.jpmml.converter.ImportanceDecorator;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.MissingValueDecorator;
 import org.jpmml.converter.PMMLUtil;
 import org.jpmml.converter.Schema;
-import org.jpmml.converter.ValidValueDecorator;
 
 public class GBDT {
 
@@ -150,7 +146,6 @@ public class GBDT {
 		for(int i = 0; i < activeFields.length; i++){
 			String activeField = activeFields[i];
 
-			final
 			OpType opType;
 
 			Set<Double> featureCategories = getFeatureCategories(i);
@@ -164,49 +159,23 @@ public class GBDT {
 
 			DataField dataField = encoder.createDataField(FieldName.create(activeField), opType, DataType.DOUBLE);
 
-			final
-			Double importance = getFeatureImportance(activeField);
+			String value = getFeatureValue(activeField);
+			if(value != null){
 
-			FieldDecorator importanceDecorator = new FieldDecorator(){
-
-				@Override
-				public void decorate(DataField dataField, MiningField miningField){
-					miningField.setImportance(importance);
+				switch(opType){
+					case CATEGORICAL:
+						PMMLUtil.addValues(dataField, LightGBMUtil.parseValues(value));
+						break;
+					case CONTINUOUS:
+						PMMLUtil.addIntervals(dataField, LightGBMUtil.parseIntervals(value));
+						break;
 				}
-			};
+			}
+
+			ImportanceDecorator importanceDecorator = new ImportanceDecorator()
+				.setImportance(getFeatureImportance(activeField));
 
 			encoder.addDecorator(dataField.getName(), importanceDecorator);
-
-			final
-			String value = getFeatureValue(activeField);
-
-			ValidValueDecorator validValueDecorator = new ValidValueDecorator(){
-
-				@Override
-				public void decorate(DataField dataField, MiningField miningField){
-
-					if(value == null){
-						return;
-					}
-
-					switch(opType){
-						case CATEGORICAL:
-							List<String> values = LightGBMUtil.parseValues(value);
-
-							PMMLUtil.addValues(dataField, values);
-							break;
-						case CONTINUOUS:
-							Interval interval = LightGBMUtil.parseInterval(value);
-
-							dataField.addIntervals(interval);
-							break;
-						default:
-							throw new IllegalArgumentException();
-					}
-				}
-			};
-
-			encoder.addDecorator(dataField.getName(), validValueDecorator);
 
 			MissingValueDecorator missingValueDecorator = new MissingValueDecorator()
 				.setMissingValueReplacement("0");
@@ -226,18 +195,7 @@ public class GBDT {
 	}
 
 	public MiningModel encodeMiningModel(Schema schema){
-		Schema segmentSchema = schema.toAnonymousSchema();
-
-		List<TreeModel> treeModels = new ArrayList<>();
-
-		Tree[] trees = this.models_;
-		for(Tree tree : trees){
-			TreeModel treeModel = tree.encodeTreeModel(segmentSchema);
-
-			treeModels.add(treeModel);
-		}
-
-		MiningModel miningModel = this.object_function_.encodeMiningModel(treeModels, schema);
+		MiningModel miningModel = this.object_function_.encodeMiningModel(Arrays.asList(this.models_), schema);
 
 		return miningModel;
 	}

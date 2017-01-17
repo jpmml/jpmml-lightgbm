@@ -18,17 +18,21 @@
  */
 package org.jpmml.lightgbm;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.common.base.Function;
+import com.google.common.io.CharStreams;
 import org.dmg.pmml.Interval;
+import org.jpmml.converter.Feature;
+import org.jpmml.converter.Schema;
 
 public class LightGBMUtil {
 
@@ -48,6 +52,19 @@ public class LightGBMUtil {
 		gbdt.load(sections);
 
 		return gbdt;
+	}
+
+	static
+	public Schema toLightGBMSchema(Schema schema){
+		Function<Feature, Feature> function = new Function<Feature, Feature>(){
+
+			@Override
+			public Feature apply(Feature feature){
+				return feature.toContinuousFeature();
+			}
+		};
+
+		return schema.toTransformedSchema(function);
 	}
 
 	static
@@ -99,34 +116,9 @@ public class LightGBMUtil {
 	public Iterator<String> parseText(InputStream is) throws IOException {
 		Reader reader = new InputStreamReader(is, "US-ASCII");
 
-		return parseText(reader);
-	}
+		List<String> lines = CharStreams.readLines(reader);
 
-	static
-	public Iterator<String> parseText(Reader reader) throws IOException {
-		BufferedReader bufferedReader = new BufferedReader(reader){
-
-			@Override
-			public void close(){
-			}
-		};
-
-		try {
-			List<String> lines = new ArrayList<>();
-
-			while(true){
-				String line = bufferedReader.readLine();
-				if(line == null){
-					break;
-				}
-
-				lines.add(line);
-			}
-
-			return lines.iterator();
-		} finally {
-			bufferedReader.close();
-		}
+		return lines.iterator();
 	}
 
 	static
@@ -165,7 +157,7 @@ public class LightGBMUtil {
 	}
 
 	static
-	public Interval parseInterval(String string){
+	public List<Interval> parseIntervals(String string){
 
 		if(string.length() < 3){
 			throw new IllegalArgumentException();
@@ -196,7 +188,7 @@ public class LightGBMUtil {
 			.setLeftMargin(leftMargin)
 			.setRightMargin(rightMargin);
 
-		return interval;
+		return Collections.singletonList(interval);
 	}
 
 	static

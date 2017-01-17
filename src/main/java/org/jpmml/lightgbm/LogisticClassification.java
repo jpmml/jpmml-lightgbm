@@ -21,29 +21,19 @@ package org.jpmml.lightgbm;
 import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.collect.Iterables;
-import org.dmg.pmml.Apply;
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
 import org.dmg.pmml.FieldName;
-import org.dmg.pmml.FieldRef;
-import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.OpType;
-import org.dmg.pmml.Output;
-import org.dmg.pmml.OutputField;
-import org.dmg.pmml.ResultFeature;
 import org.dmg.pmml.mining.MiningModel;
-import org.dmg.pmml.mining.Segment;
-import org.dmg.pmml.mining.Segmentation;
 import org.dmg.pmml.regression.RegressionModel;
-import org.dmg.pmml.regression.RegressionTable;
-import org.dmg.pmml.tree.TreeModel;
 import org.jpmml.converter.CategoricalLabel;
+import org.jpmml.converter.ContinuousLabel;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.ModelUtil;
 import org.jpmml.converter.PMMLEncoder;
-import org.jpmml.converter.PMMLUtil;
 import org.jpmml.converter.Schema;
+import org.jpmml.converter.SigmoidTransformation;
 import org.jpmml.converter.mining.MiningModelUtil;
 
 public class LogisticClassification extends ObjectiveFunction {
@@ -68,57 +58,16 @@ public class LogisticClassification extends ObjectiveFunction {
 
 		DataField dataField = encoder.createDataField(name, OpType.CATEGORICAL, DataType.STRING, categories);
 
-		Label label = new CategoricalLabel(dataField);
-
-		return label;
+		return new CategoricalLabel(dataField);
 	}
 
 	@Override
-	public MiningModel encodeMiningModel(List<TreeModel> treeModels, Schema schema){
-		Schema segmentSchema = schema.toAnonymousSchema();
+	public MiningModel encodeMiningModel(List<Tree> trees, Schema schema){
+		Schema segmentSchema = new Schema(new ContinuousLabel(null, DataType.DOUBLE), schema.getFeatures());
 
-		MiningModel miningModel = new MiningModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(segmentSchema))
-			.setSegmentation(createSegmentation(treeModels))
-			.setOutput(createOutput(this.sigmoid_));
+		MiningModel miningModel = createMiningModel(trees, segmentSchema)
+			.setOutput(ModelUtil.createPredictedOutput(FieldName.create("lgbmValue"), OpType.CONTINUOUS, DataType.DOUBLE, new SigmoidTransformation(-2d * LogisticClassification.this.sigmoid_)));
 
-		return fixClassifer(MiningModelUtil.createBinaryLogisticClassification(schema, miningModel, -1d, true));
-	}
-
-	static
-	private MiningModel fixClassifer(MiningModel miningModel){
-		Segmentation segmentation = miningModel.getSegmentation();
-
-		Segment lastSegment = Iterables.getLast(segmentation.getSegments());
-
-		RegressionModel regressionModel = (RegressionModel)lastSegment.getModel();
-		regressionModel.setNormalizationMethod(null);
-
-		RegressionTable regressionTable = Iterables.getFirst(regressionModel.getRegressionTables(), null);
-		regressionTable.setIntercept(1d);
-
-		return miningModel;
-	}
-
-	static
-	private Output createOutput(double sigmoid){
-		Output output = new Output();
-
-		OutputField lgbmValue = new OutputField(FieldName.create("lgbmValue"), DataType.DOUBLE)
-			.setOpType(OpType.CONTINUOUS)
-			.setResultFeature(ResultFeature.PREDICTED_VALUE)
-			.setFinalResult(false);
-
-		// "1 / (1 + exp(-2 * sigmoid * y))"
-		Apply apply = PMMLUtil.createApply("/", PMMLUtil.createConstant(1d), PMMLUtil.createApply("+", PMMLUtil.createConstant(1d), PMMLUtil.createApply("exp", PMMLUtil.createApply("*", PMMLUtil.createConstant(-2d * sigmoid), new FieldRef(lgbmValue.getName())))));
-
-		OutputField transformedLgbmValue = new OutputField(FieldName.create("transformedLgbmValue"), DataType.DOUBLE)
-			.setOpType(OpType.CONTINUOUS)
-			.setResultFeature(ResultFeature.TRANSFORMED_VALUE)
-			.setFinalResult(false)
-			.setExpression(apply);
-
-		output.addOutputFields(lgbmValue, transformedLgbmValue);
-
-		return output;
+		return MiningModelUtil.createBinaryLogisticClassification(schema, miningModel, RegressionModel.NormalizationMethod.NONE, 0d, 1d, true);
 	}
 }
