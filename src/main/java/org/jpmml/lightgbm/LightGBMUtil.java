@@ -31,6 +31,7 @@ import java.util.List;
 import com.google.common.base.Function;
 import com.google.common.io.CharStreams;
 import org.dmg.pmml.Interval;
+import org.jpmml.converter.BinaryFeature;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.Schema;
 
@@ -55,11 +56,28 @@ public class LightGBMUtil {
 	}
 
 	static
-	public Schema toLightGBMSchema(Schema schema){
+	public Schema toLightGBMSchema(final GBDT gbdt, final Schema schema){
 		Function<Feature, Feature> function = new Function<Feature, Feature>(){
+
+			private List<Feature> features = schema.getFeatures();
+
 
 			@Override
 			public Feature apply(Feature feature){
+
+				if(feature instanceof BinaryFeature){
+					int index = this.features.indexOf(feature);
+
+					if(index < 0){
+						throw new IllegalArgumentException();
+					}
+
+					Boolean binary = gbdt.isBinary(index);
+					if(binary != null && binary.booleanValue()){
+						return feature;
+					}
+				}
+
 				return feature.toContinuousFeature();
 			}
 		};

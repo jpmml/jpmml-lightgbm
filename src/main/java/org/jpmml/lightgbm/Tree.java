@@ -18,15 +18,13 @@
  */
 package org.jpmml.lightgbm;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.Predicate;
 import org.dmg.pmml.SimplePredicate;
 import org.dmg.pmml.True;
 import org.dmg.pmml.tree.Node;
 import org.dmg.pmml.tree.TreeModel;
+import org.jpmml.converter.BinaryFeature;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.ModelUtil;
@@ -92,31 +90,50 @@ public class Tree {
 
 			Feature feature = schema.getFeature(this.split_feature_real_[index]);
 
-			ContinuousFeature continuousFeature = feature.toContinuousFeature();
+			Predicate leftPredicate;
+			Predicate rightPredicate;
 
-			SimplePredicate.Operator leftOperator;
-			SimplePredicate.Operator rightOperator;
+			if(feature instanceof BinaryFeature){
+				BinaryFeature binaryFeature = (BinaryFeature)feature;
 
-			switch(this.decision_type_[index]){
-				case SPLIT_NUMERIC:
-					leftOperator = SimplePredicate.Operator.LESS_OR_EQUAL;
-					rightOperator = SimplePredicate.Operator.GREATER_THAN;
-					break;
-				case SPLIT_CATEGORICAL:
-					leftOperator = SimplePredicate.Operator.EQUAL;
-					rightOperator = SimplePredicate.Operator.NOT_EQUAL;
-					break;
-				default:
+				if(this.decision_type_[index] != Tree.SPLIT_NUMERIC || this.threshold_[index] != 0.5d){
 					throw new IllegalArgumentException();
+				}
+
+				leftPredicate = new SimplePredicate(binaryFeature.getName(), SimplePredicate.Operator.NOT_EQUAL)
+					.setValue(binaryFeature.getValue());
+
+				rightPredicate = new SimplePredicate(binaryFeature.getName(), SimplePredicate.Operator.EQUAL)
+					.setValue(binaryFeature.getValue());
+			} else
+
+			{
+				ContinuousFeature continuousFeature = feature.toContinuousFeature();
+
+				SimplePredicate.Operator leftOperator;
+				SimplePredicate.Operator rightOperator;
+
+				switch(this.decision_type_[index]){
+					case Tree.SPLIT_NUMERIC:
+						leftOperator = SimplePredicate.Operator.LESS_OR_EQUAL;
+						rightOperator = SimplePredicate.Operator.GREATER_THAN;
+						break;
+					case Tree.SPLIT_CATEGORICAL:
+						leftOperator = SimplePredicate.Operator.EQUAL;
+						rightOperator = SimplePredicate.Operator.NOT_EQUAL;
+						break;
+					default:
+						throw new IllegalArgumentException();
+				}
+
+				String value = ValueUtil.formatValue(this.threshold_[index]);
+
+				leftPredicate = new SimplePredicate(continuousFeature.getName(), leftOperator)
+					.setValue(value);
+
+				rightPredicate = new SimplePredicate(continuousFeature.getName(), rightOperator)
+					.setValue(value);
 			}
-
-			String value = ValueUtil.formatValue(this.threshold_[index]);
-
-			Predicate leftPredicate = new SimplePredicate(continuousFeature.getName(), leftOperator)
-				.setValue(value);
-
-			Predicate rightPredicate = new SimplePredicate(continuousFeature.getName(), rightOperator)
-				.setValue(value);
 
 			Node leftChild = new Node()
 				.setPredicate(leftPredicate);
@@ -140,24 +157,41 @@ public class Tree {
 		}
 	}
 
-	Set<Double> getFeatureCategories(int feature){
-		Set<Double> result = null;
+	Boolean isBinary(int feature){
+		Boolean result = null;
 
 		for(int i = 0; i < this.split_feature_real_.length; i++){
 
-			if(this.split_feature_real_[i] == feature && this.decision_type_[i] == Tree.SPLIT_CATEGORICAL){
+			if(this.split_feature_real_[i] == feature){
 
-				if(result == null){
-					result = new LinkedHashSet<>();
+				if(this.decision_type_[i] != Tree.SPLIT_NUMERIC || this.threshold_[i] != 0.5d){
+					return Boolean.FALSE;
 				}
 
-				result.add(this.threshold_[i]);
+				result = Boolean.TRUE;
 			}
 		}
 
 		return result;
 	}
 
+	Boolean isCategorical(int feature){
+		Boolean result = null;
+
+		for(int i = 0; i < this.split_feature_real_.length; i++){
+
+			if(this.split_feature_real_[i] == feature){
+
+				if(this.decision_type_[i] != Tree.SPLIT_CATEGORICAL){
+					return Boolean.FALSE;
+				}
+
+				result = Boolean.TRUE;
+			}
+		}
+
+		return result;
+	}
 
 	private static final int SPLIT_NUMERIC = 0;
 	private static final int SPLIT_CATEGORICAL = 1;

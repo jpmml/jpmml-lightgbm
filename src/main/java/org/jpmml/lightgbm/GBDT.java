@@ -24,8 +24,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
@@ -146,29 +144,22 @@ public class GBDT {
 		for(int i = 0; i < activeFields.length; i++){
 			String activeField = activeFields[i];
 
-			OpType opType;
-
-			Set<Double> featureCategories = getFeatureCategories(i);
-			if(featureCategories != null && featureCategories.size() > 0){
-				opType = OpType.CATEGORICAL;
-			} else
-
-			{
-				opType = OpType.CONTINUOUS;
+			Boolean categorical = isCategorical(i);
+			if(categorical == null){
+				categorical = Boolean.FALSE;
 			}
 
-			DataField dataField = encoder.createDataField(FieldName.create(activeField), opType, DataType.DOUBLE);
+			DataField dataField = encoder.createDataField(FieldName.create(activeField), (categorical ? OpType.CATEGORICAL : OpType.CONTINUOUS), DataType.DOUBLE);
 
 			String value = getFeatureValue(activeField);
 			if(value != null){
 
-				switch(opType){
-					case CATEGORICAL:
-						PMMLUtil.addValues(dataField, LightGBMUtil.parseValues(value));
-						break;
-					case CONTINUOUS:
-						PMMLUtil.addIntervals(dataField, LightGBMUtil.parseIntervals(value));
-						break;
+				if(categorical){
+					PMMLUtil.addValues(dataField, LightGBMUtil.parseValues(value));
+				} else
+
+				{
+					PMMLUtil.addIntervals(dataField, LightGBMUtil.parseIntervals(value));
 				}
 			}
 
@@ -204,20 +195,40 @@ public class GBDT {
 		return this.feature_names_;
 	}
 
-	Set<Double> getFeatureCategories(int feature){
-		Set<Double> result = null;
+	Boolean isBinary(int feature){
+		Boolean result = null;
 
 		Tree[] trees = this.models_;
 		for(Tree tree : trees){
-			Set<Double> categories = tree.getFeatureCategories(feature);
+			Boolean binary = tree.isBinary(feature);
 
-			if(categories != null && categories.size() > 0){
+			if(binary != null){
 
-				if(result == null){
-					result = new TreeSet<>();
+				if(!binary.booleanValue()){
+					return Boolean.FALSE;
 				}
 
-				result.addAll(categories);
+				result = Boolean.TRUE;
+			}
+		}
+
+		return result;
+	}
+
+	Boolean isCategorical(int feature){
+		Boolean result = null;
+
+		Tree[] trees = this.models_;
+		for(Tree tree: trees){
+			Boolean categorical = tree.isCategorical(feature);
+
+			if(categorical != null){
+
+				if(!categorical.booleanValue()){
+					return Boolean.FALSE;
+				}
+
+				result = Boolean.TRUE;
 			}
 		}
 
