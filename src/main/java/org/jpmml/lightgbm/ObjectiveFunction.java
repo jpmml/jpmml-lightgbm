@@ -36,7 +36,7 @@ abstract
 public class ObjectiveFunction {
 
 	abstract
-	public Label encodeLabel(FieldName name, PMMLEncoder encoder);
+	public Label encodeLabel(FieldName targetField, List<String> targetCategories, PMMLEncoder encoder);
 
 	abstract
 	public MiningModel encodeMiningModel(List<Tree> trees, Schema schema);

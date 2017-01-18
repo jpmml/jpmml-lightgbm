@@ -23,10 +23,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
+import org.dmg.pmml.FieldName;
 import org.dmg.pmml.PMML;
 import org.jpmml.model.MetroJAXBUtil;
 
@@ -52,6 +54,18 @@ public class Main {
 		required = true
 	)
 	private File output = null;
+
+	@Parameter (
+		names = {"--target-name"},
+		description = "Target name. Defaults to \"_target\""
+	)
+	private String targetName = null;
+
+	@Parameter (
+		names = {"--target-categories"},
+		description = "Target categories. Defaults to 0-based index [0, 1, .., num_class - 1]"
+	)
+	private List<String> targetCategories = null;
 
 
 	static
@@ -96,7 +110,7 @@ public class Main {
 			gbdt = LightGBMUtil.loadGBDT(is);
 		}
 
-		PMML pmml = gbdt.encodePMML();
+		PMML pmml = gbdt.encodePMML(this.targetName != null ? FieldName.create(this.targetName) : null, this.targetCategories);
 
 		try(OutputStream os = new FileOutputStream(this.output)){
 			MetroJAXBUtil.marshalPMML(pmml, os);

@@ -45,7 +45,7 @@ public class LightGBMTest extends IntegrationTest {
 					gbdt = LightGBMUtil.loadGBDT(is);
 				}
 
-				PMML pmml = gbdt.encodePMML();
+				PMML pmml = gbdt.encodePMML(null, null);
 
 				return pmml;
 			}

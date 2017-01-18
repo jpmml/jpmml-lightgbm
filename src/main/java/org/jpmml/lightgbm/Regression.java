@@ -33,8 +33,13 @@ import org.jpmml.converter.Schema;
 public class Regression extends ObjectiveFunction {
 
 	@Override
-	public Label encodeLabel(FieldName name, PMMLEncoder encoder){
-		DataField dataField = encoder.createDataField(name, OpType.CONTINUOUS, DataType.DOUBLE);
+	public Label encodeLabel(FieldName targetField, List<String> targetCategories, PMMLEncoder encoder){
+
+		if(targetCategories != null){
+			throw new IllegalArgumentException();
+		}
+
+		DataField dataField = encoder.createDataField(targetField, OpType.CONTINUOUS, DataType.DOUBLE);
 
 		return new ContinuousLabel(dataField);
 	}

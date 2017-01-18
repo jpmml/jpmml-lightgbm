@@ -127,31 +127,35 @@ public class GBDT {
 		}
 	}
 
-	public PMML encodePMML(){
+	public PMML encodePMML(FieldName targetField, List<String> targetCategories){
 		LightGBMEncoder encoder = new LightGBMEncoder();
 
 		Label label;
 
 		{
-			String targetField = "_target";
+			if(targetField == null){
+				targetField = FieldName.create("_target");
+			}
 
-			label = this.object_function_.encodeLabel(FieldName.create(targetField), encoder);
+			label = this.object_function_.encodeLabel(targetField, targetCategories, encoder);
 		}
 
 		List<Feature> features = new ArrayList<>();
 
-		String[] activeFields = this.feature_names_;
-		for(int i = 0; i < activeFields.length; i++){
-			String activeField = activeFields[i];
+		String[] featureNames = this.feature_names_;
+		for(int i = 0; i < featureNames.length; i++){
+			String featureName = featureNames[i];
+
+			FieldName activeField = FieldName.create(featureNames[i]);
 
 			Boolean categorical = isCategorical(i);
 			if(categorical == null){
 				categorical = Boolean.FALSE;
 			}
 
-			DataField dataField = encoder.createDataField(FieldName.create(activeField), (categorical ? OpType.CATEGORICAL : OpType.CONTINUOUS), DataType.DOUBLE);
+			DataField dataField = encoder.createDataField(activeField, (categorical ? OpType.CATEGORICAL : OpType.CONTINUOUS), DataType.DOUBLE);
 
-			String value = getFeatureValue(activeField);
+			String value = getFeatureValue(featureName);
 			if(value != null){
 
 				if(categorical){
@@ -164,14 +168,14 @@ public class GBDT {
 			}
 
 			ImportanceDecorator importanceDecorator = new ImportanceDecorator()
-				.setImportance(getFeatureImportance(activeField));
+				.setImportance(getFeatureImportance(featureName));
 
-			encoder.addDecorator(dataField.getName(), importanceDecorator);
+			encoder.addDecorator(activeField, importanceDecorator);
 
 			MissingValueDecorator missingValueDecorator = new MissingValueDecorator()
 				.setMissingValueReplacement("0");
 
-			encoder.addDecorator(dataField.getName(), missingValueDecorator);
+			encoder.addDecorator(activeField, missingValueDecorator);
 
 			features.add(new ContinuousFeature(encoder, dataField));
 		}

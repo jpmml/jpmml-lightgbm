@@ -40,15 +40,35 @@ public class Classification extends ObjectiveFunction {
 	}
 
 	@Override
-	public Label encodeLabel(FieldName name, PMMLEncoder encoder){
-		List<String> categories = new ArrayList<>();
+	public Label encodeLabel(FieldName targetField, List<String> targetCategories, PMMLEncoder encoder){
+		targetCategories = prepareTargetCategories(targetCategories);
 
-		for(int i = 0; i < this.num_class_; i++){
-			categories.add(String.valueOf(i));
-		}
-
-		DataField dataField = encoder.createDataField(name, OpType.CATEGORICAL, DataType.STRING, categories);
+		DataField dataField = encoder.createDataField(targetField, OpType.CATEGORICAL, DataType.STRING, targetCategories);
 
 		return new CategoricalLabel(dataField);
+	}
+
+	private List<String> prepareTargetCategories(List<String> targetCategories){
+
+		if(targetCategories != null){
+
+			if(targetCategories.size() != this.num_class_){
+				throw new IllegalArgumentException();
+			}
+
+			return targetCategories;
+		}
+
+		List<String> result = new ArrayList<>();
+
+		for(int i = 0; i < this.num_class_; i++){
+			result.add(String.valueOf(i));
+		}
+
+		return result;
+	}
+
+	public int getNumClass(){
+		return this.num_class_;
 	}
 }
