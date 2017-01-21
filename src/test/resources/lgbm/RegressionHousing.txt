@@ -500,3 +500,5 @@ RAD=[1,24]
 RM=[3.561,8.78]
 TAX=[187,711]
 ZN=[0,100]
+
+pandas_categorical:[]
