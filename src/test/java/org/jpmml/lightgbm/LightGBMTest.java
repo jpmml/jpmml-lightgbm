@@ -23,18 +23,17 @@ import java.io.InputStream;
 import org.dmg.pmml.PMML;
 import org.jpmml.evaluator.ArchiveBatch;
 import org.jpmml.evaluator.IntegrationTest;
+import org.jpmml.evaluator.IntegrationTestBatch;
 
 public class LightGBMTest extends IntegrationTest {
 
 	@Override
 	protected ArchiveBatch createBatch(String name, String dataset){
-		ArchiveBatch result = new ArchiveBatch(name, dataset){
+		ArchiveBatch result = new IntegrationTestBatch(name, dataset){
 
 			@Override
-			public InputStream open(String path){
-				Class<? extends LightGBMTest> clazz = LightGBMTest.this.getClass();
-
-				return clazz.getResourceAsStream(path);
+			public IntegrationTest getIntegrationTest(){
+				return LightGBMTest.this;
 			}
 
 			@Override
@@ -46,6 +45,8 @@ public class LightGBMTest extends IntegrationTest {
 				}
 
 				PMML pmml = gbdt.encodePMML(null, null);
+
+				ensureValidity(pmml);
 
 				return pmml;
 			}
