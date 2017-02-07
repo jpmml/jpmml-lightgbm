@@ -163,7 +163,7 @@ public class GBDT {
 				} else
 
 				{
-					PMMLUtil.addIntervals(dataField, LightGBMUtil.parseIntervals(value));
+					//PMMLUtil.addIntervals(dataField, LightGBMUtil.parseIntervals(value));
 				}
 			}
 
