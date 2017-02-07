@@ -282,6 +282,8 @@ public class GBDT {
 			case "huber":
 			// RegressionFairLoss
 			case "fair":
+			// RegressionPoissonLoss
+			case "poisson":
 				return new Regression();
 			case "binary":
 				return new LogisticClassification(num_class, sigmoid);

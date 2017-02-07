@@ -82,3 +82,21 @@ store_lgbm(housing_lgbm, "RegressionHousing.txt")
 medv = DataFrame(housing_lgbm.predict(housing_X), columns = ["_target"])
 
 store_csv(medv, "RegressionHousing.csv")
+
+#
+# Poisson regression
+#
+
+visit_df = load_csv("Visit.csv")
+
+visit_X = visit_df[["age", "outwork", "female", "married", "kids", "hhninc", "educ", "self"]]
+visit_y = visit_df["docvis"]
+
+visit_lgbm = LGBMRegressor(objective = "poisson", n_estimators = 31)
+visit_lgbm.fit(visit_X.as_matrix(), visit_y, feature_name = ["age", "outwork", "female", "married", "kids", "hhninc", "educ", "self"], categorical_feature = ["outwork", "female", "married", "kids", "self"])
+
+store_lgbm(visit_lgbm, "RegressionVisit.txt")
+
+docvis = DataFrame(visit_lgbm.predict(visit_X), columns = ["_target"])
+
+store_csv(docvis, "RegressionVisit.csv")

@@ -31,4 +31,9 @@ public class RegressionTest extends LightGBMTest {
 	public void evaluateHousing() throws Exception {
 		evaluate("Regression", "Housing");
 	}
+
+	@Test
+	public void evaluateVisit() throws Exception {
+		evaluate("Regression", "Visit");
+	}
 }
