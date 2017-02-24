@@ -23,8 +23,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -175,7 +173,7 @@ public class LightGBMUtil {
 	}
 
 	static
-	public List<Interval> parseIntervals(String string){
+	public Interval parseInterval(String string){
 
 		if(string.length() < 3){
 			throw new IllegalArgumentException();
@@ -194,7 +192,7 @@ public class LightGBMUtil {
 				throw new IllegalArgumentException(bounds);
 		}
 
-		String[] values = margins.split(",");
+		String[] values = margins.split(":");
 		if(values.length != 2){
 			throw new IllegalArgumentException(margins);
 		}
@@ -206,13 +204,6 @@ public class LightGBMUtil {
 			.setLeftMargin(leftMargin)
 			.setRightMargin(rightMargin);
 
-		return Collections.singletonList(interval);
-	}
-
-	static
-	public List<String> parseValues(String string){
-		String[] values = string.split(",");
-
-		return Arrays.asList(values);
+		return interval;
 	}
 }

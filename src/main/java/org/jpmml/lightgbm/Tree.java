@@ -43,8 +43,6 @@ public class Tree {
 
 	private double[] threshold_;
 
-	private int[] decision_type_;
-
 	private double[] leaf_value_;
 
 	private int[] leaf_count_;
@@ -61,7 +59,6 @@ public class Tree {
 		this.right_child_ = section.getIntArray("right_child", this.num_leaves_ - 1);
 		this.split_feature_real_ = section.getIntArray("split_feature", this.num_leaves_ - 1);
 		this.threshold_ = section.getDoubleArray("threshold", this.num_leaves_ - 1);
-		this.decision_type_ = section.getIntArray("decision_type", this.num_leaves_ - 1);
 		this.leaf_value_ = section.getDoubleArray("leaf_value", this.num_leaves_);
 		this.leaf_count_ = section.getIntArray("leaf_count", this.num_leaves_);
 		this.internal_value_ = section.getDoubleArray("internal_value", this.num_leaves_ - 1);
@@ -96,7 +93,7 @@ public class Tree {
 			if(feature instanceof BinaryFeature){
 				BinaryFeature binaryFeature = (BinaryFeature)feature;
 
-				if(this.decision_type_[index] != Tree.SPLIT_NUMERIC || this.threshold_[index] != 0.5d){
+				if(this.threshold_[index] != 0.5d){
 					throw new IllegalArgumentException();
 				}
 
@@ -110,28 +107,12 @@ public class Tree {
 			{
 				ContinuousFeature continuousFeature = feature.toContinuousFeature();
 
-				SimplePredicate.Operator leftOperator;
-				SimplePredicate.Operator rightOperator;
-
-				switch(this.decision_type_[index]){
-					case Tree.SPLIT_NUMERIC:
-						leftOperator = SimplePredicate.Operator.LESS_OR_EQUAL;
-						rightOperator = SimplePredicate.Operator.GREATER_THAN;
-						break;
-					case Tree.SPLIT_CATEGORICAL:
-						leftOperator = SimplePredicate.Operator.EQUAL;
-						rightOperator = SimplePredicate.Operator.NOT_EQUAL;
-						break;
-					default:
-						throw new IllegalArgumentException();
-				}
-
 				String value = ValueUtil.formatValue(this.threshold_[index]);
 
-				leftPredicate = new SimplePredicate(continuousFeature.getName(), leftOperator)
+				leftPredicate = new SimplePredicate(continuousFeature.getName(), SimplePredicate.Operator.LESS_OR_EQUAL)
 					.setValue(value);
 
-				rightPredicate = new SimplePredicate(continuousFeature.getName(), rightOperator)
+				rightPredicate = new SimplePredicate(continuousFeature.getName(), SimplePredicate.Operator.GREATER_THAN)
 					.setValue(value);
 			}
 
@@ -164,7 +145,7 @@ public class Tree {
 
 			if(this.split_feature_real_[i] == feature){
 
-				if(this.decision_type_[i] != Tree.SPLIT_NUMERIC || this.threshold_[i] != 0.5d){
+				if(this.threshold_[i] != 0.5d){
 					return Boolean.FALSE;
 				}
 
@@ -174,25 +155,4 @@ public class Tree {
 
 		return result;
 	}
-
-	Boolean isCategorical(int feature){
-		Boolean result = null;
-
-		for(int i = 0; i < this.split_feature_real_.length; i++){
-
-			if(this.split_feature_real_[i] == feature){
-
-				if(this.decision_type_[i] != Tree.SPLIT_CATEGORICAL){
-					return Boolean.FALSE;
-				}
-
-				result = Boolean.TRUE;
-			}
-		}
-
-		return result;
-	}
-
-	private static final int SPLIT_NUMERIC = 0;
-	private static final int SPLIT_CATEGORICAL = 1;
 }

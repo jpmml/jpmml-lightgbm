@@ -31,6 +31,7 @@ import org.dmg.pmml.FieldName;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.PMML;
 import org.dmg.pmml.mining.MiningModel;
+import org.jpmml.converter.BinaryFeature;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.ImportanceDecorator;
@@ -51,13 +52,13 @@ public class GBDT {
 
 	private String[] feature_names_;
 
+	private String[] feature_infos_;
+
 	private ObjectiveFunction object_function_;
 
 	private Tree[] models_;
 
 	private Map<String, String> feature_importances = Collections.emptyMap();
-
-	private Map<String, String> feature_values = Collections.emptyMap();
 
 
 	public void load(List<Section> sections){
@@ -75,6 +76,7 @@ public class GBDT {
 			this.sigmoid_ = section.getDouble("sigmoid");
 			this.label_idx_ = section.getInt("label_index");
 			this.feature_names_ = section.getStringArray("feature_names", this.max_feature_idx_ + 1);
+			this.feature_infos_ = section.getStringArray("feature_infos", this.max_feature_idx_ + 1);
 
 			this.object_function_ = parseObjectiveFunction(section.getString("objective"), this.num_class_, this.sigmoid_);
 
@@ -111,19 +113,6 @@ public class GBDT {
 			this.feature_importances = loadFeatureSection(section);
 
 			index++;
-		} // End if
-
-		feature_information:
-		if(index < sections.size()){
-			Section section = sections.get(index);
-
-			if(!section.checkId("feature information:")){
-				break feature_information;
-			}
-
-			this.feature_values = loadFeatureSection(section);
-
-			index++;
 		}
 	}
 
@@ -143,28 +132,27 @@ public class GBDT {
 		List<Feature> features = new ArrayList<>();
 
 		String[] featureNames = this.feature_names_;
+		String[] featureInfos = this.feature_infos_;
 		for(int i = 0; i < featureNames.length; i++){
 			String featureName = featureNames[i];
+			String featureInfo = featureInfos[i];
+
+			Boolean binary = isBinary(i);
+			if(binary == null){
+				binary = Boolean.FALSE;
+			}
 
 			FieldName activeField = FieldName.create(featureNames[i]);
 
-			Boolean categorical = isCategorical(i);
-			if(categorical == null){
-				categorical = Boolean.FALSE;
-			}
+			DataField dataField;
+			if(binary){
+				dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.BOOLEAN, Arrays.asList("false", "true"));
+			} else
 
-			DataField dataField = encoder.createDataField(activeField, (categorical ? OpType.CATEGORICAL : OpType.CONTINUOUS), DataType.DOUBLE);
+			{
+				dataField = encoder.createDataField(activeField, OpType.CONTINUOUS, DataType.DOUBLE);
 
-			String value = getFeatureValue(featureName);
-			if(value != null){
-
-				if(categorical){
-					PMMLUtil.addValues(dataField, LightGBMUtil.parseValues(value));
-				} else
-
-				{
-					//PMMLUtil.addIntervals(dataField, LightGBMUtil.parseIntervals(value));
-				}
+				PMMLUtil.addIntervals(dataField, Arrays.asList(LightGBMUtil.parseInterval(featureInfo)));
 			}
 
 			ImportanceDecorator importanceDecorator = new ImportanceDecorator()
@@ -172,12 +160,20 @@ public class GBDT {
 
 			encoder.addDecorator(activeField, importanceDecorator);
 
+			String missingValueReplacement = (binary ? "false" : "0");
+
 			MissingValueDecorator missingValueDecorator = new MissingValueDecorator()
-				.setMissingValueReplacement("0");
+				.setMissingValueReplacement(missingValueReplacement);
 
 			encoder.addDecorator(activeField, missingValueDecorator);
 
-			features.add(new ContinuousFeature(encoder, dataField));
+			if(binary){
+				features.add(new BinaryFeature(encoder, dataField, "true"));
+			} else
+
+			{
+				features.add(new ContinuousFeature(encoder, dataField));
+			}
 		}
 
 		Schema schema = new Schema(label, features);
@@ -199,7 +195,17 @@ public class GBDT {
 		return this.feature_names_;
 	}
 
+	public String[] getFeatureInfos(){
+		return this.feature_infos_;
+	}
+
 	Boolean isBinary(int feature){
+		String featureInfo = this.feature_infos_[feature];
+
+		if(!(featureInfo).equals("[0:1]")){
+			return Boolean.FALSE;
+		}
+
 		Boolean result = null;
 
 		Tree[] trees = this.models_;
@@ -219,26 +225,6 @@ public class GBDT {
 		return result;
 	}
 
-	Boolean isCategorical(int feature){
-		Boolean result = null;
-
-		Tree[] trees = this.models_;
-		for(Tree tree: trees){
-			Boolean categorical = tree.isCategorical(feature);
-
-			if(categorical != null){
-
-				if(!categorical.booleanValue()){
-					return Boolean.FALSE;
-				}
-
-				result = Boolean.TRUE;
-			}
-		}
-
-		return result;
-	}
-
 	/**
 	 * @see #getFeatureNames()
 	 */
@@ -246,15 +232,6 @@ public class GBDT {
 		String value = this.feature_importances.get(featureName);
 
 		return (value != null ? Double.valueOf(value) : null);
-	}
-
-	/**
-	 * @see #getFeatureNames()
-	 */
-	String getFeatureValue(String featureName){
-		String value = this.feature_values.get(featureName);
-
-		return value;
 	}
 
 	private Map<String, String> loadFeatureSection(Section section){
