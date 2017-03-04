@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -173,6 +174,21 @@ public class LightGBMUtil {
 	}
 
 	static
+	public boolean isInterval(String string){
+		return string.startsWith("[") && string.endsWith("]");
+	}
+
+	static
+	public boolean isBinaryInterval(String string){
+		return string.equals("[0:1]");
+	}
+
+	static
+	public boolean isValues(String string){
+		return !isInterval(string);
+	}
+
+	static
 	public Interval parseInterval(String string){
 
 		if(string.length() < 3){
@@ -205,5 +221,12 @@ public class LightGBMUtil {
 			.setRightMargin(rightMargin);
 
 		return interval;
+	}
+
+	static
+	public List<String> parseValues(String string){
+		String[] values = string.split(":");
+
+		return Arrays.asList(values);
 	}
 }

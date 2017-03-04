@@ -61,7 +61,7 @@ auto_X = auto_df[["cylinders", "displacement", "horsepower", "weight", "accelera
 auto_y = auto_df["mpg"]
 
 auto_lgbm = LGBMRegressor(n_estimators = 31)
-auto_lgbm.fit(auto_X.as_matrix(), auto_y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"])
+auto_lgbm.fit(auto_X.as_matrix(), auto_y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"], categorical_feature = ["cylinders", "model_year", "origin"])
 
 store_lgbm(auto_lgbm, "RegressionAuto.txt")
 
@@ -75,7 +75,7 @@ housing_X = housing_df[housing_df.columns.difference(["MEDV"])]
 housing_y = housing_df["MEDV"]
 
 housing_lgbm = LGBMRegressor(n_estimators = 31)
-housing_lgbm.fit(housing_X, housing_y)
+housing_lgbm.fit(housing_X, housing_y, categorical_feature = ["CHAS"])
 
 store_lgbm(housing_lgbm, "RegressionHousing.txt")
 
@@ -93,7 +93,7 @@ visit_X = visit_df[["age", "outwork", "female", "married", "kids", "hhninc", "ed
 visit_y = visit_df["docvis"]
 
 visit_lgbm = LGBMRegressor(objective = "poisson", n_estimators = 31)
-visit_lgbm.fit(visit_X.as_matrix(), visit_y, feature_name = ["age", "outwork", "female", "married", "kids", "hhninc", "educ", "self"])
+visit_lgbm.fit(visit_X.as_matrix(), visit_y, feature_name = ["age", "outwork", "female", "married", "kids", "hhninc", "educ", "self"], categorical_feature = ["female", "married", "kids"]) # categorical_feature = ["outwork", "female", "married", "kids", "self"]
 
 store_lgbm(visit_lgbm, "RegressionVisit.txt")
 

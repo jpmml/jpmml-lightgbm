@@ -142,17 +142,38 @@ public class GBDT {
 				binary = Boolean.FALSE;
 			}
 
+			Boolean categorical = isCategorical(i);
+			if(categorical == null){
+				categorical = LightGBMUtil.isValues(featureInfo);
+			}
+
 			FieldName activeField = FieldName.create(featureNames[i]);
 
 			DataField dataField;
-			if(binary){
-				dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.BOOLEAN, Arrays.asList("false", "true"));
+
+			if(categorical){
+
+				if(binary){
+					throw new IllegalArgumentException();
+				} else
+
+				{
+					dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.DOUBLE);
+
+					PMMLUtil.addValues(dataField, LightGBMUtil.parseValues(featureInfo));
+				}
 			} else
 
 			{
-				dataField = encoder.createDataField(activeField, OpType.CONTINUOUS, DataType.DOUBLE);
+				if(binary){
+					dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.BOOLEAN, Arrays.asList("false", "true"));
+				} else
 
-				PMMLUtil.addIntervals(dataField, Arrays.asList(LightGBMUtil.parseInterval(featureInfo)));
+				{
+					dataField = encoder.createDataField(activeField, OpType.CONTINUOUS, DataType.DOUBLE);
+
+					PMMLUtil.addIntervals(dataField, Arrays.asList(LightGBMUtil.parseInterval(featureInfo)));
+				}
 			}
 
 			ImportanceDecorator importanceDecorator = new ImportanceDecorator()
@@ -202,7 +223,7 @@ public class GBDT {
 	Boolean isBinary(int feature){
 		String featureInfo = this.feature_infos_[feature];
 
-		if(!(featureInfo).equals("[0:1]")){
+		if(!LightGBMUtil.isBinaryInterval(featureInfo)){
 			return Boolean.FALSE;
 		}
 
@@ -215,6 +236,32 @@ public class GBDT {
 			if(binary != null){
 
 				if(!binary.booleanValue()){
+					return Boolean.FALSE;
+				}
+
+				result = Boolean.TRUE;
+			}
+		}
+
+		return result;
+	}
+
+	Boolean isCategorical(int feature){
+		String featureInfo = this.feature_infos_[feature];
+
+		if(!LightGBMUtil.isValues(featureInfo)){
+			return Boolean.FALSE;
+		}
+
+		Boolean result = null;
+
+		Tree[] trees = this.models_;
+		for(Tree tree: trees){
+			Boolean categorical = tree.isCategorical(feature);
+
+			if(categorical != null){
+
+				if(!categorical.booleanValue()){
 					return Boolean.FALSE;
 				}
 
