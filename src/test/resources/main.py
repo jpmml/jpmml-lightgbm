@@ -16,87 +16,90 @@ def store_lgbm(lgbm, name):
 # Multi-class classification
 #
 
-iris_df = load_csv("Iris.csv")
+def build_iris(name):
+	df = load_csv(name + ".csv")
+	X = df[df.columns.difference(["Species"])]
+	y = df["Species"]
 
-iris_X = iris_df[iris_df.columns.difference(["Species"])]
-iris_y = iris_df["Species"]
+	lgbm = LGBMClassifier(n_estimators = 11)
+	lgbm.fit(X, y)
+	store_lgbm(lgbm, "Classification" + name + ".txt")
 
-iris_lgbm = LGBMClassifier(n_estimators = 11)
-iris_lgbm.fit(iris_X, iris_y)
+	species = DataFrame(lgbm.predict(X), columns = ["_target"]).replace("setosa", "0").replace("versicolor", "1").replace("virginica", "2")
+	species_proba = DataFrame(lgbm.predict_proba(X), columns = ["probability_0", "probability_1", "probability_2"])
+	store_csv(pandas.concat((species, species_proba), axis = 1), "Classification" + name + ".csv")
 
-store_lgbm(iris_lgbm, "ClassificationIris.txt")
-
-species = DataFrame(iris_lgbm.predict(iris_X), columns = ["_target"]).replace("setosa", "0").replace("versicolor", "1").replace("virginica", "2")
-species_proba = DataFrame(iris_lgbm.predict_proba(iris_X), columns = ["probability_0", "probability_1", "probability_2"])
-
-store_csv(pandas.concat((species, species_proba), axis = 1), "ClassificationIris.csv")
+build_iris("Iris")
+build_iris("IrisNA")
 
 #
 # Binary classification
 #
 
-versicolor_df = load_csv("Versicolor.csv")
+def build_versicolor(name):
+	df = load_csv(name + ".csv")
+	X = df[df.columns.difference(["Species"])]
+	y = df["Species"]
 
-versicolor_X = versicolor_df[versicolor_df.columns.difference(["Species"])]
-versicolor_y = versicolor_df["Species"]
+	lgbm = LGBMClassifier(n_estimators = 11)
+	lgbm.fit(X, y)
+	store_lgbm(lgbm, "Classification" + name + ".txt")
 
-versicolor_lgbm = LGBMClassifier(n_estimators = 11)
-versicolor_lgbm.fit(versicolor_X, versicolor_y)
+	versicolor = DataFrame(lgbm.predict(X), columns = ["_target"])
+	versicolor_proba = DataFrame(lgbm.predict_proba(X), columns = ["probability_0", "probability_1"])
+	store_csv(pandas.concat((versicolor, versicolor_proba), axis = 1), "Classification" + name + ".csv")
 
-store_lgbm(versicolor_lgbm, "ClassificationVersicolor.txt")
-
-versicolor = DataFrame(versicolor_lgbm.predict(versicolor_X), columns = ["_target"])
-versicolor_proba = DataFrame(versicolor_lgbm.predict_proba(versicolor_X), columns = ["probability_0", "probability_1"])
-
-store_csv(pandas.concat((versicolor, versicolor_proba), axis = 1), "ClassificationVersicolor.csv")
+build_versicolor("Versicolor")
 
 #
 # Regression
 #
 
-auto_df = load_csv("Auto.csv")
+def build_auto(name):
+	df = load_csv(name + ".csv")
+	X = df[["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"]]
+	y = df["mpg"]
 
-#auto_X = auto_df[auto_df.columns.difference(["mpg"])]
-auto_X = auto_df[["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"]]
-auto_y = auto_df["mpg"]
+	lgbm = LGBMRegressor(n_estimators = 31)
+	lgbm.fit(X.as_matrix(), y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"], categorical_feature = ["cylinders", "model_year", "origin"])
+	store_lgbm(lgbm, "Regression" + name + ".txt")
 
-auto_lgbm = LGBMRegressor(n_estimators = 31)
-auto_lgbm.fit(auto_X.as_matrix(), auto_y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"], categorical_feature = ["cylinders", "model_year", "origin"])
+	mpg = DataFrame(lgbm.predict(X), columns = ["_target"])
+	store_csv(mpg, "Regression" + name + ".csv")
 
-store_lgbm(auto_lgbm, "RegressionAuto.txt")
+build_auto("Auto")
+build_auto("AutoNA")
 
-mpg = DataFrame(auto_lgbm.predict(auto_X), columns = ["_target"])
+def build_housing(name):
+	df = load_csv(name + ".csv")
+	X = df[df.columns.difference(["MEDV"])]
+	y = df["MEDV"]
 
-store_csv(mpg, "RegressionAuto.csv")
+	lgbm = LGBMRegressor(n_estimators = 31)
+	lgbm.fit(X, y, categorical_feature = ["CHAS"])
+	store_lgbm(lgbm, "Regression" + name + ".txt")
 
-housing_df = load_csv("Housing.csv")
+	medv = DataFrame(lgbm.predict(X), columns = ["_target"])
+	store_csv(medv, "Regression" + name + ".csv")
 
-housing_X = housing_df[housing_df.columns.difference(["MEDV"])]
-housing_y = housing_df["MEDV"]
-
-housing_lgbm = LGBMRegressor(n_estimators = 31)
-housing_lgbm.fit(housing_X, housing_y, categorical_feature = ["CHAS"])
-
-store_lgbm(housing_lgbm, "RegressionHousing.txt")
-
-medv = DataFrame(housing_lgbm.predict(housing_X), columns = ["_target"])
-
-store_csv(medv, "RegressionHousing.csv")
+build_housing("Housing")
+build_housing("HousingNA")
 
 #
 # Poisson regression
 #
 
-visit_df = load_csv("Visit.csv")
+def build_visit(name):
+	df = load_csv(name + ".csv")
+	X = df[["age", "outwork", "female", "married", "kids", "hhninc", "educ", "self"]]
+	y = df["docvis"]
 
-visit_X = visit_df[["age", "outwork", "female", "married", "kids", "hhninc", "educ", "self"]]
-visit_y = visit_df["docvis"]
+	lgbm = LGBMRegressor(objective = "poisson", n_estimators = 31)
+	lgbm.fit(X.as_matrix(), y, feature_name = ["age", "outwork", "female", "married", "kids", "hhninc", "educ", "self"], categorical_feature = ["female", "married", "kids"]) # categorical_feature = ["outwork", "female", "married", "kids", "self"]
+	store_lgbm(lgbm, "Regression" + name + ".txt")
 
-visit_lgbm = LGBMRegressor(objective = "poisson", n_estimators = 31)
-visit_lgbm.fit(visit_X.as_matrix(), visit_y, feature_name = ["age", "outwork", "female", "married", "kids", "hhninc", "educ", "self"], categorical_feature = ["female", "married", "kids"]) # categorical_feature = ["outwork", "female", "married", "kids", "self"]
+	docvis = DataFrame(lgbm.predict(X), columns = ["_target"])
+	store_csv(docvis, "Regression" + name + ".csv")
 
-store_lgbm(visit_lgbm, "RegressionVisit.txt")
-
-docvis = DataFrame(visit_lgbm.predict(visit_X), columns = ["_target"])
-
-store_csv(docvis, "RegressionVisit.csv")
+build_visit("Visit")
+build_visit("VisitNA")

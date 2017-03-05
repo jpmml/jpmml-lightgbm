@@ -28,12 +28,27 @@ public class RegressionTest extends LightGBMTest {
 	}
 
 	@Test
+	public void evaluateAutoNA() throws Exception {
+		evaluate("Regression", "AutoNA");
+	}
+
+	@Test
 	public void evaluateHousing() throws Exception {
 		evaluate("Regression", "Housing");
 	}
 
 	@Test
+	public void evaluateHousingNA() throws Exception {
+		evaluate("Regression", "HousingNA");
+	}
+
+	@Test
 	public void evaluateVisit() throws Exception {
 		evaluate("Regression", "Visit");
+	}
+
+	@Test
+	public void evaluateVisitNA() throws Exception {
+		evaluate("Regression", "VisitNA");
 	}
 }

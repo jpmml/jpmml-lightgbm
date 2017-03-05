@@ -36,7 +36,6 @@ import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.ImportanceDecorator;
 import org.jpmml.converter.Label;
-import org.jpmml.converter.MissingValueDecorator;
 import org.jpmml.converter.PMMLUtil;
 import org.jpmml.converter.Schema;
 
@@ -180,13 +179,6 @@ public class GBDT {
 				.setImportance(getFeatureImportance(featureName));
 
 			encoder.addDecorator(activeField, importanceDecorator);
-
-			String missingValueReplacement = (binary ? "false" : "0");
-
-			MissingValueDecorator missingValueDecorator = new MissingValueDecorator()
-				.setMissingValueReplacement(missingValueReplacement);
-
-			encoder.addDecorator(activeField, missingValueDecorator);
 
 			if(binary){
 				features.add(new BinaryFeature(encoder, dataField, "true"));

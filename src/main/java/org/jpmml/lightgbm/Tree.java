@@ -75,7 +75,8 @@ public class Tree {
 		encodeNode(root, 0, schema);
 
 		TreeModel treeModel = new TreeModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(schema), root)
-			.setSplitCharacteristic(TreeModel.SplitCharacteristic.BINARY_SPLIT);
+			.setSplitCharacteristic(TreeModel.SplitCharacteristic.BINARY_SPLIT)
+			.setMissingValueStrategy(TreeModel.MissingValueStrategy.DEFAULT_CHILD);
 
 		return treeModel;
 	}
@@ -93,6 +94,8 @@ public class Tree {
 			Predicate leftPredicate;
 			Predicate rightPredicate;
 
+			boolean defaultLeft;
+
 			if(feature instanceof BinaryFeature){
 				BinaryFeature binaryFeature = (BinaryFeature)feature;
 
@@ -105,6 +108,8 @@ public class Tree {
 
 				rightPredicate = new SimplePredicate(binaryFeature.getName(), SimplePredicate.Operator.EQUAL)
 					.setValue(binaryFeature.getValue());
+
+				defaultLeft = true;
 			} else
 
 			{
@@ -117,10 +122,16 @@ public class Tree {
 					case Tree.SPLIT_NUMERIC:
 						leftOperator = SimplePredicate.Operator.LESS_OR_EQUAL;
 						rightOperator = SimplePredicate.Operator.GREATER_THAN;
+
+						// Send the value to the direction of the zero value
+						defaultLeft = (0d <= this.threshold_[index]);
 						break;
 					case Tree.SPLIT_CATEGORICAL:
 						leftOperator = SimplePredicate.Operator.EQUAL;
 						rightOperator = SimplePredicate.Operator.NOT_EQUAL;
+
+						// Send zero values to the left, and all other values to the right
+						defaultLeft = (0d == this.threshold_[index]);
 						break;
 					default:
 						throw new IllegalArgumentException();
@@ -146,6 +157,8 @@ public class Tree {
 			encodeNode(rightChild, this.right_child_[index], schema);
 
 			parent.addNodes(leftChild, rightChild);
+
+			parent.setDefaultChild(defaultLeft ? leftChild.getId() : rightChild.getId());
 		} else
 
 		// Leaf node
