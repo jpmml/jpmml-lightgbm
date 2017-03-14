@@ -29,6 +29,7 @@ import org.dmg.pmml.tree.TreeModel;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.ModelUtil;
 import org.jpmml.converter.PMMLEncoder;
+import org.jpmml.converter.PredicateManager;
 import org.jpmml.converter.Schema;
 import org.jpmml.converter.mining.MiningModelUtil;
 
@@ -45,10 +46,12 @@ public class ObjectiveFunction {
 	protected MiningModel createMiningModel(List<Tree> trees, Schema schema){
 		Schema segmentSchema = schema.toAnonymousSchema();
 
+		PredicateManager predicateManager = new PredicateManager();
+
 		List<TreeModel> treeModels = new ArrayList<>();
 
 		for(Tree tree : trees){
-			TreeModel treeModel = tree.encodeTreeModel(segmentSchema);
+			TreeModel treeModel = tree.encodeTreeModel(predicateManager, segmentSchema);
 
 			treeModels.add(treeModel);
 		}

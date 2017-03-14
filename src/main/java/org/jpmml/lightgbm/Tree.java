@@ -29,6 +29,7 @@ import org.jpmml.converter.CategoricalFeature;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.ModelUtil;
+import org.jpmml.converter.PredicateManager;
 import org.jpmml.converter.Schema;
 import org.jpmml.converter.ValueUtil;
 
@@ -69,11 +70,11 @@ public class Tree {
 		this.internal_count_ = section.getIntArray("internal_count", this.num_leaves_ - 1);
 	}
 
-	public TreeModel encodeTreeModel(Schema schema){
+	public TreeModel encodeTreeModel(PredicateManager predicateManager, Schema schema){
 		Node root = new Node()
 			.setPredicate(new True());
 
-		encodeNode(root, 0, schema);
+		encodeNode(root, predicateManager, 0, schema);
 
 		TreeModel treeModel = new TreeModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(schema), root)
 			.setSplitCharacteristic(TreeModel.SplitCharacteristic.BINARY_SPLIT)
@@ -82,7 +83,7 @@ public class Tree {
 		return treeModel;
 	}
 
-	public void encodeNode(Node parent, int index, Schema schema){
+	public void encodeNode(Node parent, PredicateManager predicateManager, int index, Schema schema){
 		parent.setId(String.valueOf(index));
 
 		// Non-leaf (aka internal) node
@@ -104,11 +105,10 @@ public class Tree {
 					throw new IllegalArgumentException();
 				}
 
-				leftPredicate = new SimplePredicate(binaryFeature.getName(), SimplePredicate.Operator.NOT_EQUAL)
-					.setValue(binaryFeature.getValue());
+				String value = binaryFeature.getValue();
 
-				rightPredicate = new SimplePredicate(binaryFeature.getName(), SimplePredicate.Operator.EQUAL)
-					.setValue(binaryFeature.getValue());
+				leftPredicate = predicateManager.createSimplePredicate(binaryFeature, SimplePredicate.Operator.NOT_EQUAL, value);
+				rightPredicate = predicateManager.createSimplePredicate(binaryFeature, SimplePredicate.Operator.EQUAL, value);
 
 				defaultLeft = true;
 			} else
@@ -122,11 +122,8 @@ public class Tree {
 
 				String value = ValueUtil.formatValue(this.threshold_[index]);
 
-				leftPredicate = new SimplePredicate(categoricalFeature.getName(), SimplePredicate.Operator.EQUAL)
-					.setValue(value);
-
-				rightPredicate = new SimplePredicate(categoricalFeature.getName(), SimplePredicate.Operator.NOT_EQUAL)
-					.setValue(value);
+				leftPredicate = predicateManager.createSimplePredicate(categoricalFeature, SimplePredicate.Operator.EQUAL, value);
+				rightPredicate = predicateManager.createSimplePredicate(categoricalFeature, SimplePredicate.Operator.NOT_EQUAL, value);
 
 				defaultLeft = (0d == this.threshold_[index]);
 			} else
@@ -158,22 +155,19 @@ public class Tree {
 
 				String value = ValueUtil.formatValue(this.threshold_[index]);
 
-				leftPredicate = new SimplePredicate(continuousFeature.getName(), leftOperator)
-					.setValue(value);
-
-				rightPredicate = new SimplePredicate(continuousFeature.getName(), rightOperator)
-					.setValue(value);
+				leftPredicate = predicateManager.createSimplePredicate(continuousFeature, leftOperator, value);
+				rightPredicate = predicateManager.createSimplePredicate(continuousFeature, rightOperator, value);
 			}
 
 			Node leftChild = new Node()
 				.setPredicate(leftPredicate);
 
-			encodeNode(leftChild, this.left_child_[index], schema);
+			encodeNode(leftChild, predicateManager, this.left_child_[index], schema);
 
 			Node rightChild = new Node()
 				.setPredicate(rightPredicate);
 
-			encodeNode(rightChild, this.right_child_[index], schema);
+			encodeNode(rightChild, predicateManager, this.right_child_[index], schema);
 
 			parent.addNodes(leftChild, rightChild);
 
