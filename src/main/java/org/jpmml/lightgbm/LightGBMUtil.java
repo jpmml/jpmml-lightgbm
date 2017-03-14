@@ -34,6 +34,7 @@ import org.jpmml.converter.BinaryFeature;
 import org.jpmml.converter.CategoricalFeature;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.Schema;
+import org.jpmml.converter.WildcardFeature;
 
 public class LightGBMUtil {
 
@@ -67,6 +68,7 @@ public class LightGBMUtil {
 				int index = this.features.indexOf(feature);
 
 				if(feature instanceof BinaryFeature){
+					BinaryFeature binaryFeature = (BinaryFeature)feature;
 
 					if(index < 0){
 						throw new IllegalArgumentException();
@@ -74,11 +76,12 @@ public class LightGBMUtil {
 
 					Boolean binary = gbdt.isBinary(index);
 					if(binary != null && binary.booleanValue()){
-						return feature;
+						return binaryFeature;
 					}
 				} else
 
 				if(feature instanceof CategoricalFeature){
+					CategoricalFeature categoricalFeature = (CategoricalFeature)feature;
 
 					if(index < 0){
 						throw new IllegalArgumentException();
@@ -86,7 +89,24 @@ public class LightGBMUtil {
 
 					Boolean categorical = gbdt.isCategorical(index);
 					if(categorical != null && categorical.booleanValue()){
-						return feature;
+						return categoricalFeature;
+					}
+				} else
+
+				if(feature instanceof WildcardFeature){
+					WildcardFeature wildcardFeature = (WildcardFeature)feature;
+
+					if(index < 0){
+						throw new IllegalArgumentException();
+					}
+
+					Boolean binary = gbdt.isBinary(index);
+					if(binary != null && binary.booleanValue()){
+						wildcardFeature.toCategoricalFeature(Arrays.asList("0", "1"));
+
+						BinaryFeature binaryFeature = new BinaryFeature(wildcardFeature.getEncoder(), wildcardFeature.getName(), wildcardFeature.getDataType(), "1");
+
+						return binaryFeature;
 					}
 				}
 

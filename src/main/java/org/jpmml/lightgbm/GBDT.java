@@ -166,9 +166,9 @@ public class GBDT {
 
 			{
 				if(binary){
-					DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.BOOLEAN, Arrays.asList("false", "true"));
+					DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.DOUBLE, Arrays.asList("0", "1"));
 
-					features.add(new BinaryFeature(encoder, dataField, "true"));
+					features.add(new BinaryFeature(encoder, dataField, "1"));
 				} else
 
 				{
