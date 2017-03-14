@@ -33,6 +33,8 @@ import org.dmg.pmml.Interval;
 import org.jpmml.converter.BinaryFeature;
 import org.jpmml.converter.CategoricalFeature;
 import org.jpmml.converter.Feature;
+import org.jpmml.converter.ImportanceDecorator;
+import org.jpmml.converter.ModelEncoder;
 import org.jpmml.converter.Schema;
 import org.jpmml.converter.WildcardFeature;
 
@@ -60,19 +62,36 @@ public class LightGBMUtil {
 	public Schema toLightGBMSchema(final GBDT gbdt, final Schema schema){
 		Function<Feature, Feature> function = new Function<Feature, Feature>(){
 
+			private String[] featureNames = gbdt.getFeatureNames();
+
 			private List<Feature> features = schema.getFeatures();
 
+			{
+				if(this.featureNames.length != this.features.size()){
+					throw new IllegalArgumentException();
+				}
+			}
 
 			@Override
 			public Feature apply(Feature feature){
 				int index = this.features.indexOf(feature);
 
+				if(index < 0){
+					throw new IllegalArgumentException();
+				}
+
+				Double importance = gbdt.getFeatureImportance(this.featureNames[index]);
+				if(importance != null){
+					ModelEncoder encoder = (ModelEncoder)feature.getEncoder();
+
+					ImportanceDecorator importanceDecorator = new ImportanceDecorator()
+						.setImportance(importance);
+
+					encoder.addDecorator(feature.getName(), importanceDecorator);
+				} // End if
+
 				if(feature instanceof BinaryFeature){
 					BinaryFeature binaryFeature = (BinaryFeature)feature;
-
-					if(index < 0){
-						throw new IllegalArgumentException();
-					}
 
 					Boolean binary = gbdt.isBinary(index);
 					if(binary != null && binary.booleanValue()){
@@ -83,10 +102,6 @@ public class LightGBMUtil {
 				if(feature instanceof CategoricalFeature){
 					CategoricalFeature categoricalFeature = (CategoricalFeature)feature;
 
-					if(index < 0){
-						throw new IllegalArgumentException();
-					}
-
 					Boolean categorical = gbdt.isCategorical(index);
 					if(categorical != null && categorical.booleanValue()){
 						return categoricalFeature;
@@ -95,10 +110,6 @@ public class LightGBMUtil {
 
 				if(feature instanceof WildcardFeature){
 					WildcardFeature wildcardFeature = (WildcardFeature)feature;
-
-					if(index < 0){
-						throw new IllegalArgumentException();
-					}
 
 					Boolean binary = gbdt.isBinary(index);
 					if(binary != null && binary.booleanValue()){
