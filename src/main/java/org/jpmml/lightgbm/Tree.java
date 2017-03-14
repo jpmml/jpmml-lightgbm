@@ -25,6 +25,7 @@ import org.dmg.pmml.True;
 import org.dmg.pmml.tree.Node;
 import org.dmg.pmml.tree.TreeModel;
 import org.jpmml.converter.BinaryFeature;
+import org.jpmml.converter.CategoricalFeature;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.ModelUtil;
@@ -110,6 +111,24 @@ public class Tree {
 					.setValue(binaryFeature.getValue());
 
 				defaultLeft = true;
+			} else
+
+			if(feature instanceof CategoricalFeature){
+				CategoricalFeature categoricalFeature = (CategoricalFeature)feature;
+
+				if(this.decision_type_[index ] != Tree.SPLIT_CATEGORICAL){
+					throw new IllegalArgumentException();
+				}
+
+				String value = ValueUtil.formatValue(this.threshold_[index]);
+
+				leftPredicate = new SimplePredicate(categoricalFeature.getName(), SimplePredicate.Operator.EQUAL)
+					.setValue(value);
+
+				rightPredicate = new SimplePredicate(categoricalFeature.getName(), SimplePredicate.Operator.NOT_EQUAL)
+					.setValue(value);
+
+				defaultLeft = (0d == this.threshold_[index]);
 			} else
 
 			{

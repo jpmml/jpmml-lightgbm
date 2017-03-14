@@ -32,6 +32,7 @@ import org.dmg.pmml.OpType;
 import org.dmg.pmml.PMML;
 import org.dmg.pmml.mining.MiningModel;
 import org.jpmml.converter.BinaryFeature;
+import org.jpmml.converter.CategoricalFeature;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.ImportanceDecorator;
@@ -148,8 +149,6 @@ public class GBDT {
 
 			FieldName activeField = FieldName.create(featureNames[i]);
 
-			DataField dataField;
-
 			if(categorical){
 
 				if(binary){
@@ -157,21 +156,27 @@ public class GBDT {
 				} else
 
 				{
-					dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.DOUBLE);
+					DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.DOUBLE);
 
 					PMMLUtil.addValues(dataField, LightGBMUtil.parseValues(featureInfo));
+
+					features.add(new CategoricalFeature(encoder, dataField));
 				}
 			} else
 
 			{
 				if(binary){
-					dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.BOOLEAN, Arrays.asList("false", "true"));
+					DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.BOOLEAN, Arrays.asList("false", "true"));
+
+					features.add(new BinaryFeature(encoder, dataField, "true"));
 				} else
 
 				{
-					dataField = encoder.createDataField(activeField, OpType.CONTINUOUS, DataType.DOUBLE);
+					DataField dataField = encoder.createDataField(activeField, OpType.CONTINUOUS, DataType.DOUBLE);
 
 					PMMLUtil.addIntervals(dataField, Arrays.asList(LightGBMUtil.parseInterval(featureInfo)));
+
+					features.add(new ContinuousFeature(encoder, dataField));
 				}
 			}
 
@@ -179,14 +184,6 @@ public class GBDT {
 				.setImportance(getFeatureImportance(featureName));
 
 			encoder.addDecorator(activeField, importanceDecorator);
-
-			if(binary){
-				features.add(new BinaryFeature(encoder, dataField, "true"));
-			} else
-
-			{
-				features.add(new ContinuousFeature(encoder, dataField));
-			}
 		}
 
 		Schema schema = new Schema(label, features);

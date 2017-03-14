@@ -31,6 +31,7 @@ import com.google.common.base.Function;
 import com.google.common.io.CharStreams;
 import org.dmg.pmml.Interval;
 import org.jpmml.converter.BinaryFeature;
+import org.jpmml.converter.CategoricalFeature;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.Schema;
 
@@ -63,9 +64,9 @@ public class LightGBMUtil {
 
 			@Override
 			public Feature apply(Feature feature){
+				int index = this.features.indexOf(feature);
 
 				if(feature instanceof BinaryFeature){
-					int index = this.features.indexOf(feature);
 
 					if(index < 0){
 						throw new IllegalArgumentException();
@@ -73,6 +74,18 @@ public class LightGBMUtil {
 
 					Boolean binary = gbdt.isBinary(index);
 					if(binary != null && binary.booleanValue()){
+						return feature;
+					}
+				} else
+
+				if(feature instanceof CategoricalFeature){
+
+					if(index < 0){
+						throw new IllegalArgumentException();
+					}
+
+					Boolean categorical = gbdt.isCategorical(index);
+					if(categorical != null && categorical.booleanValue()){
 						return feature;
 					}
 				}
