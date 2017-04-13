@@ -149,21 +149,7 @@ public class LightGBMUtil {
 				continue loop;
 			}
 
-			String key;
-			String value;
-
-			int equals = line.indexOf('=');
-			if(equals > 0){
-				key = line.substring(0, equals);
-				value = line.substring(equals + 1);
-			} else
-
-			{
-				key = line;
-				value = null;
-			}
-
-			section.put(key, value);
+			section.put(line);
 		}
 
 		if(section.size() > 0){
@@ -186,7 +172,7 @@ public class LightGBMUtil {
 	public String[] parseStringArray(String string, int length){
 		String[] result = string.split("\\s");
 
-		if(result.length != length){
+		if(length > -1 && result.length != length){
 			throw new IllegalArgumentException();
 		}
 
@@ -249,7 +235,7 @@ public class LightGBMUtil {
 				closure = Interval.Closure.CLOSED_CLOSED;
 				break;
 			default:
-				throw new IllegalArgumentException(bounds);
+				throw new IllegalArgumentException(string);
 		}
 
 		String[] values = margins.split(":");

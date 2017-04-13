@@ -44,15 +44,13 @@ public class GBDT {
 
 	private int max_feature_idx_;
 
-	private int num_class_;
-
-	private double sigmoid_;
-
 	private int label_idx_;
 
 	private String[] feature_names_;
 
 	private String[] feature_infos_;
+
+	private boolean boost_from_average_;
 
 	private ObjectiveFunction object_function_;
 
@@ -72,13 +70,12 @@ public class GBDT {
 			}
 
 			this.max_feature_idx_ = section.getInt("max_feature_idx");
-			this.num_class_ = section.getInt("num_class");
-			this.sigmoid_ = section.getDouble("sigmoid");
 			this.label_idx_ = section.getInt("label_index");
 			this.feature_names_ = section.getStringArray("feature_names", this.max_feature_idx_ + 1);
 			this.feature_infos_ = section.getStringArray("feature_infos", this.max_feature_idx_ + 1);
+			this.boost_from_average_ = section.containsKey("boost_from_average");
 
-			this.object_function_ = parseObjectiveFunction(section.getString("objective"), this.num_class_, this.sigmoid_);
+			this.object_function_ = parseObjectiveFunction(section.getString("objective"));
 
 			index++;
 		}
@@ -220,7 +217,12 @@ public class GBDT {
 
 		Tree[] trees = this.models_;
 		for(Tree tree : trees){
+			Double score = tree.getScore();
 			Boolean binary = tree.isBinary(feature);
+
+			if(score != null){
+				continue;
+			} // End if
 
 			if(binary != null){
 
@@ -246,7 +248,12 @@ public class GBDT {
 
 		Tree[] trees = this.models_;
 		for(Tree tree: trees){
+			Double score = tree.getScore();
 			Boolean categorical = tree.isCategorical(feature);
+
+			if(score != null){
+				continue;
+			} // End if
 
 			if(categorical != null){
 
@@ -279,7 +286,19 @@ public class GBDT {
 	}
 
 	static
-	public ObjectiveFunction parseObjectiveFunction(String objective, int num_class, double sigmoid){
+	public ObjectiveFunction parseObjectiveFunction(String string){
+		String[] tokens = LightGBMUtil.parseStringArray(string, -1);
+
+		if(tokens.length == 0){
+			throw new IllegalArgumentException(string);
+		}
+
+		String objective = tokens[0];
+
+		Section section = new Section();
+		for(int i = 1; i < tokens.length; i++){
+			section.put(tokens[i], ':');
+		}
 
 		switch(objective){
 			// RegressionL2loss
@@ -299,9 +318,9 @@ public class GBDT {
 			case "poisson":
 				return new Regression();
 			case "binary":
-				return new LogisticClassification(num_class, sigmoid);
+				return new LogisticClassification(section.getDouble("sigmoid"));
 			case "multiclass":
-				return new SoftMaxClassification(num_class);
+				return new SoftMaxClassification(section.getInt("num_class"));
 			default:
 				throw new IllegalArgumentException(objective);
 		}

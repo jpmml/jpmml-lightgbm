@@ -65,4 +65,26 @@ public class Section extends LinkedHashMap<String, String> {
 	public String[] getStringArray(String key, int length){
 		return LightGBMUtil.parseStringArray(get(key), length);
 	}
+
+	public String put(String string){
+		return put(string, '=');
+	}
+
+	public String put(String string, char separator){
+		String key;
+		String value;
+
+		int index = string.indexOf(separator);
+		if(index > 0){
+			key = string.substring(0, index);
+			value = string.substring(index + 1);
+		} else
+
+		{
+			key = string;
+			value = null;
+		}
+
+		return put(key, value);
+	}
 }

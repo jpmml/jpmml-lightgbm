@@ -1,9 +1,9 @@
 tree
 num_class=1
+num_tree_per_iteration=1
 label_index=0
 max_feature_idx=3
-objective=binary
-sigmoid=1
+objective=binary sigmoid:1
 feature_names=Petal.Length Petal.Width Sepal.Length Sepal.Width
 feature_infos=[1:6.9000000000000004] [0.10000000000000001:2.5] [4.2999999999999998:7.9000000000000004] [2:4.4000000000000004]
 
@@ -21,6 +21,7 @@ leaf_count=50 29 21 25 25
 internal_value=0 -0 1.6296296296296291 -1.9130434782608696
 internal_count=150 100 54 46
 shrinkage=0.1
+has_categorical=0
 
 
 Tree=1
@@ -37,6 +38,7 @@ leaf_count=50 29 21 25 25
 internal_value=0 -4.1174100579387276e-05 1.4774280715314223 -1.7381690148718736
 internal_count=150 100 54 46
 shrinkage=0.1
+has_categorical=0
 
 
 Tree=2
@@ -53,6 +55,7 @@ leaf_count=50 22 21 34 23
 internal_value=0 -0.00017105772588590432 -1.338245733247863 1.6320371362624617
 internal_count=150 100 55 45
 shrinkage=0.1
+has_categorical=0
 
 
 Tree=3
@@ -69,6 +72,7 @@ leaf_count=50 28 23 26 23
 internal_value=0 -5.2092589170081471e-05 1.2703128329634261 -1.5111354931746588
 internal_count=150 100 54 46
 shrinkage=0.1
+has_categorical=0
 
 
 Tree=4
@@ -85,6 +89,7 @@ leaf_count=50 29 23 25 23
 internal_value=0 -0.00028648946564966397 1.2033724356517022 -1.4236327569427876
 internal_count=150 100 54 46
 shrinkage=0.1
+has_categorical=0
 
 
 Tree=5
@@ -101,6 +106,7 @@ leaf_count=24 29 46 25 26
 internal_value=0 -0.00037162056979150827 1.1304131676485298 -1.4243950394247973
 internal_count=150 100 54 50
 shrinkage=0.1
+has_categorical=0
 
 
 Tree=6
@@ -117,6 +123,7 @@ leaf_count=50 28 46 26
 internal_value=0 -0.00059102184260147791 1.0843487795633693
 internal_count=150 100 54
 shrinkage=0.1
+has_categorical=0
 
 
 Tree=7
@@ -133,6 +140,7 @@ leaf_count=50 29 46 25
 internal_value=0 -0.00066090927868115454 1.024281350029749
 internal_count=150 100 54
 shrinkage=0.1
+has_categorical=0
 
 
 Tree=8
@@ -149,6 +157,7 @@ leaf_count=50 29 46 25
 internal_value=0 -0.0008871958955060117 0.99045679096068251
 internal_count=150 100 54
 shrinkage=0.1
+has_categorical=0
 
 
 Tree=9
@@ -165,6 +174,7 @@ leaf_count=50 54 46
 internal_value=0 -0.0009268644639412782
 internal_count=150 100
 shrinkage=0.1
+has_categorical=0
 
 
 Tree=10
@@ -181,6 +191,7 @@ leaf_count=50 45 55
 internal_value=0 -0.0014972209409796059
 internal_count=150 100
 shrinkage=0.1
+has_categorical=0
 
 
 

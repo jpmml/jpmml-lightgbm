@@ -50,7 +50,17 @@ public class ObjectiveFunction {
 
 		List<TreeModel> treeModels = new ArrayList<>();
 
+		double intercept = 0d;
+
 		for(Tree tree : trees){
+			Double score = tree.getScore();
+
+			if(score != null){
+				intercept += score;
+
+				continue;
+			}
+
 			TreeModel treeModel = tree.encodeTreeModel(predicateManager, segmentSchema);
 
 			treeModels.add(treeModel);
@@ -58,6 +68,10 @@ public class ObjectiveFunction {
 
 		MiningModel miningModel = new MiningModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(schema))
 			.setSegmentation(MiningModelUtil.createSegmentation(Segmentation.MultipleModelMethod.SUM, treeModels));
+
+		if(intercept != 0d){
+			miningModel.setTargets(ModelUtil.createRescaleTargets(schema, null, intercept));
+		}
 
 		return miningModel;
 	}

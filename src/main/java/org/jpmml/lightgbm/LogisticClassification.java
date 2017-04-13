@@ -36,7 +36,7 @@ public class LogisticClassification extends Classification {
 	private double sigmoid_;
 
 
-	public LogisticClassification(int num_class, double sigmoid){
+	public LogisticClassification(double sigmoid){
 		super(2);
 
 		this.sigmoid_ = sigmoid;
