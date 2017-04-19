@@ -26,7 +26,7 @@ def build_iris(name):
 	store_lgbm(lgbm, "Classification" + name + ".txt")
 
 	species = DataFrame(lgbm.predict(X), columns = ["_target"]).replace("setosa", "0").replace("versicolor", "1").replace("virginica", "2")
-	species_proba = DataFrame(lgbm.predict_proba(X), columns = ["probability_0", "probability_1", "probability_2"])
+	species_proba = DataFrame(lgbm.predict_proba(X), columns = ["probability(0)", "probability(1)", "probability(2)"])
 	store_csv(pandas.concat((species, species_proba), axis = 1), "Classification" + name + ".csv")
 
 build_iris("Iris")
@@ -46,7 +46,7 @@ def build_versicolor(name):
 	store_lgbm(lgbm, "Classification" + name + ".txt")
 
 	versicolor = DataFrame(lgbm.predict(X), columns = ["_target"])
-	versicolor_proba = DataFrame(lgbm.predict_proba(X), columns = ["probability_0", "probability_1"])
+	versicolor_proba = DataFrame(lgbm.predict_proba(X), columns = ["probability(0)", "probability(1)"])
 	store_csv(pandas.concat((versicolor, versicolor_proba), axis = 1), "Classification" + name + ".csv")
 
 build_versicolor("Versicolor")

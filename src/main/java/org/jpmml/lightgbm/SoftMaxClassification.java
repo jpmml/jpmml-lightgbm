@@ -53,11 +53,11 @@ public class SoftMaxClassification extends Classification {
 
 		for(int i = 0, rows = categoricalLabel.size(), columns = (trees.size() / rows); i < rows; i++){
 			MiningModel miningModel = createMiningModel(FortranMatrixUtil.getRow(trees, rows, columns, i), segmentSchema)
-				.setOutput(ModelUtil.createPredictedOutput(FieldName.create("lgbmValue_" + categoricalLabel.getValue(i)), OpType.CONTINUOUS, DataType.DOUBLE));
+				.setOutput(ModelUtil.createPredictedOutput(FieldName.create("lgbmValue(" + categoricalLabel.getValue(i) + ")"), OpType.CONTINUOUS, DataType.DOUBLE));
 
 			miningModels.add(miningModel);
 		}
 
-		return MiningModelUtil.createClassification(schema, miningModels, RegressionModel.NormalizationMethod.SOFTMAX, true);
+		return MiningModelUtil.createClassification(miningModels, RegressionModel.NormalizationMethod.SOFTMAX, true, schema);
 	}
 }
