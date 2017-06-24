@@ -1,7 +1,7 @@
 JPMML-LightGBM
 ==============
 
-Java library and command-line application for converting [LightGBM] (https://github.com/Microsoft/LightGBM) models to PMML.
+Java library and command-line application for converting [LightGBM](https://github.com/Microsoft/LightGBM) models to PMML.
 
 # Prerequisites #
 
@@ -9,7 +9,7 @@ Java library and command-line application for converting [LightGBM] (https://git
 
 # Installation #
 
-Enter the project root directory and build using [Apache Maven] (http://maven.apache.org/):
+Enter the project root directory and build using [Apache Maven](http://maven.apache.org/):
 ```
 mvn clean install
 ```
@@ -26,7 +26,7 @@ A typical workflow can be summarized as follows:
 
 ### The LightGBM side of operations
 
-Using the [`lightgbm`] (https://github.com/Microsoft/LightGBM/tree/master/python-package) package to train a regression model for the example boston housing dataset:
+Using the [`lightgbm`](https://github.com/Microsoft/LightGBM/tree/master/python-package) package to train a regression model for the example boston housing dataset:
 ```Python
 from sklearn.datasets import load_boston
 
@@ -54,8 +54,8 @@ java -jar target/converter-executable-1.0-SNAPSHOT.jar --help
 
 # License #
 
-JPMML-LightGBM is licensed under the [GNU Affero General Public License (AGPL) version 3.0] (http://www.gnu.org/licenses/agpl-3.0.html). Other licenses are available on request.
+JPMML-LightGBM is licensed under the [GNU Affero General Public License (AGPL) version 3.0](http://www.gnu.org/licenses/agpl-3.0.html). Other licenses are available on request.
 
 # Additional information #
 
-Please contact [info@openscoring.io] (mailto:info@openscoring.io)
+Please contact [info@openscoring.io](mailto:info@openscoring.io)
