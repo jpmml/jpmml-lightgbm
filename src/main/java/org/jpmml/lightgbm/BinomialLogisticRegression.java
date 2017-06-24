@@ -18,7 +18,6 @@
  */
 package org.jpmml.lightgbm;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.dmg.pmml.DataType;
@@ -26,38 +25,30 @@ import org.dmg.pmml.FieldName;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.mining.MiningModel;
 import org.dmg.pmml.regression.RegressionModel;
-import org.jpmml.converter.CategoricalLabel;
 import org.jpmml.converter.ContinuousLabel;
-import org.jpmml.converter.FortranMatrixUtil;
 import org.jpmml.converter.ModelUtil;
 import org.jpmml.converter.Schema;
+import org.jpmml.converter.SigmoidTransformation;
 import org.jpmml.converter.mining.MiningModelUtil;
 
-public class SoftMaxClassification extends Classification {
+public class BinomialLogisticRegression extends Classification {
 
-	public SoftMaxClassification(int num_class){
-		super(num_class);
+	private double sigmoid_;
 
-		if(num_class < 3){
-			throw new IllegalArgumentException("Multi-class classification requires three or more target categories");
-		}
+
+	public BinomialLogisticRegression(double sigmoid){
+		super(2);
+
+		this.sigmoid_ = sigmoid;
 	}
 
 	@Override
 	public MiningModel encodeMiningModel(List<Tree> trees, Schema schema){
 		Schema segmentSchema = new Schema(new ContinuousLabel(null, DataType.DOUBLE), schema.getFeatures());
 
-		List<MiningModel> miningModels = new ArrayList<>();
+		MiningModel miningModel = createMiningModel(trees, segmentSchema)
+			.setOutput(ModelUtil.createPredictedOutput(FieldName.create("lgbmValue"), OpType.CONTINUOUS, DataType.DOUBLE, new SigmoidTransformation(-1d * BinomialLogisticRegression.this.sigmoid_)));
 
-		CategoricalLabel categoricalLabel = (CategoricalLabel)schema.getLabel();
-
-		for(int i = 0, rows = categoricalLabel.size(), columns = (trees.size() / rows); i < rows; i++){
-			MiningModel miningModel = createMiningModel(FortranMatrixUtil.getRow(trees, rows, columns, i), segmentSchema)
-				.setOutput(ModelUtil.createPredictedOutput(FieldName.create("lgbmValue(" + categoricalLabel.getValue(i) + ")"), OpType.CONTINUOUS, DataType.DOUBLE));
-
-			miningModels.add(miningModel);
-		}
-
-		return MiningModelUtil.createClassification(miningModels, RegressionModel.NormalizationMethod.SOFTMAX, true, schema);
+		return MiningModelUtil.createBinaryLogisticClassification(miningModel, 1d, 0d, RegressionModel.NormalizationMethod.NONE, true, schema);
 	}
 }

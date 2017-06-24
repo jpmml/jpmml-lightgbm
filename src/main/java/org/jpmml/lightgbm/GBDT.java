@@ -318,9 +318,9 @@ public class GBDT {
 			case "poisson":
 				return new Regression();
 			case "binary":
-				return new LogisticClassification(section.getDouble("sigmoid"));
+				return new BinomialLogisticRegression(section.getDouble("sigmoid"));
 			case "multiclass":
-				return new SoftMaxClassification(section.getInt("num_class"));
+				return new MultinomialLogisticRegression(section.getInt("num_class"));
 			default:
 				throw new IllegalArgumentException(objective);
 		}
