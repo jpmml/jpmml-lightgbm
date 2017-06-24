@@ -49,6 +49,6 @@ public class LogisticClassification extends Classification {
 		MiningModel miningModel = createMiningModel(trees, segmentSchema)
 			.setOutput(ModelUtil.createPredictedOutput(FieldName.create("lgbmValue"), OpType.CONTINUOUS, DataType.DOUBLE, new SigmoidTransformation(-1d * LogisticClassification.this.sigmoid_)));
 
-		return MiningModelUtil.createBinaryLogisticClassification(miningModel, 0d, 1d, RegressionModel.NormalizationMethod.NONE, true, schema);
+		return MiningModelUtil.createBinaryLogisticClassification(miningModel, 1d, 0d, RegressionModel.NormalizationMethod.NONE, true, schema);
 	}
 }
