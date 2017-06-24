@@ -20,16 +20,23 @@ package org.jpmml.lightgbm;
 
 import java.io.InputStream;
 
+import com.google.common.base.Predicate;
+import org.dmg.pmml.FieldName;
 import org.dmg.pmml.PMML;
 import org.jpmml.evaluator.ArchiveBatch;
 import org.jpmml.evaluator.IntegrationTest;
 import org.jpmml.evaluator.IntegrationTestBatch;
+import org.jpmml.evaluator.PMMLEquivalence;
 
 public class LightGBMTest extends IntegrationTest {
 
+	public LightGBMTest(){
+		super(new PMMLEquivalence(1e-9, 1e-9));
+	}
+
 	@Override
-	protected ArchiveBatch createBatch(String name, String dataset){
-		ArchiveBatch result = new IntegrationTestBatch(name, dataset){
+	protected ArchiveBatch createBatch(String name, String dataset, Predicate<FieldName> predicate){
+		ArchiveBatch result = new IntegrationTestBatch(name, dataset, predicate){
 
 			@Override
 			public IntegrationTest getIntegrationTest(){
