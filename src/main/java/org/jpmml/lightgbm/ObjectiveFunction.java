@@ -26,6 +26,7 @@ import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.mining.MiningModel;
 import org.dmg.pmml.mining.Segmentation;
 import org.dmg.pmml.tree.TreeModel;
+import org.jpmml.converter.ContinuousLabel;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.ModelUtil;
 import org.jpmml.converter.PMMLEncoder;
@@ -44,6 +45,8 @@ public class ObjectiveFunction {
 
 	static
 	protected MiningModel createMiningModel(List<Tree> trees, Schema schema){
+		ContinuousLabel continuousLabel = (ContinuousLabel)schema.getLabel();
+
 		Schema segmentSchema = schema.toAnonymousSchema();
 
 		PredicateManager predicateManager = new PredicateManager();
@@ -66,11 +69,11 @@ public class ObjectiveFunction {
 			treeModels.add(treeModel);
 		}
 
-		MiningModel miningModel = new MiningModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(schema))
+		MiningModel miningModel = new MiningModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(continuousLabel))
 			.setSegmentation(MiningModelUtil.createSegmentation(Segmentation.MultipleModelMethod.SUM, treeModels));
 
 		if(intercept != 0d){
-			miningModel.setTargets(ModelUtil.createRescaleTargets(schema, null, intercept));
+			miningModel.setTargets(ModelUtil.createRescaleTargets(null, intercept, continuousLabel));
 		}
 
 		return miningModel;
