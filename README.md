@@ -14,7 +14,7 @@ Enter the project root directory and build using [Apache Maven](http://maven.apa
 mvn clean install
 ```
 
-The build produces an executable uber-JAR file `target/converter-executable-1.0-SNAPSHOT.jar`.
+The build produces an executable uber-JAR file `target/converter-executable-1.1-SNAPSHOT.jar`.
 
 # Usage #
 
@@ -44,12 +44,12 @@ lgbm.booster_.save_model("lightgbm.txt")
 
 Converting the text file `lightgbm.txt` to a PMML file `lightgbm.pmml`:
 ```
-java -jar target/converter-executable-1.0-SNAPSHOT.jar --lgbm-input lightgbm.txt --pmml-output lightgbm.pmml
+java -jar target/converter-executable-1.1-SNAPSHOT.jar --lgbm-input lightgbm.txt --pmml-output lightgbm.pmml
 ```
 
 Getting help:
 ```
-java -jar target/converter-executable-1.0-SNAPSHOT.jar --help
+java -jar target/converter-executable-1.1-SNAPSHOT.jar --help
 ```
 
 # License #
