@@ -181,10 +181,11 @@ public class LightGBMUtil {
 
 	static
 	public int[] parseIntArray(String string, int length){
-		int[] result = new int[length];
-
 		String[] values = parseStringArray(string, length);
-		for(int i = 0; i < length; i++){
+
+		int[] result = new int[values.length];
+
+		for(int i = 0; i < result.length; i++){
 			result[i] = Integer.parseInt(values[i]);
 		}
 
@@ -193,10 +194,11 @@ public class LightGBMUtil {
 
 	static
 	public double[] parseDoubleArray(String string, int length){
-		double[] result = new double[length];
-
 		String[] values = parseStringArray(string, length);
-		for(int i = 0; i < length; i++){
+
+		double[] result = new double[values.length];
+
+		for(int i = 0; i < result.length; i++){
 			result[i] = Double.parseDouble(values[i]);
 		}
 

@@ -18,6 +18,9 @@
  */
 package org.jpmml.lightgbm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.Predicate;
 import org.dmg.pmml.SimplePredicate;
@@ -37,6 +40,8 @@ public class Tree {
 
 	private int num_leaves_;
 
+	private int num_cat_;
+
 	private int[] left_child_;
 
 	private int[] right_child_;
@@ -55,9 +60,14 @@ public class Tree {
 
 	private int[] internal_count_;
 
+	private int[] cat_boundaries_;
+
+	private int[] cat_threshold_;
+
 
 	public void load(Section section){
 		this.num_leaves_ = section.getInt("num_leaves");
+		this.num_cat_ = section.getInt("num_cat");
 
 		this.left_child_ = section.getIntArray("left_child", this.num_leaves_ - 1);
 		this.right_child_ = section.getIntArray("right_child", this.num_leaves_ - 1);
@@ -68,6 +78,11 @@ public class Tree {
 		this.leaf_count_ = section.getIntArray("leaf_count", this.num_leaves_);
 		this.internal_value_ = section.getDoubleArray("internal_value", this.num_leaves_ - 1);
 		this.internal_count_ = section.getIntArray("internal_count", this.num_leaves_ - 1);
+
+		if(this.num_cat_ > 0){
+			this.cat_boundaries_ = section.getIntArray("cat_boundaries", this.num_cat_ + 1);
+			this.cat_threshold_ = section.getIntArray("cat_threshold", -1);
+		}
 	}
 
 	public TreeModel encodeTreeModel(PredicateManager predicateManager, Schema schema){
@@ -93,15 +108,18 @@ public class Tree {
 
 			Feature feature = schema.getFeature(this.split_feature_real_[index]);
 
+			double threshold_ = this.threshold_[index];
+			int decision_type_ = this.decision_type_[index];
+
 			Predicate leftPredicate;
 			Predicate rightPredicate;
 
-			boolean defaultLeft;
+			boolean defaultLeft = hasDefaultLeftMask(decision_type_);
 
 			if(feature instanceof BinaryFeature){
 				BinaryFeature binaryFeature = (BinaryFeature)feature;
 
-				if(this.decision_type_[index] != Tree.SPLIT_NUMERIC && this.threshold_[index] != 0.5d){
+				if(hasCategoricalMask(decision_type_) || threshold_ != 0.5d){
 					throw new IllegalArgumentException();
 				}
 
@@ -109,54 +127,36 @@ public class Tree {
 
 				leftPredicate = predicateManager.createSimplePredicate(binaryFeature, SimplePredicate.Operator.NOT_EQUAL, value);
 				rightPredicate = predicateManager.createSimplePredicate(binaryFeature, SimplePredicate.Operator.EQUAL, value);
-
-				defaultLeft = true;
 			} else
 
 			if(feature instanceof CategoricalFeature){
 				CategoricalFeature categoricalFeature = (CategoricalFeature)feature;
 
-				if(this.decision_type_[index ] != Tree.SPLIT_CATEGORICAL){
+				if(!hasCategoricalMask(decision_type_)){
 					throw new IllegalArgumentException();
 				}
 
-				String value = ValueUtil.formatValue(this.threshold_[index]);
+				List<String> values = categoricalFeature.getValues();
 
-				leftPredicate = predicateManager.createSimplePredicate(categoricalFeature, SimplePredicate.Operator.EQUAL, value);
-				rightPredicate = predicateManager.createSimplePredicate(categoricalFeature, SimplePredicate.Operator.NOT_EQUAL, value);
+				int cat_idx = ValueUtil.asInt(threshold_);
 
-				defaultLeft = (0d == this.threshold_[index]);
+				leftPredicate = predicateManager.createSimpleSetPredicate(categoricalFeature, selectValues(values, cat_idx, true));
+				rightPredicate = predicateManager.createSimpleSetPredicate(categoricalFeature, selectValues(values, cat_idx, false));
+
+				defaultLeft = false;
 			} else
 
 			{
 				ContinuousFeature continuousFeature = feature.toContinuousFeature();
 
-				SimplePredicate.Operator leftOperator;
-				SimplePredicate.Operator rightOperator;
-
-				switch(this.decision_type_[index]){
-					case Tree.SPLIT_NUMERIC:
-						leftOperator = SimplePredicate.Operator.LESS_OR_EQUAL;
-						rightOperator = SimplePredicate.Operator.GREATER_THAN;
-
-						// Send the value to the direction of the zero value
-						defaultLeft = (0d <= this.threshold_[index]);
-						break;
-					case Tree.SPLIT_CATEGORICAL:
-						leftOperator = SimplePredicate.Operator.EQUAL;
-						rightOperator = SimplePredicate.Operator.NOT_EQUAL;
-
-						// Send zero values to the left, and all other values to the right
-						defaultLeft = (0d == this.threshold_[index]);
-						break;
-					default:
-						throw new IllegalArgumentException();
+				if(hasCategoricalMask(decision_type_)){
+					throw new IllegalArgumentException();
 				}
 
-				String value = ValueUtil.formatValue(this.threshold_[index]);
+				String value = ValueUtil.formatValue(threshold_);
 
-				leftPredicate = predicateManager.createSimplePredicate(continuousFeature, leftOperator, value);
-				rightPredicate = predicateManager.createSimplePredicate(continuousFeature, rightOperator, value);
+				leftPredicate = predicateManager.createSimplePredicate(continuousFeature, SimplePredicate.Operator.LESS_OR_EQUAL, value);
+				rightPredicate = predicateManager.createSimplePredicate(continuousFeature, SimplePredicate.Operator.GREATER_THAN, value);
 			}
 
 			Node leftChild = new Node()
@@ -181,6 +181,45 @@ public class Tree {
 			parent.setScore(ValueUtil.formatValue(this.leaf_value_[index]));
 			parent.setRecordCount((double)this.leaf_count_[index]);
 		}
+	}
+
+	private List<String> selectValues(List<String> values, int cat_idx, boolean left){
+		List<String> result;
+
+		if(left){
+			result = new ArrayList<>();
+		} else
+
+		{
+			result = new ArrayList<>(values);
+		}
+
+		int n = (this.cat_boundaries_[cat_idx + 1] - this.cat_boundaries_[cat_idx]);
+
+		for(int i = 0; i < n; i++){
+
+			for(int j = 0; j < 32; j++){
+				int cat = (i * 32) + j;
+
+				if(findInBitset(this.cat_threshold_, this.cat_boundaries_[cat_idx], n, cat)){
+					String value = String.valueOf(cat);
+
+					if(values.indexOf(value) < 0){
+						throw new IllegalArgumentException();
+					} // End if
+
+					if(left){
+						result.add(value);
+					} else
+
+					{
+						result.remove(value);
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 
 	Double getScore(){
@@ -208,7 +247,7 @@ public class Tree {
 
 			if(this.split_feature_real_[i] == feature){
 
-				if(this.decision_type_[i] != Tree.SPLIT_NUMERIC){
+				if(hasCategoricalMask(this.decision_type_[i])){
 					return Boolean.FALSE;
 				} // End if
 
@@ -230,9 +269,9 @@ public class Tree {
 
 			if(this.split_feature_real_[i] == feature){
 
-				if(this.decision_type_[i] != Tree.SPLIT_CATEGORICAL){
- 					return Boolean.FALSE;
- 				}
+				if(!hasCategoricalMask(this.decision_type_[i])){
+					return Boolean.FALSE;
+				}
 
  				result = Boolean.TRUE;
  			}
@@ -241,6 +280,38 @@ public class Tree {
  		return result;
  	}
 
-	private static final int SPLIT_NUMERIC = 0;
-	private static final int SPLIT_CATEGORICAL = 1;
+	static
+	private boolean hasCategoricalMask(int decision_type){
+		return getDecisionType(decision_type, Tree.MASK_CATEGORICAL) == Tree.MASK_CATEGORICAL;
+	}
+
+	static
+	private boolean hasDefaultLeftMask(int decision_type){
+		return getDecisionType(decision_type, Tree.MASK_DEFAULT_LEFT) == Tree.MASK_DEFAULT_LEFT;
+	}
+
+	static
+	int getDecisionType(int decision_type, int mask){
+		return (decision_type & mask);
+	}
+
+	static
+	int getMissingType(int decision_type){
+		return getDecisionType((decision_type >> 2), 3);
+	}
+
+	static
+	private boolean findInBitset(int[] bits, int bitOffset, int n, int pos){
+		int i1 = pos / 32;
+		if(i1 >= n){
+			return false;
+		}
+
+		int i2 = pos % 32;
+
+		return ((bits[bitOffset + i1] >> i2) & 1) == 1;
+	}
+
+	private static final int MASK_CATEGORICAL = 1;
+	private static final int MASK_DEFAULT_LEFT = 2;
 }
