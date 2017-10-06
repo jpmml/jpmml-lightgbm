@@ -26,12 +26,12 @@ import org.dmg.pmml.PMML;
 import org.jpmml.evaluator.ArchiveBatch;
 import org.jpmml.evaluator.IntegrationTest;
 import org.jpmml.evaluator.IntegrationTestBatch;
-import org.jpmml.evaluator.PMMLEquivalence;
+import org.jpmml.evaluator.RealNumberEquivalence;
 
 public class LightGBMTest extends IntegrationTest {
 
 	public LightGBMTest(){
-		super(new PMMLEquivalence(1e-9, 1e-9));
+		super(new RealNumberEquivalence(0));
 	}
 
 	@Override
