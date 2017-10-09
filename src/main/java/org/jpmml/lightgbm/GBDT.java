@@ -41,7 +41,6 @@ import org.jpmml.converter.Feature;
 import org.jpmml.converter.ImportanceDecorator;
 import org.jpmml.converter.InvalidValueDecorator;
 import org.jpmml.converter.Label;
-import org.jpmml.converter.MissingValueDecorator;
 import org.jpmml.converter.PMMLUtil;
 import org.jpmml.converter.Schema;
 
@@ -161,13 +160,11 @@ public class GBDT {
 					List<Integer> categories = new ArrayList<>();
 					categories.addAll(LightGBMUtil.parseValues(featureInfo));
 
-					Collections.sort(categories);
-
-					// Move the missing category level from the first position to the last position
-					boolean hasMissinng = categories.remove(GBDT.CATEGORY_MISSING);
-					if(hasMissinng){
-						categories.add(GBDT.CATEGORY_MISSING);
+					if(categories.contains(GBDT.CATEGORY_MISSING)){
+						categories.remove(GBDT.CATEGORY_MISSING);
 					}
+
+					Collections.sort(categories);
 
 					DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER);
 
@@ -175,11 +172,6 @@ public class GBDT {
 
 					features.add(new CategoricalFeature(encoder, dataField));
 				}
-
-				MissingValueDecorator missingValueDecorator = new MissingValueDecorator()
-					.setMissingValueReplacement(LightGBMUtil.CATEGORY_FORMATTER.apply(GBDT.CATEGORY_MISSING));
-
-				encoder.addDecorator(activeField, missingValueDecorator);
 			} else
 
 			{
