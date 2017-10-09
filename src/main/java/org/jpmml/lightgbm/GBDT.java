@@ -30,7 +30,6 @@ import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
 import org.dmg.pmml.FieldName;
 import org.dmg.pmml.Interval;
-import org.dmg.pmml.InvalidValueTreatmentMethod;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.PMML;
 import org.dmg.pmml.mining.MiningModel;
@@ -39,7 +38,6 @@ import org.jpmml.converter.CategoricalFeature;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.ImportanceDecorator;
-import org.jpmml.converter.InvalidValueDecorator;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.PMMLUtil;
 import org.jpmml.converter.Schema;
@@ -191,11 +189,6 @@ public class GBDT {
 					features.add(new ContinuousFeature(encoder, dataField));
 				}
 			}
-
-			InvalidValueDecorator invalidValueDecorator = new InvalidValueDecorator()
-				.setInvalidValueTreatment(InvalidValueTreatmentMethod.AS_IS);
-
-			encoder.addDecorator(activeField, invalidValueDecorator);
 
 			ImportanceDecorator importanceDecorator = new ImportanceDecorator()
 				.setImportance(getFeatureImportance(featureName));

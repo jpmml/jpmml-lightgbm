@@ -22,11 +22,16 @@ import java.io.InputStream;
 
 import com.google.common.base.Predicate;
 import org.dmg.pmml.FieldName;
+import org.dmg.pmml.InvalidValueTreatmentMethod;
+import org.dmg.pmml.MiningField;
 import org.dmg.pmml.PMML;
+import org.dmg.pmml.Visitor;
+import org.dmg.pmml.VisitorAction;
 import org.jpmml.evaluator.ArchiveBatch;
 import org.jpmml.evaluator.IntegrationTest;
 import org.jpmml.evaluator.IntegrationTestBatch;
 import org.jpmml.evaluator.RealNumberEquivalence;
+import org.jpmml.model.visitors.AbstractVisitor;
 
 public class LightGBMTest extends IntegrationTest {
 
@@ -52,6 +57,21 @@ public class LightGBMTest extends IntegrationTest {
 				}
 
 				PMML pmml = gbdt.encodePMML(null, null);
+
+				// XXX
+				if(("Housing").equals(getDataset()) || ("HousingNA").equals(getDataset())){
+					Visitor visitor = new AbstractVisitor(){
+
+						@Override
+						public VisitorAction visit(MiningField miningField){
+							miningField.setInvalidValueTreatment(InvalidValueTreatmentMethod.AS_IS);
+
+							return super.visit(miningField);
+						}
+					};
+
+					visitor.applyTo(pmml);
+				}
 
 				ensureValidity(pmml);
 
