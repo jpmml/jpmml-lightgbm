@@ -19,8 +19,12 @@
 package org.jpmml.lightgbm;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.dmg.pmml.FieldName;
 import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.Predicate;
 import org.dmg.pmml.SimplePredicate;
@@ -89,7 +93,7 @@ public class Tree {
 		Node root = new Node()
 			.setPredicate(new True());
 
-		encodeNode(root, predicateManager, 0, schema);
+		encodeNode(root, predicateManager, Collections.<FieldName, List<String>>emptyMap(), 0, schema);
 
 		TreeModel treeModel = new TreeModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(schema.getLabel()), root)
 			.setSplitCharacteristic(TreeModel.SplitCharacteristic.BINARY_SPLIT)
@@ -98,8 +102,11 @@ public class Tree {
 		return treeModel;
 	}
 
-	public void encodeNode(Node parent, PredicateManager predicateManager, int index, Schema schema){
+	public void encodeNode(Node parent, PredicateManager predicateManager, Map<FieldName, List<String>> fieldValues, int index, Schema schema){
 		parent.setId(String.valueOf(index));
+
+		Map<FieldName, List<String>> leftFieldValues = fieldValues;
+		Map<FieldName, List<String>> rightFieldValues = fieldValues;
 
 		// Non-leaf (aka internal) node
 		if(index >= 0){
@@ -136,12 +143,26 @@ public class Tree {
 					throw new IllegalArgumentException();
 				}
 
-				List<String> values = categoricalFeature.getValues();
+				FieldName name = categoricalFeature.getName();
+
+				List<String> values = fieldValues.get(name);
+				if(values == null){
+					values = categoricalFeature.getValues();
+				}
 
 				int cat_idx = ValueUtil.asInt(threshold_);
 
-				leftPredicate = predicateManager.createSimpleSetPredicate(categoricalFeature, selectValues(values, cat_idx, true));
-				rightPredicate = predicateManager.createSimpleSetPredicate(categoricalFeature, selectValues(values, cat_idx, false));
+				List<String> leftValues = selectValues(values, cat_idx, true);
+				List<String> rightValues = selectValues(values, cat_idx, false);
+
+				leftFieldValues = new HashMap<>(fieldValues);
+				leftFieldValues.put(name, leftValues);
+
+				rightFieldValues = new HashMap<>(fieldValues);
+				rightFieldValues.put(name, rightValues);
+
+				leftPredicate = predicateManager.createSimpleSetPredicate(categoricalFeature, leftValues);
+				rightPredicate = predicateManager.createSimpleSetPredicate(categoricalFeature, rightValues);
 
 				defaultLeft = false;
 			} else
@@ -162,12 +183,12 @@ public class Tree {
 			Node leftChild = new Node()
 				.setPredicate(leftPredicate);
 
-			encodeNode(leftChild, predicateManager, this.left_child_[index], schema);
+			encodeNode(leftChild, predicateManager, leftFieldValues, this.left_child_[index], schema);
 
 			Node rightChild = new Node()
 				.setPredicate(rightPredicate);
 
-			encodeNode(rightChild, predicateManager, this.right_child_[index], schema);
+			encodeNode(rightChild, predicateManager, rightFieldValues, this.right_child_[index], schema);
 
 			parent.addNodes(leftChild, rightChild);
 
@@ -204,10 +225,6 @@ public class Tree {
 				if(findInBitset(this.cat_threshold_, this.cat_boundaries_[cat_idx], n, cat)){
 					String value = LightGBMUtil.CATEGORY_FORMATTER.apply(cat);
 
-					if(values.indexOf(value) < 0){
-						throw new IllegalArgumentException();
-					} // End if
-
 					if(left){
 						result.add(value);
 					} else
@@ -216,6 +233,19 @@ public class Tree {
 						result.remove(value);
 					}
 				}
+			}
+		}
+
+		if(left){
+
+			if(result.isEmpty()){
+				throw new IllegalArgumentException();
+			}
+		} else
+
+		{
+			if((result).equals(values)){
+				throw new IllegalArgumentException();
 			}
 		}
 
