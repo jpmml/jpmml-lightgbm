@@ -202,7 +202,7 @@ public class Tree {
 				int cat = (i * 32) + j;
 
 				if(findInBitset(this.cat_threshold_, this.cat_boundaries_[cat_idx], n, cat)){
-					String value = String.valueOf(cat);
+					String value = LightGBMUtil.CATEGORY_FORMATTER.apply(cat);
 
 					if(values.indexOf(value) < 0){
 						throw new IllegalArgumentException();

@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.google.common.io.CharStreams;
 import org.dmg.pmml.Interval;
 import org.jpmml.converter.BinaryFeature;
@@ -36,6 +37,7 @@ import org.jpmml.converter.Feature;
 import org.jpmml.converter.ImportanceDecorator;
 import org.jpmml.converter.ModelEncoder;
 import org.jpmml.converter.Schema;
+import org.jpmml.converter.ValueUtil;
 import org.jpmml.converter.WildcardFeature;
 
 public class LightGBMUtil {
@@ -256,9 +258,25 @@ public class LightGBMUtil {
 	}
 
 	static
-	public List<String> parseValues(String string){
+	public List<Integer> parseValues(String string){
 		String[] values = string.split(":");
 
-		return Arrays.asList(values);
+		return Lists.transform(Arrays.asList(values), LightGBMUtil.CATEGORY_PARSER);
 	}
+
+	static final Function<String, Integer> CATEGORY_PARSER = new Function<String, Integer>(){
+
+		@Override
+		public Integer apply(String string){
+			return Integer.valueOf(string);
+		}
+	};
+
+	static final Function<Integer, String> CATEGORY_FORMATTER = new Function<Integer, String>(){
+
+		@Override
+		public String apply(Integer integer){
+			return ValueUtil.formatValue(integer);
+		}
+	};
 }

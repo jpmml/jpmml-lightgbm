@@ -25,9 +25,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
 import org.dmg.pmml.FieldName;
+import org.dmg.pmml.Interval;
 import org.dmg.pmml.InvalidValueTreatmentMethod;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.PMML;
@@ -156,30 +158,34 @@ public class GBDT {
 				} else
 
 				{
-					DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.DOUBLE);
+					List<Integer> categories = LightGBMUtil.parseValues(featureInfo);
 
-					PMMLUtil.addValues(dataField, LightGBMUtil.parseValues(featureInfo));
+					DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER);
+
+					PMMLUtil.addValues(dataField, Lists.transform(categories, LightGBMUtil.CATEGORY_FORMATTER));
 
 					features.add(new CategoricalFeature(encoder, dataField));
 				}
 
 				MissingValueDecorator missingValueDecorator = new MissingValueDecorator()
-					.setMissingValueReplacement("-1");
+					.setMissingValueReplacement(LightGBMUtil.CATEGORY_FORMATTER.apply(-1));
 
 				encoder.addDecorator(activeField, missingValueDecorator);
 			} else
 
 			{
 				if(binary){
-					DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.DOUBLE, Arrays.asList("0", "1"));
+					DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER, Arrays.asList("0", "1"));
 
 					features.add(new BinaryFeature(encoder, dataField, "1"));
 				} else
 
 				{
+					Interval interval = LightGBMUtil.parseInterval(featureInfo);
+
 					DataField dataField = encoder.createDataField(activeField, OpType.CONTINUOUS, DataType.DOUBLE);
 
-					PMMLUtil.addIntervals(dataField, Arrays.asList(LightGBMUtil.parseInterval(featureInfo)));
+					PMMLUtil.addIntervals(dataField, Arrays.asList(interval));
 
 					features.add(new ContinuousFeature(encoder, dataField));
 				}
