@@ -158,7 +158,16 @@ public class GBDT {
 				} else
 
 				{
-					List<Integer> categories = LightGBMUtil.parseValues(featureInfo);
+					List<Integer> categories = new ArrayList<>();
+					categories.addAll(LightGBMUtil.parseValues(featureInfo));
+
+					Collections.sort(categories);
+
+					// Move the missing category level from the first position to the last position
+					boolean hasMissinng = categories.remove(GBDT.CATEGORY_MISSING);
+					if(hasMissinng){
+						categories.add(GBDT.CATEGORY_MISSING);
+					}
 
 					DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER);
 
@@ -168,7 +177,7 @@ public class GBDT {
 				}
 
 				MissingValueDecorator missingValueDecorator = new MissingValueDecorator()
-					.setMissingValueReplacement(LightGBMUtil.CATEGORY_FORMATTER.apply(-1));
+					.setMissingValueReplacement(LightGBMUtil.CATEGORY_FORMATTER.apply(GBDT.CATEGORY_MISSING));
 
 				encoder.addDecorator(activeField, missingValueDecorator);
 			} else
@@ -344,4 +353,6 @@ public class GBDT {
 				throw new IllegalArgumentException(objective);
 		}
 	}
+
+	private static final Integer CATEGORY_MISSING = -1;
 }
