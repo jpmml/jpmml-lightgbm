@@ -92,7 +92,7 @@ def build_housing(name, num_iteration = 0):
 	X = df[df.columns.difference(["MEDV"])]
 	y = df["MEDV"]
 
-	lgbm = LGBMRegressor(n_estimators = 31)
+	lgbm = LGBMRegressor(n_estimators = 51)
 	lgbm.fit(X, y, categorical_feature = ["CHAS"])
 
 	if(num_iteration == 0):
@@ -104,9 +104,9 @@ def build_housing(name, num_iteration = 0):
 	store_csv(medv, "Regression" + name + ".csv")
 
 build_housing("Housing")
-build_housing("Housing", 17)
+build_housing("Housing", 31)
 build_housing("HousingNA")
-build_housing("HousingNA", 17)
+build_housing("HousingNA", 31)
 
 #
 # Poisson regression
@@ -117,7 +117,7 @@ def build_visit(name, num_iteration = 0):
 	X = df[["age", "outwork", "female", "married", "kids", "hhninc", "educ", "self"]]
 	y = df["docvis"]
 
-	lgbm = LGBMRegressor(objective = "poisson", n_estimators = 31)
+	lgbm = LGBMRegressor(objective = "poisson", n_estimators = 71)
 	lgbm.fit(X.as_matrix(), y, feature_name = ["age", "outwork", "female", "married", "kids", "hhninc", "educ", "self"], categorical_feature = ["female", "married", "kids"]) # categorical_feature = ["outwork", "female", "married", "kids", "self"]
 
 	if(num_iteration == 0):
@@ -129,6 +129,6 @@ def build_visit(name, num_iteration = 0):
 	store_csv(docvis, "Regression" + name + ".csv")
 
 build_visit("Visit")
-build_visit("Visit", 17)
+build_visit("Visit", 31)
 build_visit("VisitNA")
-build_visit("VisitNA", 17)
+build_visit("VisitNA", 31)

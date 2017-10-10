@@ -49,7 +49,7 @@ public class RegressionTest extends LightGBMTest {
 
 	@Test
 	public void evaluateHousingLimit() throws Exception {
-		evaluate("Regression", "Housing@17");
+		evaluate("Regression", "Housing@31");
 	}
 
 	@Test
@@ -59,7 +59,7 @@ public class RegressionTest extends LightGBMTest {
 
 	@Test
 	public void evaluateHousingNALimit() throws Exception {
-		evaluate("Regression", "HousingNA@17");
+		evaluate("Regression", "HousingNA@31");
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class RegressionTest extends LightGBMTest {
 
 	@Test
 	public void evaluateVisitLimit() throws Exception {
-		evaluate("Regression", "Visit@17");
+		evaluate("Regression", "Visit@31");
 	}
 
 	@Test
@@ -79,6 +79,6 @@ public class RegressionTest extends LightGBMTest {
 
 	@Test
 	public void evaluateVisitNALimit() throws Exception {
-		evaluate("Regression", "VisitNA@17");
+		evaluate("Regression", "VisitNA@31");
 	}
 }
