@@ -18,7 +18,10 @@
  */
 package org.jpmml.lightgbm;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 
 import com.google.common.base.Predicate;
 import org.dmg.pmml.FieldName;
@@ -52,14 +55,21 @@ public class LightGBMTest extends IntegrationTest {
 			public PMML getPMML() throws Exception {
 				GBDT gbdt;
 
-				try(InputStream is = open("/lgbm/" + getName() + getDataset() + ".txt")){
+				String[] dataset = parseDataset();
+
+				try(InputStream is = open("/lgbm/" + getName() + dataset[0] + ".txt")){
 					gbdt = LightGBMUtil.loadGBDT(is);
 				}
 
-				PMML pmml = gbdt.encodePMML(null, null);
+				Integer numIteration = null;
+				if(dataset.length > 1){
+					numIteration = new Integer(dataset[1]);
+				}
+
+				PMML pmml = gbdt.encodePMML(null, null, numIteration);
 
 				// XXX
-				if(("Housing").equals(getDataset()) || ("HousingNA").equals(getDataset())){
+				if(("Housing").equals(dataset[0]) || ("HousingNA").equals(dataset[0])){
 					Visitor visitor = new AbstractVisitor(){
 
 						@Override
@@ -76,6 +86,29 @@ public class LightGBMTest extends IntegrationTest {
 				ensureValidity(pmml);
 
 				return pmml;
+			}
+
+			@Override
+			public List<Map<FieldName, String>> getInput() throws IOException {
+				String[] dataset = parseDataset();
+
+				return loadRecords("/csv/" + dataset[0] + ".csv");
+			}
+
+			@Override
+			public List<Map<FieldName, String>> getOutput() throws IOException {
+				return loadRecords("/csv/" + getName() + getDataset() + ".csv");
+			}
+
+			private String[] parseDataset(){
+				String dataset = getDataset();
+
+				int index = dataset.indexOf('@');
+				if(index > -1){
+					return new String[]{dataset.substring(0, index), dataset.substring(index + 1)};
+				}
+
+				return new String[]{dataset};
 			}
 		};
 

@@ -28,8 +28,18 @@ public class RegressionTest extends LightGBMTest {
 	}
 
 	@Test
+	public void evaluateAutoLimit() throws Exception {
+		evaluate("Regression", "Auto@17");
+	}
+
+	@Test
 	public void evaluateAutoNA() throws Exception {
 		evaluate("Regression", "AutoNA");
+	}
+
+	@Test
+	public void evaluateAutoNALimit() throws Exception {
+		evaluate("Regression", "AutoNA@17");
 	}
 
 	@Test
@@ -38,8 +48,18 @@ public class RegressionTest extends LightGBMTest {
 	}
 
 	@Test
+	public void evaluateHousingLimit() throws Exception {
+		evaluate("Regression", "Housing@17");
+	}
+
+	@Test
 	public void evaluateHousingNA() throws Exception {
 		evaluate("Regression", "HousingNA");
+	}
+
+	@Test
+	public void evaluateHousingNALimit() throws Exception {
+		evaluate("Regression", "HousingNA@17");
 	}
 
 	@Test
@@ -48,7 +68,17 @@ public class RegressionTest extends LightGBMTest {
 	}
 
 	@Test
+	public void evaluateVisitLimit() throws Exception {
+		evaluate("Regression", "Visit@17");
+	}
+
+	@Test
 	public void evaluateVisitNA() throws Exception {
 		evaluate("Regression", "VisitNA");
+	}
+
+	@Test
+	public void evaluateVisitNALimit() throws Exception {
+		evaluate("Regression", "VisitNA@17");
 	}
 }

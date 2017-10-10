@@ -67,6 +67,12 @@ public class Main {
 	)
 	private List<String> targetCategories = null;
 
+	@Parameter (
+		names = {"--num-iteration"},
+		description = "Limit the number of trees. Defaults to all trees"
+	)
+	private Integer numIteration = null;
+
 
 	static
 	public void main(String... args) throws Exception {
@@ -110,7 +116,7 @@ public class Main {
 			gbdt = LightGBMUtil.loadGBDT(is);
 		}
 
-		PMML pmml = gbdt.encodePMML(this.targetName != null ? FieldName.create(this.targetName) : null, this.targetCategories);
+		PMML pmml = gbdt.encodePMML(this.targetName != null ? FieldName.create(this.targetName) : null, this.targetCategories, this.numIteration);
 
 		try(OutputStream os = new FileOutputStream(this.output)){
 			MetroJAXBUtil.marshalPMML(pmml, os);

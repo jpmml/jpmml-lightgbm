@@ -115,7 +115,7 @@ public class GBDT {
 		}
 	}
 
-	public PMML encodePMML(FieldName targetField, List<String> targetCategories){
+	public PMML encodePMML(FieldName targetField, List<String> targetCategories, Integer numIteration){
 		LightGBMEncoder encoder = new LightGBMEncoder();
 
 		Label label;
@@ -198,15 +198,15 @@ public class GBDT {
 
 		Schema schema = new Schema(label, features);
 
-		MiningModel miningModel = encodeMiningModel(schema);
+		MiningModel miningModel = encodeMiningModel(numIteration, schema);
 
 		PMML pmml = encoder.encodePMML(miningModel);
 
 		return pmml;
 	}
 
-	public MiningModel encodeMiningModel(Schema schema){
-		MiningModel miningModel = this.object_function_.encodeMiningModel(Arrays.asList(this.models_), schema);
+	public MiningModel encodeMiningModel(Integer numIteration, Schema schema){
+		MiningModel miningModel = this.object_function_.encodeMiningModel(Arrays.asList(this.models_), numIteration, schema);
 
 		return miningModel;
 	}

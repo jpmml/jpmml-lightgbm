@@ -44,7 +44,7 @@ public class MultinomialLogisticRegression extends Classification {
 	}
 
 	@Override
-	public MiningModel encodeMiningModel(List<Tree> trees, Schema schema){
+	public MiningModel encodeMiningModel(List<Tree> trees, Integer numIteration, Schema schema){
 		Schema segmentSchema = new Schema(new ContinuousLabel(null, DataType.DOUBLE), schema.getFeatures());
 
 		List<MiningModel> miningModels = new ArrayList<>();
@@ -52,7 +52,7 @@ public class MultinomialLogisticRegression extends Classification {
 		CategoricalLabel categoricalLabel = (CategoricalLabel)schema.getLabel();
 
 		for(int i = 0, rows = categoricalLabel.size(), columns = (trees.size() / rows); i < rows; i++){
-			MiningModel miningModel = createMiningModel(FortranMatrixUtil.getRow(trees, rows, columns, i), segmentSchema)
+			MiningModel miningModel = createMiningModel(FortranMatrixUtil.getRow(trees, rows, columns, i), numIteration, segmentSchema)
 				.setOutput(ModelUtil.createPredictedOutput(FieldName.create("lgbmValue(" + categoricalLabel.getValue(i) + ")"), OpType.CONTINUOUS, DataType.DOUBLE));
 
 			miningModels.add(miningModel);

@@ -41,10 +41,10 @@ public class ObjectiveFunction {
 	public Label encodeLabel(FieldName targetField, List<String> targetCategories, PMMLEncoder encoder);
 
 	abstract
-	public MiningModel encodeMiningModel(List<Tree> trees, Schema schema);
+	public MiningModel encodeMiningModel(List<Tree> trees, Integer numIteration, Schema schema);
 
 	static
-	protected MiningModel createMiningModel(List<Tree> trees, Schema schema){
+	protected MiningModel createMiningModel(List<Tree> trees, Integer numIteration, Schema schema){
 		ContinuousLabel continuousLabel = (ContinuousLabel)schema.getLabel();
 
 		Schema segmentSchema = schema.toAnonymousSchema();
@@ -52,6 +52,15 @@ public class ObjectiveFunction {
 		PredicateManager predicateManager = new PredicateManager();
 
 		List<TreeModel> treeModels = new ArrayList<>();
+
+		if(numIteration != null){
+
+			if(numIteration > trees.size()){
+				throw new IllegalArgumentException("Tree limit " + numIteration + " is greater than the number of trees");
+			}
+
+			trees = trees.subList(0, numIteration);
+		}
 
 		for(Tree tree : trees){
 			TreeModel treeModel = tree.encodeTreeModel(predicateManager, segmentSchema);
