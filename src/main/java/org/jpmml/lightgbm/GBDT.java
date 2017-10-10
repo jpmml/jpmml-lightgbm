@@ -230,12 +230,7 @@ public class GBDT {
 
 		Tree[] trees = this.models_;
 		for(Tree tree : trees){
-			Double score = tree.getScore();
 			Boolean binary = tree.isBinary(feature);
-
-			if(score != null){
-				continue;
-			} // End if
 
 			if(binary != null){
 
@@ -261,12 +256,7 @@ public class GBDT {
 
 		Tree[] trees = this.models_;
 		for(Tree tree: trees){
-			Double score = tree.getScore();
 			Boolean categorical = tree.isCategorical(feature);
-
-			if(score != null){
-				continue;
-			} // End if
 
 			if(categorical != null){
 

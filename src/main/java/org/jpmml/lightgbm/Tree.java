@@ -252,24 +252,6 @@ public class Tree {
 		return result;
 	}
 
-	Double getScore(){
-
-		if(this.leaf_value_.length > 1){
-			double leaf_value = this.leaf_value_[0];
-
-			for(int i = 1; i < this.leaf_value_.length; i++){
-
-				if(this.leaf_value_[i] != leaf_value){
-					return null;
-				}
-			}
-
-			return leaf_value;
-		}
-
-		return null;
-	}
-
 	Boolean isBinary(int feature){
 		Boolean result = null;
 
