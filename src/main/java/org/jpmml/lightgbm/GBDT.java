@@ -32,6 +32,7 @@ import org.dmg.pmml.FieldName;
 import org.dmg.pmml.Interval;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.PMML;
+import org.dmg.pmml.Visitor;
 import org.dmg.pmml.mining.MiningModel;
 import org.jpmml.converter.BinaryFeature;
 import org.jpmml.converter.CategoricalFeature;
@@ -41,6 +42,7 @@ import org.jpmml.converter.ImportanceDecorator;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.PMMLUtil;
 import org.jpmml.converter.Schema;
+import org.jpmml.lightgbm.visitors.TreeModelCompactor;
 
 public class GBDT {
 
@@ -115,7 +117,7 @@ public class GBDT {
 		}
 	}
 
-	public PMML encodePMML(FieldName targetField, List<String> targetCategories, Integer numIteration){
+	public PMML encodePMML(FieldName targetField, List<String> targetCategories, Integer numIteration, boolean transform){
 		LightGBMEncoder encoder = new LightGBMEncoder();
 
 		Label label;
@@ -198,15 +200,23 @@ public class GBDT {
 
 		Schema schema = new Schema(label, features);
 
-		MiningModel miningModel = encodeMiningModel(numIteration, schema);
+		MiningModel miningModel = encodeMiningModel(numIteration, transform, schema);
 
 		PMML pmml = encoder.encodePMML(miningModel);
 
 		return pmml;
 	}
 
-	public MiningModel encodeMiningModel(Integer numIteration, Schema schema){
+	public MiningModel encodeMiningModel(Integer numIteration, boolean transform, Schema schema){
 		MiningModel miningModel = this.object_function_.encodeMiningModel(Arrays.asList(this.models_), numIteration, schema);
+
+		if(transform){
+			List<Visitor> visitors = Arrays.<Visitor>asList(new TreeModelCompactor());
+
+			for(Visitor visitor : visitors){
+				visitor.applyTo(miningModel);
+			}
+		}
 
 		return miningModel;
 	}

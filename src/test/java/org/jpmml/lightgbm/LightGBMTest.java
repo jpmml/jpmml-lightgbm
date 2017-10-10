@@ -66,7 +66,7 @@ public class LightGBMTest extends IntegrationTest {
 					numIteration = new Integer(dataset[1]);
 				}
 
-				PMML pmml = gbdt.encodePMML(null, null, numIteration);
+				PMML pmml = gbdt.encodePMML(null, null, numIteration, (numIteration != null));
 
 				// XXX
 				if(("Housing").equals(dataset[0]) || ("HousingNA").equals(dataset[0])){

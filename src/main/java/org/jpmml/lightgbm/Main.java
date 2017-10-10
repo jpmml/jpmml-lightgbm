@@ -73,6 +73,12 @@ public class Main {
 	)
 	private Integer numIteration = null;
 
+	@Parameter (
+		names = {"--compact"},
+		description = "Transform LightGBM-style trees to PMML-style trees"
+	)
+	private boolean transform = false;
+
 
 	static
 	public void main(String... args) throws Exception {
@@ -116,7 +122,7 @@ public class Main {
 			gbdt = LightGBMUtil.loadGBDT(is);
 		}
 
-		PMML pmml = gbdt.encodePMML(this.targetName != null ? FieldName.create(this.targetName) : null, this.targetCategories, this.numIteration);
+		PMML pmml = gbdt.encodePMML(this.targetName != null ? FieldName.create(this.targetName) : null, this.targetCategories, this.numIteration, this.transform);
 
 		try(OutputStream os = new FileOutputStream(this.output)){
 			MetroJAXBUtil.marshalPMML(pmml, os);
