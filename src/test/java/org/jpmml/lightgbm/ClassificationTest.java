@@ -18,7 +18,6 @@
  */
 package org.jpmml.lightgbm;
 
-import org.jpmml.evaluator.RealNumberEquivalence;
 import org.junit.Test;
 
 public class ClassificationTest extends LightGBMTest {
@@ -40,7 +39,7 @@ public class ClassificationTest extends LightGBMTest {
 
 	@Test
 	public void evaluateIrisNALimit() throws Exception {
-		evaluate("Classification", "IrisNA@7", new RealNumberEquivalence(1));
+		evaluate("Classification", "IrisNA@7");
 	}
 
 	@Test
