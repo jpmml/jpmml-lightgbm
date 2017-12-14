@@ -327,9 +327,10 @@ public class GBDT {
 			case "huber":
 			// RegressionFairLoss
 			case "fair":
+				return new Regression();
 			// RegressionPoissonLoss
 			case "poisson":
-				return new Regression();
+				return new PoissonRegression();
 			case "binary":
 				return new BinomialLogisticRegression(section.getDouble("sigmoid"));
 			case "multiclass":
