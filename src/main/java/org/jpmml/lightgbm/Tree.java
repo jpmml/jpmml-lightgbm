@@ -66,7 +66,7 @@ public class Tree {
 
 	private int[] cat_boundaries_;
 
-	private int[] cat_threshold_;
+	private long[] cat_threshold_;
 
 
 	public void load(Section section){
@@ -85,7 +85,7 @@ public class Tree {
 
 		if(this.num_cat_ > 0){
 			this.cat_boundaries_ = section.getIntArray("cat_boundaries", this.num_cat_ + 1);
-			this.cat_threshold_ = section.getIntArray("cat_threshold", -1);
+			this.cat_threshold_ = section.getUnsignedIntArray("cat_threshold", -1);
 		}
 	}
 
@@ -313,7 +313,7 @@ public class Tree {
 	}
 
 	static
-	private boolean findInBitset(int[] bits, int bitOffset, int n, int pos){
+	private boolean findInBitset(long[] bits, int bitOffset, int n, int pos){
 		int i1 = pos / 32;
 		if(i1 >= n){
 			return false;

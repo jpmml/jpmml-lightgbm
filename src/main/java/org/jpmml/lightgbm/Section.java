@@ -50,6 +50,14 @@ public class Section extends LinkedHashMap<String, String> {
 		return LightGBMUtil.parseIntArray(get(key), length);
 	}
 
+	public long parseUnsignedInt(String key){
+		return Long.parseLong(get(key));
+	}
+
+	public long[] getUnsignedIntArray(String key, int length){
+		return LightGBMUtil.parseUnsignedIntArray(get(key), length);
+	}
+
 	public double getDouble(String key){
 		return Double.parseDouble(get(key));
 	}

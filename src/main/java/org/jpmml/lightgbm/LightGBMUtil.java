@@ -195,6 +195,19 @@ public class LightGBMUtil {
 	}
 
 	static
+	public long[] parseUnsignedIntArray(String string, int length){
+		String[] values = parseStringArray(string, length);
+
+		long[] result = new long[values.length];
+
+		for(int i = 0; i < result.length; i++){
+			result[i] = Long.parseLong(values[i]);
+		}
+
+		return result;
+	}
+
+	static
 	public double[] parseDoubleArray(String string, int length){
 		String[] values = parseStringArray(string, length);
 
