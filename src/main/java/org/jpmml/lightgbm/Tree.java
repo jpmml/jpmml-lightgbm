@@ -102,11 +102,8 @@ public class Tree {
 		return treeModel;
 	}
 
-	public void encodeNode(Node parent, PredicateManager predicateManager, Map<FieldName, List<String>> fieldValues, int index, Schema schema){
+	public void encodeNode(Node parent, PredicateManager predicateManager, Map<FieldName, List<String>> parentFieldValues, int index, Schema schema){
 		parent.setId(String.valueOf(index));
-
-		Map<FieldName, List<String>> leftFieldValues = fieldValues;
-		Map<FieldName, List<String>> rightFieldValues = fieldValues;
 
 		// Non-leaf (aka internal) node
 		if(index >= 0){
@@ -117,6 +114,9 @@ public class Tree {
 
 			double threshold_ = this.threshold_[index];
 			int decision_type_ = this.decision_type_[index];
+
+			Map<FieldName, List<String>> leftFieldValues = parentFieldValues;
+			Map<FieldName, List<String>> rightFieldValues = parentFieldValues;
 
 			Predicate leftPredicate;
 			Predicate rightPredicate;
@@ -145,20 +145,20 @@ public class Tree {
 
 				FieldName name = categoricalFeature.getName();
 
-				List<String> values = fieldValues.get(name);
-				if(values == null){
-					values = categoricalFeature.getValues();
+				List<String> parentValues = parentFieldValues.get(name);
+				if(parentValues == null){
+					parentValues = categoricalFeature.getValues();
 				}
 
 				int cat_idx = ValueUtil.asInt(threshold_);
 
-				List<String> leftValues = selectValues(values, cat_idx, true);
-				List<String> rightValues = selectValues(values, cat_idx, false);
+				List<String> leftValues = selectValues(parentValues, cat_idx, true);
+				List<String> rightValues = selectValues(parentValues, cat_idx, false);
 
-				leftFieldValues = new HashMap<>(fieldValues);
+				leftFieldValues = new HashMap<>(parentFieldValues);
 				leftFieldValues.put(name, leftValues);
 
-				rightFieldValues = new HashMap<>(fieldValues);
+				rightFieldValues = new HashMap<>(parentFieldValues);
 				rightFieldValues.put(name, rightValues);
 
 				leftPredicate = predicateManager.createSimpleSetPredicate(categoricalFeature, leftValues);
