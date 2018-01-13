@@ -46,6 +46,8 @@ import org.jpmml.lightgbm.visitors.TreeModelCompactor;
 
 public class GBDT {
 
+	private String version;
+
 	private int max_feature_idx_;
 
 	private int label_idx_;
@@ -71,6 +73,11 @@ public class GBDT {
 
 			if(!section.checkId("tree")){
 				throw new IllegalArgumentException();
+			}
+
+			this.version = section.getString("version");
+			if(this.version != null && !("v2").equals(this.version)){
+				throw new IllegalArgumentException(this.version);
 			}
 
 			this.max_feature_idx_ = section.getInt("max_feature_idx");
