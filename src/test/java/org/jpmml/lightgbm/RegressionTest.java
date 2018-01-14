@@ -29,6 +29,11 @@ public class RegressionTest extends LightGBMTest {
 	}
 
 	@Test
+	public void evaluateAutoDirect() throws Exception {
+		evaluate("Regression", "AutoDirect");
+	}
+
+	@Test
 	public void evaluateAutoLimit() throws Exception {
 		evaluate("Regression", "Auto@17");
 	}
@@ -36,6 +41,11 @@ public class RegressionTest extends LightGBMTest {
 	@Test
 	public void evaluateAutoNA() throws Exception {
 		evaluate("Regression", "AutoNA");
+	}
+
+	@Test
+	public void evaluateAutoDirectNA() throws Exception {
+		evaluate("Regression", "AutoDirectNA");
 	}
 
 	@Test

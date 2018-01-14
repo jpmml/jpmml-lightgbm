@@ -865,4 +865,4 @@ RAD=25
 ZN=17
 CHAS=13
 
-pandas_categorical:[]
+pandas_categorical:[[0.0, 1.0]]

@@ -30,6 +30,8 @@ import java.util.List;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.io.CharStreams;
+import com.google.common.math.DoubleMath;
+import org.dmg.pmml.DataType;
 import org.dmg.pmml.Interval;
 import org.jpmml.converter.BinaryFeature;
 import org.jpmml.converter.CategoricalFeature;
@@ -277,11 +279,60 @@ public class LightGBMUtil {
 		return Lists.transform(Arrays.asList(values), LightGBMUtil.CATEGORY_PARSER);
 	}
 
+	static
+	public DataType getDataType(List<String> values){
+		DataType dataType = DataType.INTEGER;
+
+		for(String value : values){
+
+			switch(dataType){
+				case INTEGER:
+					try {
+						Integer.parseInt(value);
+
+						continue;
+					} catch(NumberFormatException integerNfe){
+
+						try {
+							double doubleValue = Double.parseDouble(value);
+
+							if(DoubleMath.isMathematicalInteger(doubleValue)){
+								continue;
+							}
+
+							dataType = DataType.DOUBLE;
+						} catch(NumberFormatException doubleNfe){
+							dataType = DataType.STRING;
+						}
+					}
+					// Falls through
+				case DOUBLE:
+					try {
+						Double.parseDouble(value);
+
+						continue;
+					} catch(NumberFormatException nfe){
+						dataType = DataType.STRING;
+					}
+					// Falls through
+				default:
+					break;
+			}
+		}
+
+		return dataType;
+	}
+
 	static final Function<String, Integer> CATEGORY_PARSER = new Function<String, Integer>(){
 
 		@Override
 		public Integer apply(String string){
-			return Integer.valueOf(string);
+
+			try {
+				return Integer.valueOf(string);
+			} catch(NumberFormatException nfe){
+				return ValueUtil.asInteger(Double.valueOf(string));
+			}
 		}
 	};
 

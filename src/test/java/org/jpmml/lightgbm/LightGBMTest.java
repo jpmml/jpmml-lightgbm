@@ -92,6 +92,8 @@ public class LightGBMTest extends IntegrationTest {
 			public List<Map<FieldName, String>> getInput() throws IOException {
 				String[] dataset = parseDataset();
 
+				dataset[0] = dataset[0].replace("Direct", "");
+
 				return loadRecords("/csv/" + dataset[0] + ".csv");
 			}
 

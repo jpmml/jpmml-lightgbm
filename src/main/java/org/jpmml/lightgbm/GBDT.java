@@ -25,6 +25,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
@@ -63,6 +64,8 @@ public class GBDT {
 	private Tree[] models_;
 
 	private Map<String, String> feature_importances = Collections.emptyMap();
+
+	private List<List<String>> pandas_categorical = Collections.emptyList();
 
 
 	public void load(List<Section> sections){
@@ -122,6 +125,21 @@ public class GBDT {
 
 			index++;
 		}
+
+		pandas_categorical:
+		if(index < sections.size()){
+			Section section = sections.get(index);
+
+			String id = section.id();
+
+			if(id != null && !(id).startsWith("pandas_categorical:")){
+				break pandas_categorical;
+			}
+
+			this.pandas_categorical = loadPandasCategorical(section);
+
+			index++;
+		}
 	}
 
 	public PMML encodePMML(FieldName targetField, List<String> targetCategories, Integer numIteration, boolean transform){
@@ -138,6 +156,8 @@ public class GBDT {
 		}
 
 		List<Feature> features = new ArrayList<>();
+
+		int categoryIndex = 0;
 
 		String[] featureNames = this.feature_names_;
 		String[] featureInfos = this.feature_infos_;
@@ -164,21 +184,46 @@ public class GBDT {
 				} else
 
 				{
-					List<Integer> categories = new ArrayList<>();
-					categories.addAll(LightGBMUtil.parseValues(featureInfo));
+					Feature feature;
 
-					if(categories.contains(GBDT.CATEGORY_MISSING)){
-						categories.remove(GBDT.CATEGORY_MISSING);
+					if(this.pandas_categorical.size() > 0){
+						List<String> categories = this.pandas_categorical.get(categoryIndex);
+
+						DataType dataType = LightGBMUtil.getDataType(categories);
+						switch(dataType){
+							case INTEGER:
+								categories = Lists.transform(Lists.transform(categories, LightGBMUtil.CATEGORY_PARSER), LightGBMUtil.CATEGORY_FORMATTER);
+								break;
+							default:
+								break;
+						}
+
+						DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, dataType, categories);
+
+						feature = new CategoricalFeature(encoder, dataField);
+					} else
+
+					{
+						List<Integer> categories = new ArrayList<>();
+						categories.addAll(LightGBMUtil.parseValues(featureInfo));
+
+						if(categories.contains(GBDT.CATEGORY_MISSING)){
+							categories.remove(GBDT.CATEGORY_MISSING);
+						}
+
+						Collections.sort(categories);
+
+						DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER);
+
+						PMMLUtil.addValues(dataField, Lists.transform(categories, LightGBMUtil.CATEGORY_FORMATTER));
+
+						feature = new DirectCategoricalFeature(encoder, dataField);
 					}
 
-					Collections.sort(categories);
-
-					DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER);
-
-					PMMLUtil.addValues(dataField, Lists.transform(categories, LightGBMUtil.CATEGORY_FORMATTER));
-
-					features.add(new CategoricalFeature(encoder, dataField));
+					features.add(feature);
 				}
+
+				categoryIndex++;
 			} else
 
 			{
@@ -303,6 +348,72 @@ public class GBDT {
 		(result.keySet()).retainAll(Arrays.asList(this.feature_names_));
 
 		return result;
+	}
+
+	private List<List<String>> loadPandasCategorical(Section section){
+		List<List<String>> result = new ArrayList<>();
+
+		String id = section.id();
+
+		if(("pandas_categorical:null").equals(id)){
+			return result;
+		} // End if
+
+		if(!id.startsWith("pandas_categorical:[") || !id.endsWith("]")){
+			throw new IllegalArgumentException(id);
+		}
+
+		id = id.substring("pandas_categorical:[".length(), id.length() - "]".length());
+
+		while(true){
+			int index = id.indexOf(']');
+
+			if(index < 0){
+				break;
+			}
+
+			String values = id.substring(0, index + 1);
+
+			if(!values.startsWith("[") || !values.endsWith("]")){
+				throw new IllegalArgumentException(values);
+			}
+
+			values = values.substring("[".length(), values.length() - "]".length());
+
+			result.add(loadPandasCategoryValues(values));
+
+			id = id.substring(index + 1);
+
+			if(id.startsWith(", ")){
+				id = id.substring(", ".length());
+			}
+		}
+
+		if(!("").equals(id)){
+			throw new IllegalArgumentException(id);
+		}
+
+		return result;
+	}
+
+	static
+	private List<String> loadPandasCategoryValues(String string){
+		List<String> values = Arrays.asList(string.split(",\\s"));
+
+		Function<String, String> function = new Function<String, String>(){
+
+			@Override
+			public String apply(String string){
+
+				if((string.length() > 1) && (string.startsWith("\"") && string.endsWith("\""))){
+					string = string.substring("\"".length(), string.length() - "\"".length());
+				}
+
+				return string;
+			}
+		};
+
+		return Lists.transform(values, function);
 	}
 
 	static

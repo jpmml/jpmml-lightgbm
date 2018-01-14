@@ -18,9 +18,30 @@
  */
 package org.jpmml.lightgbm;
 
+import org.jpmml.evaluator.RealNumberEquivalence;
 import org.junit.Test;
 
 public class ClassificationTest extends LightGBMTest {
+
+	@Test
+	public void evaluateAudit() throws Exception {
+		evaluate("Classification", "Audit");
+	}
+
+	@Test
+	public void evaluateAuditLimit() throws Exception {
+		evaluate("Classification", "Audit@17", new RealNumberEquivalence(2));
+	}
+
+	@Test
+	public void evaluateAuditNA() throws Exception {
+		evaluate("Classification", "AuditNA", new RealNumberEquivalence(1));
+	}
+
+	@Test
+	public void evaluateAuditNALimit() throws Exception {
+		evaluate("Classification", "AuditNA@17", new RealNumberEquivalence(1));
+	}
 
 	@Test
 	public void evaluateIris() throws Exception {

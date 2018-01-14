@@ -21,8 +21,10 @@ package org.jpmml.lightgbm;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.dmg.pmml.FieldName;
 import org.dmg.pmml.MiningFunction;
@@ -93,7 +95,7 @@ public class Tree {
 		Node root = new Node()
 			.setPredicate(new True());
 
-		encodeNode(root, predicateManager, Collections.<FieldName, List<String>>emptyMap(), 0, schema);
+		encodeNode(root, predicateManager, Collections.<FieldName, Set<String>>emptyMap(), 0, schema);
 
 		TreeModel treeModel = new TreeModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(schema.getLabel()), root)
 			.setSplitCharacteristic(TreeModel.SplitCharacteristic.BINARY_SPLIT)
@@ -102,7 +104,7 @@ public class Tree {
 		return treeModel;
 	}
 
-	public void encodeNode(Node parent, PredicateManager predicateManager, Map<FieldName, List<String>> parentFieldValues, int index, Schema schema){
+	public void encodeNode(Node parent, PredicateManager predicateManager, Map<FieldName, Set<String>> parentFieldValues, int index, Schema schema){
 		parent.setId(String.valueOf(index));
 
 		// Non-leaf (aka internal) node
@@ -115,8 +117,8 @@ public class Tree {
 			double threshold_ = this.threshold_[index];
 			int decision_type_ = this.decision_type_[index];
 
-			Map<FieldName, List<String>> leftFieldValues = parentFieldValues;
-			Map<FieldName, List<String>> rightFieldValues = parentFieldValues;
+			Map<FieldName, Set<String>> leftFieldValues = parentFieldValues;
+			Map<FieldName, Set<String>> rightFieldValues = parentFieldValues;
 
 			Predicate leftPredicate;
 			Predicate rightPredicate;
@@ -145,21 +147,25 @@ public class Tree {
 
 				FieldName name = categoricalFeature.getName();
 
-				List<String> parentValues = parentFieldValues.get(name);
+				boolean indexAsValue = (categoricalFeature instanceof DirectCategoricalFeature);
+
+				List<String> values = categoricalFeature.getValues();
+
+				Set<String> parentValues = parentFieldValues.get(name);
 				if(parentValues == null){
-					parentValues = categoricalFeature.getValues();
+					parentValues = new HashSet<>(values);
 				}
 
 				int cat_idx = ValueUtil.asInt(threshold_);
 
-				List<String> leftValues = selectValues(parentValues, cat_idx, true);
-				List<String> rightValues = selectValues(parentValues, cat_idx, false);
+				List<String> leftValues = selectValues(indexAsValue, values, parentValues, cat_idx, true);
+				List<String> rightValues = selectValues(indexAsValue, values, parentValues, cat_idx, false);
 
 				leftFieldValues = new HashMap<>(parentFieldValues);
-				leftFieldValues.put(name, leftValues);
+				leftFieldValues.put(name, new HashSet<>(leftValues));
 
 				rightFieldValues = new HashMap<>(parentFieldValues);
-				rightFieldValues.put(name, rightValues);
+				rightFieldValues.put(name, new HashSet<>(rightValues));
 
 				leftPredicate = predicateManager.createSimpleSetPredicate(categoricalFeature, leftValues);
 				rightPredicate = predicateManager.createSimpleSetPredicate(categoricalFeature, rightValues);
@@ -204,7 +210,7 @@ public class Tree {
 		}
 	}
 
-	private List<String> selectValues(List<String> values, int cat_idx, boolean left){
+	private List<String> selectValues(boolean indexAsValue, List<String> values, Set<String> parentValues, int cat_idx, boolean left){
 		List<String> result;
 
 		if(left){
@@ -223,7 +229,15 @@ public class Tree {
 				int cat = (i * 32) + j;
 
 				if(findInBitset(this.cat_threshold_, this.cat_boundaries_[cat_idx], n, cat)){
-					String value = LightGBMUtil.CATEGORY_FORMATTER.apply(cat);
+					String value;
+
+					if(indexAsValue){
+						value = LightGBMUtil.CATEGORY_FORMATTER.apply(cat);
+					} else
+
+					{
+						value = values.get(cat);
+					} // End if
 
 					if(left){
 						result.add(value);
@@ -236,6 +250,8 @@ public class Tree {
 			}
 		}
 
+		result.retainAll(parentValues);
+
 		if(left){
 
 			if(result.isEmpty()){
@@ -244,7 +260,7 @@ public class Tree {
 		} else
 
 		{
-			if((result).equals(values)){
+			if((result).equals(parentValues)){
 				throw new IllegalArgumentException();
 			}
 		}

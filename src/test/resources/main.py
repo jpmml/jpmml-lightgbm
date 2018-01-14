@@ -2,9 +2,13 @@ from lightgbm import LGBMClassifier, LGBMRegressor
 from pandas import DataFrame
 
 import pandas
+import re
 
-def load_csv(name):
-	return pandas.read_csv("csv/" + name, na_values = ["N/A", "NA"])
+def load_csv(name, categorical_columns = []):
+	df = pandas.read_csv("csv/" + name, na_values = ["N/A", "NA"])
+	for categorical_column in categorical_columns:
+		df[categorical_column] = df[categorical_column].astype("category")
+	return df
 
 def store_csv(df, name):
 	df.to_csv("csv/" + name, index = False)
@@ -42,6 +46,28 @@ build_iris("IrisNA", 7)
 # Binary classification
 #
 
+def build_audit(name, num_iteration = 0):
+	df = load_csv(name + ".csv", ["Employment", "Education", "Marital", "Occupation", "Gender"])
+	X = df[["Age", "Employment", "Education", "Marital", "Occupation", "Income", "Gender", "Hours"]]
+	y = df["Adjusted"]
+
+	lgbm = LGBMClassifier(n_estimators = 31)
+	lgbm.fit(X, y)
+
+	if(num_iteration == 0):
+		store_lgbm(lgbm, "Classification" + name + ".txt")
+	else:
+		name = (name + "@" + str(num_iteration))
+
+	adjusted = DataFrame(lgbm.predict(X, num_iteration = num_iteration), columns = ["_target"])
+	adjusted_proba = DataFrame(lgbm.predict_proba(X, num_iteration = num_iteration), columns = ["probability(0)", "probability(1)"])
+	store_csv(pandas.concat((adjusted, adjusted_proba), axis = 1), "Classification" + name + ".csv")
+
+build_audit("Audit")
+build_audit("Audit", 17)
+build_audit("AuditNA")
+build_audit("AuditNA", 17)
+
 def build_versicolor(name, num_iteration = 0):
 	df = load_csv(name + ".csv")
 	X = df[df.columns.difference(["Species"])]
@@ -67,12 +93,12 @@ build_versicolor("Versicolor", 9)
 #
 
 def build_auto(name, num_iteration = 0):
-	df = load_csv(name + ".csv")
+	df = load_csv(name + ".csv", ["cylinders", "model_year", "origin"])
 	X = df[["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"]]
 	y = df["mpg"]
 
 	lgbm = LGBMRegressor(n_estimators = 31)
-	lgbm.fit(X.as_matrix(), y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"], categorical_feature = ["cylinders", "model_year", "origin"])
+	lgbm.fit(X, y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"])
 
 	if(num_iteration == 0):
 		store_lgbm(lgbm, "Regression" + name + ".txt")
@@ -87,13 +113,31 @@ build_auto("Auto", 17)
 build_auto("AutoNA")
 build_auto("AutoNA", 17)
 
-def build_housing(name, num_iteration = 0):
+def build_auto_direct(name):
 	df = load_csv(name + ".csv")
+	X = df[["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"]]
+	y = df["mpg"]
+
+	lgbm = LGBMRegressor(n_estimators = 31)
+	lgbm.fit(X.as_matrix(), y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"], categorical_feature =  ["cylinders", "model_year", "origin"])
+
+	name = re.sub("Auto", "AutoDirect", name);
+
+	store_lgbm(lgbm, "Regression" + name + ".txt")
+
+	mpg = DataFrame(lgbm.predict(X.as_matrix()), columns = ["_target"])
+	store_csv(mpg, "Regression" + name + ".csv")
+
+build_auto_direct("Auto")
+build_auto_direct("AutoNA")
+
+def build_housing(name, num_iteration = 0):
+	df = load_csv(name + ".csv", ["CHAS"])
 	X = df[df.columns.difference(["MEDV"])]
 	y = df["MEDV"]
 
 	lgbm = LGBMRegressor(n_estimators = 51)
-	lgbm.fit(X, y, categorical_feature = ["CHAS"])
+	lgbm.fit(X, y)
 
 	if(num_iteration == 0):
 		store_lgbm(lgbm, "Regression" + name + ".txt")
@@ -113,12 +157,12 @@ build_housing("HousingNA", 31)
 #
 
 def build_visit(name, num_iteration = 0):
-	df = load_csv(name + ".csv")
+	df = load_csv(name + ".csv", ["outwork", "female", "married", "kids", "self"])
 	X = df[["age", "outwork", "female", "married", "kids", "hhninc", "educ", "self"]]
 	y = df["docvis"]
 
 	lgbm = LGBMRegressor(objective = "poisson", n_estimators = 71)
-	lgbm.fit(X.as_matrix(), y, feature_name = ["age", "outwork", "female", "married", "kids", "hhninc", "educ", "self"], categorical_feature = ["female", "married", "kids"]) # categorical_feature = ["outwork", "female", "married", "kids", "self"]
+	lgbm.fit(X, y, feature_name = ["age", "outwork", "female", "married", "kids", "hhninc", "educ", "self"])
 
 	if(num_iteration == 0):
 		store_lgbm(lgbm, "Regression" + name + ".txt")

@@ -840,4 +840,4 @@ INDUS=40
 RAD=25
 ZN=4
 
-pandas_categorical:[]
+pandas_categorical:[[0, 1]]
