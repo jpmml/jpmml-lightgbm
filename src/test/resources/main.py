@@ -70,7 +70,7 @@ build_audit("AuditNA", 17)
 
 def build_versicolor(name, num_iteration = 0):
 	df = load_csv(name + ".csv")
-	X = df[df.columns.difference(["Species"])]
+	X = df[["Sepal.Length", "Sepal.Width", "Dummy", "Petal.Length", "Petal.Width"]]
 	y = df["Species"]
 
 	lgbm = LGBMClassifier(n_estimators = 11)

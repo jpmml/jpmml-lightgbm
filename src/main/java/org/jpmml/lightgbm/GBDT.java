@@ -165,6 +165,12 @@ public class GBDT {
 			String featureName = featureNames[i];
 			String featureInfo = featureInfos[i];
 
+			if(("none").equals(featureInfo)){
+				features.add(null);
+
+				continue;
+			}
+
 			Boolean binary = isBinary(i);
 			if(binary == null){
 				binary = Boolean.FALSE;
