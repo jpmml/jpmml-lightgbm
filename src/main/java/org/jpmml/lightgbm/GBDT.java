@@ -24,9 +24,10 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
 import org.dmg.pmml.FieldName;
@@ -198,7 +199,10 @@ public class GBDT {
 						DataType dataType = LightGBMUtil.getDataType(categories);
 						switch(dataType){
 							case INTEGER:
-								categories = Lists.transform(Lists.transform(categories, LightGBMUtil.CATEGORY_PARSER), LightGBMUtil.CATEGORY_FORMATTER);
+								categories = categories.stream()
+									.map(LightGBMUtil.CATEGORY_PARSER)
+									.map(LightGBMUtil.CATEGORY_FORMATTER)
+									.collect(Collectors.toList());
 								break;
 							default:
 								break;
@@ -210,18 +214,13 @@ public class GBDT {
 					} else
 
 					{
-						List<Integer> categories = new ArrayList<>();
-						categories.addAll(LightGBMUtil.parseValues(featureInfo));
+						List<String> categories = LightGBMUtil.parseValues(featureInfo).stream()
+							.filter(value -> value != GBDT.CATEGORY_MISSING)
+							.sorted()
+							.map(LightGBMUtil.CATEGORY_FORMATTER)
+							.collect(Collectors.toList());
 
-						if(categories.contains(GBDT.CATEGORY_MISSING)){
-							categories.remove(GBDT.CATEGORY_MISSING);
-						}
-
-						Collections.sort(categories);
-
-						DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER);
-
-						PMMLUtil.addValues(dataField, Lists.transform(categories, LightGBMUtil.CATEGORY_FORMATTER));
+						DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER, categories);
 
 						feature = new DirectCategoricalFeature(encoder, dataField);
 					}
@@ -404,7 +403,7 @@ public class GBDT {
 
 	static
 	private List<String> loadPandasCategoryValues(String string){
-		List<String> values = Arrays.asList(string.split(",\\s"));
+		String[] values = string.split(",\\s");
 
 		Function<String, String> function = new Function<String, String>(){
 
@@ -419,7 +418,9 @@ public class GBDT {
 			}
 		};
 
-		return Lists.transform(values, function);
+		return Stream.of(values)
+			.map(function)
+			.collect(Collectors.toList());
 	}
 
 	static

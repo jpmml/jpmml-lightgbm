@@ -26,9 +26,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.google.common.io.CharStreams;
 import com.google.common.math.DoubleMath;
 import org.dmg.pmml.DataType;
@@ -68,7 +69,7 @@ public class LightGBMUtil {
 
 			private String[] featureNames = gbdt.getFeatureNames();
 
-			private List<Feature> features = schema.getFeatures();
+			private List<? extends Feature> features = schema.getFeatures();
 
 			{
 				if(this.featureNames.length != this.features.size()){
@@ -276,7 +277,9 @@ public class LightGBMUtil {
 	public List<Integer> parseValues(String string){
 		String[] values = string.split(":");
 
-		return Lists.transform(Arrays.asList(values), LightGBMUtil.CATEGORY_PARSER);
+		return Stream.of(values)
+			.map(LightGBMUtil.CATEGORY_PARSER)
+			.collect(Collectors.toList());
 	}
 
 	static
