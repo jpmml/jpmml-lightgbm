@@ -77,7 +77,7 @@ public class Main {
 		names = {"--compact"},
 		description = "Transform LightGBM-style trees to PMML-style trees"
 	)
-	private boolean transform = false;
+	private boolean compact = true;
 
 
 	static
@@ -122,7 +122,7 @@ public class Main {
 			gbdt = LightGBMUtil.loadGBDT(is);
 		}
 
-		PMML pmml = gbdt.encodePMML(this.targetName != null ? FieldName.create(this.targetName) : null, this.targetCategories, this.numIteration, this.transform);
+		PMML pmml = gbdt.encodePMML(this.targetName != null ? FieldName.create(this.targetName) : null, this.targetCategories, this.numIteration, this.compact);
 
 		try(OutputStream os = new FileOutputStream(this.output)){
 			MetroJAXBUtil.marshalPMML(pmml, os);
