@@ -35,12 +35,12 @@ public class ClassificationTest extends LightGBMTest {
 
 	@Test
 	public void evaluateAuditNA() throws Exception {
-		evaluate("Classification", "AuditNA", new RealNumberEquivalence(1));
+		evaluate("Classification", "AuditNA", new RealNumberEquivalence(2));
 	}
 
 	@Test
 	public void evaluateAuditNALimit() throws Exception {
-		evaluate("Classification", "AuditNA@17", new RealNumberEquivalence(1));
+		evaluate("Classification", "AuditNA@17");
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class ClassificationTest extends LightGBMTest {
 
 	@Test
 	public void evaluateIrisLimit() throws Exception {
-		evaluate("Classification", "Iris@7");
+		evaluate("Classification", "Iris@7", new RealNumberEquivalence(2));
 	}
 
 	@Test

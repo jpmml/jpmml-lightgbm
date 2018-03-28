@@ -39,7 +39,7 @@ import org.jpmml.model.visitors.AbstractVisitor;
 public class LightGBMTest extends IntegrationTest {
 
 	public LightGBMTest(){
-		super(new RealNumberEquivalence(0));
+		super(new RealNumberEquivalence(1));
 	}
 
 	@Override

@@ -18,7 +18,6 @@
  */
 package org.jpmml.lightgbm;
 
-import org.jpmml.evaluator.RealNumberEquivalence;
 import org.junit.Test;
 
 public class RegressionTest extends LightGBMTest {
@@ -75,7 +74,7 @@ public class RegressionTest extends LightGBMTest {
 
 	@Test
 	public void evaluateVisit() throws Exception {
-		evaluate("Regression", "Visit", new RealNumberEquivalence(1));
+		evaluate("Regression", "Visit");
 	}
 
 	@Test
@@ -85,7 +84,7 @@ public class RegressionTest extends LightGBMTest {
 
 	@Test
 	public void evaluateVisitNA() throws Exception {
-		evaluate("Regression", "VisitNA", new RealNumberEquivalence(1));
+		evaluate("Regression", "VisitNA");
 	}
 
 	@Test
