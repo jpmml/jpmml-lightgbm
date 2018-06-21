@@ -453,6 +453,10 @@ public class GBDT {
 				return new Regression();
 			// RegressionPoissonLoss
 			case "poisson":
+			// RegressionGammaLoss
+			case "gamma":
+			// RegressionTweedieLoss
+			case "tweedie":
 				return new PoissonRegression();
 			case "binary":
 				return new BinomialLogisticRegression(section.getDouble("sigmoid"));

@@ -156,12 +156,12 @@ build_housing("HousingNA", 31)
 # Poisson regression
 #
 
-def build_visit(name, num_iteration = 0):
+def build_visit(name, objective = "poisson", num_iteration = 0):
 	df = load_csv(name + ".csv", ["outwork", "female", "married", "kids", "self"])
 	X = df[["age", "outwork", "female", "married", "kids", "hhninc", "educ", "self"]]
 	y = df["docvis"]
 
-	lgbm = LGBMRegressor(objective = "poisson", n_estimators = 71)
+	lgbm = LGBMRegressor(objective = objective, n_estimators = 71)
 	lgbm.fit(X, y, feature_name = ["age", "outwork", "female", "married", "kids", "hhninc", "educ", "self"])
 
 	if(num_iteration == 0):
@@ -173,6 +173,6 @@ def build_visit(name, num_iteration = 0):
 	store_csv(docvis, "Regression" + name + ".csv")
 
 build_visit("Visit")
-build_visit("Visit", 31)
-build_visit("VisitNA")
-build_visit("VisitNA", 31)
+build_visit("Visit", num_iteration = 31)
+build_visit("VisitNA", objective = "tweedie")
+build_visit("VisitNA", objective = "tweedie", num_iteration = 31)
