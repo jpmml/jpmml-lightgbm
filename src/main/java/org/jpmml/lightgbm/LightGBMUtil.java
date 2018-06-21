@@ -64,7 +64,7 @@ public class LightGBMUtil {
 	}
 
 	static
-	public Schema toLightGBMSchema(final GBDT gbdt, final Schema schema){
+	public Schema toLightGBMSchema(GBDT gbdt, Schema schema){
 		Function<Feature, Feature> function = new Function<Feature, Feature>(){
 
 			private String[] featureNames = gbdt.getFeatureNames();

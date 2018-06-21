@@ -95,7 +95,7 @@ public class Tree {
 		Node root = new Node()
 			.setPredicate(new True());
 
-		encodeNode(root, predicateManager, Collections.<FieldName, Set<String>>emptyMap(), 0, schema);
+		encodeNode(root, predicateManager, Collections.emptyMap(), 0, schema);
 
 		TreeModel treeModel = new TreeModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(schema.getLabel()), root)
 			.setSplitCharacteristic(TreeModel.SplitCharacteristic.BINARY_SPLIT)
