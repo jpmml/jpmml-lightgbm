@@ -19,11 +19,7 @@
 package org.jpmml.lightgbm;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.dmg.pmml.FieldName;
@@ -35,6 +31,7 @@ import org.dmg.pmml.tree.Node;
 import org.dmg.pmml.tree.TreeModel;
 import org.jpmml.converter.BinaryFeature;
 import org.jpmml.converter.CategoricalFeature;
+import org.jpmml.converter.CategoryManager;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.ModelUtil;
@@ -95,7 +92,7 @@ public class Tree {
 		Node root = new Node()
 			.setPredicate(new True());
 
-		encodeNode(root, predicateManager, Collections.emptyMap(), 0, schema);
+		encodeNode(root, predicateManager, new CategoryManager(), 0, schema);
 
 		TreeModel treeModel = new TreeModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(schema.getLabel()), root)
 			.setSplitCharacteristic(TreeModel.SplitCharacteristic.BINARY_SPLIT)
@@ -104,7 +101,7 @@ public class Tree {
 		return treeModel;
 	}
 
-	public void encodeNode(Node parent, PredicateManager predicateManager, Map<FieldName, Set<String>> parentFieldValues, int index, Schema schema){
+	public void encodeNode(Node parent, PredicateManager predicateManager, CategoryManager categoryManager, int index, Schema schema){
 		parent.setId(String.valueOf(index));
 
 		// Non-leaf (aka internal) node
@@ -117,8 +114,8 @@ public class Tree {
 			double threshold_ = this.threshold_[index];
 			int decision_type_ = this.decision_type_[index];
 
-			Map<FieldName, Set<String>> leftFieldValues = parentFieldValues;
-			Map<FieldName, Set<String>> rightFieldValues = parentFieldValues;
+			CategoryManager leftCategoryManager = categoryManager;
+			CategoryManager rightCategoryManager = categoryManager;
 
 			Predicate leftPredicate;
 			Predicate rightPredicate;
@@ -151,21 +148,25 @@ public class Tree {
 
 				List<String> values = categoricalFeature.getValues();
 
-				Set<String> parentValues = parentFieldValues.get(name);
-				if(parentValues == null){
-					parentValues = new HashSet<>(values);
-				}
+				java.util.function.Predicate<String> valueFilter = categoryManager.getValueFilter(name);
 
 				int cat_idx = ValueUtil.asInt(threshold_);
 
-				List<String> leftValues = selectValues(indexAsValue, values, parentValues, cat_idx, true);
-				List<String> rightValues = selectValues(indexAsValue, values, parentValues, cat_idx, false);
+				List<String> leftValues = selectValues(indexAsValue, values, valueFilter, cat_idx, true);
+				List<String> rightValues = selectValues(indexAsValue, values, valueFilter, cat_idx, false);
 
-				leftFieldValues = new HashMap<>(parentFieldValues);
-				leftFieldValues.put(name, new HashSet<>(leftValues));
+				Set<String> parentValues = categoryManager.getValue(name);
 
-				rightFieldValues = new HashMap<>(parentFieldValues);
-				rightFieldValues.put(name, new HashSet<>(rightValues));
+				if(leftValues.size() == 0){
+					throw new IllegalArgumentException();
+				} // End if
+
+				if(parentValues != null && rightValues.size() == parentValues.size()){
+					throw new IllegalArgumentException();
+				}
+
+				leftCategoryManager = categoryManager.fork(name, leftValues);
+				rightCategoryManager = categoryManager.fork(name, rightValues);
 
 				leftPredicate = predicateManager.createSimpleSetPredicate(categoricalFeature, leftValues);
 				rightPredicate = predicateManager.createSimpleSetPredicate(categoricalFeature, rightValues);
@@ -189,12 +190,12 @@ public class Tree {
 			Node leftChild = new Node()
 				.setPredicate(leftPredicate);
 
-			encodeNode(leftChild, predicateManager, leftFieldValues, this.left_child_[index], schema);
+			encodeNode(leftChild, predicateManager, leftCategoryManager, this.left_child_[index], schema);
 
 			Node rightChild = new Node()
 				.setPredicate(rightPredicate);
 
-			encodeNode(rightChild, predicateManager, rightFieldValues, this.right_child_[index], schema);
+			encodeNode(rightChild, predicateManager, rightCategoryManager, this.right_child_[index], schema);
 
 			parent.addNodes(leftChild, rightChild);
 
@@ -210,7 +211,7 @@ public class Tree {
 		}
 	}
 
-	private List<String> selectValues(boolean indexAsValue, List<String> values, Set<String> parentValues, int cat_idx, boolean left){
+	private List<String> selectValues(boolean indexAsValue, List<String> values, java.util.function.Predicate<String> valueFilter, int cat_idx, boolean left){
 		List<String> result;
 
 		if(left){
@@ -250,20 +251,7 @@ public class Tree {
 			}
 		}
 
-		result.retainAll(parentValues);
-
-		if(left){
-
-			if(result.isEmpty()){
-				throw new IllegalArgumentException();
-			}
-		} else
-
-		{
-			if((result).equals(parentValues)){
-				throw new IllegalArgumentException();
-			}
-		}
+		result.removeIf(value -> !valueFilter.test(value));
 
 		return result;
 	}

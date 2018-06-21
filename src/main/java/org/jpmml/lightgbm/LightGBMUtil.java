@@ -120,7 +120,7 @@ public class LightGBMUtil {
 					if(binary != null && binary.booleanValue()){
 						wildcardFeature.toCategoricalFeature(Arrays.asList("0", "1"));
 
-						BinaryFeature binaryFeature = new BinaryFeature(wildcardFeature.getEncoder(), wildcardFeature.getName(), wildcardFeature.getDataType(), "1");
+						BinaryFeature binaryFeature = new BinaryFeature(wildcardFeature.getEncoder(), wildcardFeature, "1");
 
 						return binaryFeature;
 					}
