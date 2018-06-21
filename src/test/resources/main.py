@@ -20,12 +20,12 @@ def store_lgbm(lgbm, name):
 # Multi-class classification
 #
 
-def build_iris(name, num_iteration = 0):
+def build_iris(name, objective = "multiclass", num_iteration = 0):
 	df = load_csv(name + ".csv")
 	X = df[df.columns.difference(["Species"])]
 	y = df["Species"]
 
-	lgbm = LGBMClassifier(n_estimators = 11)
+	lgbm = LGBMClassifier(objective = objective, n_estimators = 11)
 	lgbm.fit(X, y)
 
 	if(num_iteration == 0):
@@ -38,20 +38,20 @@ def build_iris(name, num_iteration = 0):
 	store_csv(pandas.concat((species, species_proba), axis = 1), "Classification" + name + ".csv")
 
 build_iris("Iris")
-build_iris("Iris", 7)
+build_iris("Iris", num_iteration = 7)
 build_iris("IrisNA")
-build_iris("IrisNA", 7)
+build_iris("IrisNA", num_iteration = 7)
 
 #
 # Binary classification
 #
 
-def build_audit(name, num_iteration = 0):
+def build_audit(name, objective = "binary", num_iteration = 0):
 	df = load_csv(name + ".csv", ["Employment", "Education", "Marital", "Occupation", "Gender"])
 	X = df[["Age", "Employment", "Education", "Marital", "Occupation", "Income", "Gender", "Hours"]]
 	y = df["Adjusted"]
 
-	lgbm = LGBMClassifier(n_estimators = 31)
+	lgbm = LGBMClassifier(objective = objective, n_estimators = 31)
 	lgbm.fit(X, y)
 
 	if(num_iteration == 0):
@@ -64,16 +64,16 @@ def build_audit(name, num_iteration = 0):
 	store_csv(pandas.concat((adjusted, adjusted_proba), axis = 1), "Classification" + name + ".csv")
 
 build_audit("Audit")
-build_audit("Audit", 17)
+build_audit("Audit", num_iteration = 17)
 build_audit("AuditNA")
-build_audit("AuditNA", 17)
+build_audit("AuditNA", num_iteration = 17)
 
-def build_versicolor(name, num_iteration = 0):
+def build_versicolor(name, objective = "binary", num_iteration = 0):
 	df = load_csv(name + ".csv")
 	X = df[["Sepal.Length", "Sepal.Width", "Dummy", "Petal.Length", "Petal.Width"]]
 	y = df["Species"]
 
-	lgbm = LGBMClassifier(n_estimators = 11)
+	lgbm = LGBMClassifier(objective = objective, n_estimators = 11)
 	lgbm.fit(X, y)
 
 	if(num_iteration == 0):
@@ -86,18 +86,18 @@ def build_versicolor(name, num_iteration = 0):
 	store_csv(pandas.concat((versicolor, versicolor_proba), axis = 1), "Classification" + name + ".csv")
 
 build_versicolor("Versicolor")
-build_versicolor("Versicolor", 9)
+build_versicolor("Versicolor", num_iteration = 9)
 
 #
 # Regression
 #
 
-def build_auto(name, num_iteration = 0):
+def build_auto(name, objective = "regression", num_iteration = 0):
 	df = load_csv(name + ".csv", ["cylinders", "model_year", "origin"])
 	X = df[["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"]]
 	y = df["mpg"]
 
-	lgbm = LGBMRegressor(n_estimators = 31)
+	lgbm = LGBMRegressor(objective = objective, n_estimators = 31)
 	lgbm.fit(X, y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"])
 
 	if(num_iteration == 0):
@@ -109,9 +109,9 @@ def build_auto(name, num_iteration = 0):
 	store_csv(mpg, "Regression" + name + ".csv")
 
 build_auto("Auto")
-build_auto("Auto", 17)
+build_auto("Auto", num_iteration = 17)
 build_auto("AutoNA")
-build_auto("AutoNA", 17)
+build_auto("AutoNA", num_iteration = 17)
 
 def build_auto_direct(name):
 	df = load_csv(name + ".csv")
@@ -131,12 +131,12 @@ def build_auto_direct(name):
 build_auto_direct("Auto")
 build_auto_direct("AutoNA")
 
-def build_housing(name, num_iteration = 0):
+def build_housing(name, objective = "regression", num_iteration = 0):
 	df = load_csv(name + ".csv", ["CHAS"])
 	X = df[df.columns.difference(["MEDV"])]
 	y = df["MEDV"]
 
-	lgbm = LGBMRegressor(n_estimators = 51)
+	lgbm = LGBMRegressor(objective = objective, n_estimators = 51)
 	lgbm.fit(X, y)
 
 	if(num_iteration == 0):
@@ -147,10 +147,10 @@ def build_housing(name, num_iteration = 0):
 	medv = DataFrame(lgbm.predict(X, num_iteration = num_iteration), columns = ["_target"])
 	store_csv(medv, "Regression" + name + ".csv")
 
-build_housing("Housing")
-build_housing("Housing", 31)
-build_housing("HousingNA")
-build_housing("HousingNA", 31)
+build_housing("Housing", objective = "mean_squared_error")
+build_housing("Housing", objective = "mean_squared_error", num_iteration = 31)
+build_housing("HousingNA", objective = "mean_absolute_error")
+build_housing("HousingNA", objective = "mean_absolute_error", num_iteration = 31)
 
 #
 # Poisson regression
