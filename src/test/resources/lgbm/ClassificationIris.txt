@@ -7,21 +7,21 @@ max_feature_idx=3
 objective=multiclass num_class:3
 feature_names=Petal.Length Petal.Width Sepal.Length Sepal.Width
 feature_infos=[1:6.9000000000000004] [0.10000000000000001:2.5] [4.2999999999999998:7.9000000000000004] [2:4.4000000000000004]
-tree_sizes=407 458 405 564 559 563 565 559 562 488 547 565 570 548 563 492 563 567 492 546 566 492 563 567 493 548 567 493 563 562 492 548 562
+tree_sizes=333 458 405 564 559 563 565 559 562 488 547 565 570 548 563 492 563 567 492 546 566 492 563 567 493 548 567 493 563 562 492 548 562
 
 Tree=0
-num_leaves=4
+num_leaves=3
 num_cat=0
-split_feature=0 3 0
-split_gain=72.7941 0.0683824 3.55271e-15
-threshold=3.1500000000000004 3.3500000000000001 5.5500000000000007
-decision_type=2 2 2
-left_child=1 -1 -2
-right_child=2 -3 -4
-leaf_value=0.13875000310130411 -0.075000001676380629 0.15000000335276126 -0.075000001676380629
-leaf_count=20 74 31 25
-internal_value=0 1.45588 -0.75
-internal_count=150 51 99
+split_feature=0 3
+split_gain=72.7941 0.0683824
+threshold=3.1500000000000004 3.3500000000000001
+decision_type=2 2
+left_child=1 -1
+right_child=-2 -3
+leaf_value=0.13875000310130411 -0.075000001676380629 0.15000000335276126
+leaf_count=20 99 31
+internal_value=0 1.45588
+internal_count=150 51
 shrinkage=0.1
 
 
@@ -539,7 +539,7 @@ shrinkage=0.1
 
 
 feature importances:
-Petal.Length=99
+Petal.Length=98
 Petal.Width=22
 Sepal.Width=20
 Sepal.Length=12
