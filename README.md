@@ -5,6 +5,7 @@ Java library and command-line application for converting [LightGBM](https://gith
 
 # Prerequisites #
 
+* LightGBM 2.0.0 or newer.
 * Java 1.8 or newer.
 
 # Installation #
@@ -26,8 +27,9 @@ A typical workflow can be summarized as follows:
 
 ### The LightGBM side of operations
 
-Using the [`lightgbm`](https://github.com/Microsoft/LightGBM/tree/master/python-package) package to train a regression model for the example boston housing dataset:
-```Python
+Using the [`lightgbm`](https://github.com/Microsoft/LightGBM/tree/master/python-package) package to train a regression model for the example Boston housing dataset:
+
+```python
 from sklearn.datasets import load_boston
 
 boston = load_boston()
