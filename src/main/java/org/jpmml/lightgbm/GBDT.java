@@ -269,7 +269,8 @@ public class GBDT {
 		Boolean compact = (Boolean)options.get(HasLightGBMOptions.OPTION_COMPACT);
 		Integer numIterations = (Integer)options.get(HasLightGBMOptions.OPTION_NUM_ITERATION);
 
-		MiningModel miningModel = this.object_function_.encodeMiningModel(Arrays.asList(this.models_), numIterations, schema);
+		MiningModel miningModel = this.object_function_.encodeMiningModel(Arrays.asList(this.models_), numIterations, schema)
+			.setAlgorithmName("LightGBM");
 
 		if((Boolean.TRUE).equals(compact)){
 			Visitor visitor = new TreeModelCompactor();
