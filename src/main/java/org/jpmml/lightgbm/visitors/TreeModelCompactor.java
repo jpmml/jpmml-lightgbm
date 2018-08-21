@@ -18,58 +18,18 @@
  */
 package org.jpmml.lightgbm.visitors;
 
-import java.util.Deque;
 import java.util.List;
 
-import org.dmg.pmml.PMMLObject;
 import org.dmg.pmml.Predicate;
 import org.dmg.pmml.True;
-import org.dmg.pmml.VisitorAction;
 import org.dmg.pmml.tree.Node;
 import org.dmg.pmml.tree.TreeModel;
-import org.jpmml.model.visitors.AbstractVisitor;
+import org.jpmml.converter.visitors.AbstractTreeModelTransformer;
 
-public class TreeModelCompactor extends AbstractVisitor {
-
-	@Override
-	public void pushParent(PMMLObject object){
-		super.pushParent(object);
-
-		if(object instanceof Node){
-			handleNodePush((Node)object);
-		}
-	}
+public class TreeModelCompactor extends AbstractTreeModelTransformer {
 
 	@Override
-	public PMMLObject popParent(){
-		PMMLObject object = super.popParent();
-
-		if(object instanceof Node){
-			handleNodePop((Node)object);
-		}
-
-		return object;
-	}
-
-	@Override
-	public VisitorAction visit(TreeModel treeModel){
-		TreeModel.MissingValueStrategy missingValueStrategy = treeModel.getMissingValueStrategy();
-		TreeModel.NoTrueChildStrategy noTrueChildStrategy = treeModel.getNoTrueChildStrategy();
-		TreeModel.SplitCharacteristic splitCharacteristic = treeModel.getSplitCharacteristic();
-
-		if(!(TreeModel.MissingValueStrategy.DEFAULT_CHILD).equals(missingValueStrategy) || !(TreeModel.NoTrueChildStrategy.RETURN_NULL_PREDICTION).equals(noTrueChildStrategy) || !(TreeModel.SplitCharacteristic.BINARY_SPLIT).equals(splitCharacteristic)){
-			throw new IllegalArgumentException();
-		}
-
-		treeModel
-			.setMissingValueStrategy(TreeModel.MissingValueStrategy.NONE)
-			.setNoTrueChildStrategy(TreeModel.NoTrueChildStrategy.RETURN_LAST_PREDICTION)
-			.setSplitCharacteristic(TreeModel.SplitCharacteristic.MULTI_SPLIT);
-
-		return super.visit(treeModel);
-	}
-
-	private void handleNodePush(Node node){
+	public void enterNode(Node node){
 		String defaultChild = node.getDefaultChild();
 		String id = node.getId();
 		String score = node.getScore();
@@ -89,8 +49,7 @@ public class TreeModelCompactor extends AbstractVisitor {
 			Node secondChild = children.get(1);
 
 			if((defaultChild).equals(firstChild.getId())){
-				children.remove(0);
-				children.add(1, firstChild);
+				children = swapChildren(node);
 
 				firstChild = children.get(0);
 				secondChild = children.get(1);
@@ -118,9 +77,9 @@ public class TreeModelCompactor extends AbstractVisitor {
 		node.setId(null);
 	}
 
-	private void handleNodePop(Node node){
+	@Override
+	public void exitNode(Node node){
 		Double recordCount = node.getRecordCount();
-		String score = node.getScore();
 		Predicate predicate = node.getPredicate();
 
 		if(recordCount != null){
@@ -134,36 +93,27 @@ public class TreeModelCompactor extends AbstractVisitor {
 				return;
 			}
 
-			String parentScore = parentNode.getScore();
-			if(parentScore != null){
-				throw new IllegalArgumentException();
-			}
-
-			parentNode.setScore(score);
-
-			List<Node> parentChildren = parentNode.getNodes();
-
-			boolean success = parentChildren.remove(node);
-			if(!success){
-				throw new IllegalArgumentException();
-			} // End if
-
-			if(node.hasNodes()){
-				List<Node> children = node.getNodes();
-
-				parentChildren.addAll(children);
-			}
+			initScore(parentNode, node);
+			replaceChildWithGrandchildren(parentNode, node);
 		}
 	}
 
-	private Node getParentNode(){
-		Deque<PMMLObject> parents = getParents();
+	@Override
+	public void enterTreeModel(TreeModel treeModel){
+		TreeModel.MissingValueStrategy missingValueStrategy = treeModel.getMissingValueStrategy();
+		TreeModel.NoTrueChildStrategy noTrueChildStrategy = treeModel.getNoTrueChildStrategy();
+		TreeModel.SplitCharacteristic splitCharacteristic = treeModel.getSplitCharacteristic();
 
-		PMMLObject parent = parents.peekFirst();
-		if(parent instanceof Node){
-			return (Node)parent;
+		if(!(TreeModel.MissingValueStrategy.DEFAULT_CHILD).equals(missingValueStrategy) || !(TreeModel.NoTrueChildStrategy.RETURN_NULL_PREDICTION).equals(noTrueChildStrategy) || !(TreeModel.SplitCharacteristic.BINARY_SPLIT).equals(splitCharacteristic)){
+			throw new IllegalArgumentException();
 		}
+	}
 
-		return null;
+	@Override
+	public void exitTreeModel(TreeModel treeModel){
+		treeModel
+			.setMissingValueStrategy(TreeModel.MissingValueStrategy.NONE)
+			.setNoTrueChildStrategy(TreeModel.NoTrueChildStrategy.RETURN_LAST_PREDICTION)
+			.setSplitCharacteristic(TreeModel.SplitCharacteristic.MULTI_SPLIT);
 	}
 }

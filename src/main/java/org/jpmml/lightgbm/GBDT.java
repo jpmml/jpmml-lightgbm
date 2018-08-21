@@ -44,6 +44,7 @@ import org.jpmml.converter.ImportanceDecorator;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.PMMLUtil;
 import org.jpmml.converter.Schema;
+import org.jpmml.converter.ValueUtil;
 import org.jpmml.lightgbm.visitors.TreeModelCompactor;
 
 public class GBDT {
@@ -196,7 +197,7 @@ public class GBDT {
 					if(this.pandas_categorical.size() > 0){
 						List<String> categories = this.pandas_categorical.get(categoryIndex);
 
-						DataType dataType = LightGBMUtil.getDataType(categories);
+						DataType dataType = ValueUtil.getDataType(categories);
 						switch(dataType){
 							case INTEGER:
 								categories = categories.stream()
