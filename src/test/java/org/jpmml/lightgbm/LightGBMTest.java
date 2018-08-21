@@ -20,6 +20,7 @@ package org.jpmml.lightgbm;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -66,7 +67,11 @@ public class LightGBMTest extends IntegrationTest {
 					numIteration = new Integer(dataset[1]);
 				}
 
-				PMML pmml = gbdt.encodePMML(null, null, numIteration, (numIteration != null));
+				Map<String, Object> options = new LinkedHashMap<>();
+				options.put(HasLightGBMOptions.OPTION_COMPACT, numIteration != null);
+				options.put(HasLightGBMOptions.OPTION_NUM_ITERATION, numIteration);
+
+				PMML pmml = gbdt.encodePMML(null, null, options);
 
 				// XXX
 				if(("Housing").equals(dataset[0]) || ("HousingNA").equals(dataset[0])){

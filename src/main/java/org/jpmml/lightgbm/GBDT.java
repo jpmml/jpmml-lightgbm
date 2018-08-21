@@ -144,7 +144,7 @@ public class GBDT {
 		}
 	}
 
-	public PMML encodePMML(FieldName targetField, List<String> targetCategories, Integer numIteration, boolean compact){
+	public PMML encodePMML(FieldName targetField, List<String> targetCategories, Map<String, ?> options){
 		LightGBMEncoder encoder = new LightGBMEncoder();
 
 		Label label;
@@ -258,17 +258,20 @@ public class GBDT {
 
 		Schema schema = new Schema(label, features);
 
-		MiningModel miningModel = encodeMiningModel(numIteration, compact, schema);
+		MiningModel miningModel = encodeMiningModel(options, schema);
 
 		PMML pmml = encoder.encodePMML(miningModel);
 
 		return pmml;
 	}
 
-	public MiningModel encodeMiningModel(Integer numIteration, boolean compact, Schema schema){
-		MiningModel miningModel = this.object_function_.encodeMiningModel(Arrays.asList(this.models_), numIteration, schema);
+	public MiningModel encodeMiningModel(Map<String, ?> options, Schema schema){
+		Boolean compact = (Boolean)options.get(HasLightGBMOptions.OPTION_COMPACT);
+		Integer numIterations = (Integer)options.get(HasLightGBMOptions.OPTION_NUM_ITERATION);
 
-		if(compact){
+		MiningModel miningModel = this.object_function_.encodeMiningModel(Arrays.asList(this.models_), numIterations, schema);
+
+		if((Boolean.TRUE).equals(compact)){
 			Visitor visitor = new TreeModelCompactor();
 
 			visitor.applyTo(miningModel);
