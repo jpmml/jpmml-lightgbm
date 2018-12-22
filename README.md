@@ -10,7 +10,7 @@ Java library and command-line application for converting [LightGBM](https://gith
 
 # Installation #
 
-Enter the project root directory and build using [Apache Maven](http://maven.apache.org/):
+Enter the project root directory and build using [Apache Maven](https://maven.apache.org/):
 ```
 mvn clean install
 ```
@@ -56,7 +56,7 @@ java -jar target/jpmml-lightgbm-executable-1.2-SNAPSHOT.jar --help
 
 # License #
 
-JPMML-LightGBM is dual-licensed under the [GNU Affero General Public License (AGPL) version 3.0](http://www.gnu.org/licenses/agpl-3.0.html), and a commercial license.
+JPMML-LightGBM is dual-licensed under the [GNU Affero General Public License (AGPL) version 3.0](https://www.gnu.org/licenses/agpl-3.0.html), and a commercial license.
 
 # Additional information #
 
