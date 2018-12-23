@@ -101,7 +101,9 @@ public class GBDT {
 		while(index < sections.size()){
 			Section section = sections.get(index);
 
-			if(!section.checkId("Tree=" + String.valueOf(index - 1))){
+			String treeId = "Tree=" + String.valueOf(index - 1);
+
+			if(!section.checkId(treeId)){
 				break;
 			}
 
@@ -114,6 +116,8 @@ public class GBDT {
 		}
 
 		this.models_ = trees.toArray(new Tree[trees.size()]);
+
+		index = skipEndSection("end of trees", sections, index);
 
 		feature_importances:
 		if(index < sections.size()){
@@ -128,13 +132,24 @@ public class GBDT {
 			index++;
 		}
 
+		parameters:
+		if(index < sections.size()){
+			Section section = sections.get(index);
+
+			if(!section.checkId("parameters:")){
+				break parameters;
+			}
+
+			index++;
+
+			index = skipEndSection("end of parameters", sections, index);
+		}
+
 		pandas_categorical:
 		if(index < sections.size()){
 			Section section = sections.get(index);
 
-			String id = section.id();
-
-			if(id != null && !(id).startsWith("pandas_categorical:")){
+			if(!section.checkId(id -> id.startsWith("pandas_categorical:"))){
 				break pandas_categorical;
 			}
 
@@ -427,7 +442,7 @@ public class GBDT {
 	}
 
 	static
-	public ObjectiveFunction parseObjectiveFunction(String string){
+	private ObjectiveFunction parseObjectiveFunction(String string){
 		String[] tokens = LightGBMUtil.parseStringArray(string, -1);
 
 		if(tokens.length == 0){
@@ -470,6 +485,20 @@ public class GBDT {
 			default:
 				throw new IllegalArgumentException(objective);
 		}
+	}
+
+	static
+	private int skipEndSection(String id, List<Section> sections, int index){
+
+		if(index < sections.size()){
+			Section section = sections.get(index);
+
+			if(section.checkId(id)){
+				return (index + 1);
+			}
+		}
+
+		return index;
 	}
 
 	private static final Integer CATEGORY_MISSING = -1;

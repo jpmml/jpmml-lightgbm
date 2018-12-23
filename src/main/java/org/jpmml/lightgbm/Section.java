@@ -20,13 +20,18 @@ package org.jpmml.lightgbm;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import com.google.common.collect.Iterables;
 
 public class Section extends LinkedHashMap<String, String> {
 
 	public boolean checkId(String id){
-		return (id).equals(id());
+		return checkId(id::equals);
+	}
+
+	public boolean checkId(Predicate<String> predicate){
+		return predicate.test(id());
 	}
 
 	public String id(){
@@ -75,6 +80,11 @@ public class Section extends LinkedHashMap<String, String> {
 	}
 
 	public String put(String string){
+
+		if(string.startsWith("[") && string.endsWith("]")){
+			return put(string.substring("[".length(), string.length() - "]".length()), ':');
+		}
+
 		return put(string, '=');
 	}
 
@@ -86,6 +96,12 @@ public class Section extends LinkedHashMap<String, String> {
 		if(index > 0){
 			key = string.substring(0, index);
 			value = string.substring(index + 1);
+
+			value = value.trim();
+
+			if(value.length() == 0){
+				value = null;
+			}
 		} else
 
 		{
