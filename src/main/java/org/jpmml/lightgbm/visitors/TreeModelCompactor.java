@@ -30,9 +30,9 @@ public class TreeModelCompactor extends AbstractTreeModelTransformer {
 
 	@Override
 	public void enterNode(Node node){
-		String defaultChild = node.getDefaultChild();
 		String id = node.getId();
-		String score = node.getScore();
+		Object score = node.getScore();
+		String defaultChild = node.getDefaultChild();
 
 		if(id == null){
 			throw new IllegalArgumentException();
@@ -41,7 +41,7 @@ public class TreeModelCompactor extends AbstractTreeModelTransformer {
 		if(node.hasNodes()){
 			List<Node> children = node.getNodes();
 
-			if(children.size() != 2 || defaultChild == null || score != null){
+			if(children.size() != 2 || score != null || defaultChild == null){
 				throw new IllegalArgumentException();
 			}
 
@@ -69,7 +69,7 @@ public class TreeModelCompactor extends AbstractTreeModelTransformer {
 		} else
 
 		{
-			if(defaultChild != null || score == null){
+			if(score == null || defaultChild != null){
 				throw new IllegalArgumentException();
 			}
 		}

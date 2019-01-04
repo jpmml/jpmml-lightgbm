@@ -27,6 +27,7 @@ import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.Predicate;
 import org.dmg.pmml.SimplePredicate;
 import org.dmg.pmml.True;
+import org.dmg.pmml.tree.ComplexNode;
 import org.dmg.pmml.tree.Node;
 import org.dmg.pmml.tree.TreeModel;
 import org.jpmml.converter.BinaryFeature;
@@ -89,7 +90,7 @@ public class Tree {
 	}
 
 	public TreeModel encodeTreeModel(PredicateManager predicateManager, Schema schema){
-		Node root = new Node()
+		Node root = new ComplexNode()
 			.setPredicate(new True());
 
 		encodeNode(root, predicateManager, new CategoryManager(), 0, schema);
@@ -187,12 +188,12 @@ public class Tree {
 				rightPredicate = predicateManager.createSimplePredicate(continuousFeature, SimplePredicate.Operator.GREATER_THAN, value);
 			}
 
-			Node leftChild = new Node()
+			Node leftChild = new ComplexNode()
 				.setPredicate(leftPredicate);
 
 			encodeNode(leftChild, predicateManager, leftCategoryManager, this.left_child_[index], schema);
 
-			Node rightChild = new Node()
+			Node rightChild = new ComplexNode()
 				.setPredicate(rightPredicate);
 
 			encodeNode(rightChild, predicateManager, rightCategoryManager, this.right_child_[index], schema);
