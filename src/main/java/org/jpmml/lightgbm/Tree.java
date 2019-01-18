@@ -27,7 +27,6 @@ import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.Predicate;
 import org.dmg.pmml.SimplePredicate;
 import org.dmg.pmml.True;
-import org.dmg.pmml.tree.ComplexNode;
 import org.dmg.pmml.tree.Node;
 import org.dmg.pmml.tree.TreeModel;
 import org.jpmml.converter.BinaryFeature;
@@ -39,6 +38,8 @@ import org.jpmml.converter.ModelUtil;
 import org.jpmml.converter.PredicateManager;
 import org.jpmml.converter.Schema;
 import org.jpmml.converter.ValueUtil;
+import org.jpmml.lightgbm.tree.CountingBranchNode;
+import org.jpmml.lightgbm.tree.CountingLeafNode;
 
 public class Tree {
 
@@ -90,10 +91,7 @@ public class Tree {
 	}
 
 	public TreeModel encodeTreeModel(PredicateManager predicateManager, Schema schema){
-		Node root = new ComplexNode()
-			.setPredicate(new True());
-
-		encodeNode(root, predicateManager, new CategoryManager(), 0, schema);
+		Node root = encodeNode(new True(), predicateManager, new CategoryManager(), 0, schema);
 
 		TreeModel treeModel = new TreeModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(schema.getLabel()), root)
 			.setSplitCharacteristic(TreeModel.SplitCharacteristic.BINARY_SPLIT)
@@ -102,14 +100,11 @@ public class Tree {
 		return treeModel;
 	}
 
-	public void encodeNode(Node parent, PredicateManager predicateManager, CategoryManager categoryManager, int index, Schema schema){
-		parent.setId(String.valueOf(index));
+	public Node encodeNode(Predicate predicate, PredicateManager predicateManager, CategoryManager categoryManager, int index, Schema schema){
+		String id = String.valueOf(index);
 
 		// Non-leaf (aka internal) node
 		if(index >= 0){
-			parent.setScore(null); // XXX
-			parent.setRecordCount((double)this.internal_count_[index]);
-
 			Feature feature = schema.getFeature(this.split_feature_real_[index]);
 
 			double threshold_ = this.threshold_[index];
@@ -188,27 +183,31 @@ public class Tree {
 				rightPredicate = predicateManager.createSimplePredicate(continuousFeature, SimplePredicate.Operator.GREATER_THAN, value);
 			}
 
-			Node leftChild = new ComplexNode()
-				.setPredicate(leftPredicate);
+			Node leftChild = encodeNode(leftPredicate, predicateManager, leftCategoryManager, this.left_child_[index], schema);
+			Node rightChild = encodeNode(rightPredicate, predicateManager, rightCategoryManager, this.right_child_[index], schema);
 
-			encodeNode(leftChild, predicateManager, leftCategoryManager, this.left_child_[index], schema);
+			Node result = new CountingBranchNode()
+				.setId(id)
+				.setScore(null) // XXX
+				.setDefaultChild(defaultLeft ? leftChild.getId() : rightChild.getId())
+				.setRecordCount((double)this.internal_count_[index])
+				.setPredicate(predicate)
+				.addNodes(leftChild, rightChild);
 
-			Node rightChild = new ComplexNode()
-				.setPredicate(rightPredicate);
-
-			encodeNode(rightChild, predicateManager, rightCategoryManager, this.right_child_[index], schema);
-
-			parent.addNodes(leftChild, rightChild);
-
-			parent.setDefaultChild(defaultLeft ? leftChild.getId() : rightChild.getId());
+			return result;
 		} else
 
 		// Leaf node
 		{
 			index = ~index;
 
-			parent.setScore(ValueUtil.formatValue(this.leaf_value_[index]));
-			parent.setRecordCount((double)this.leaf_count_[index]);
+			Node result = new CountingLeafNode()
+				.setId(id)
+				.setScore(this.leaf_value_[index])
+				.setRecordCount((double)this.leaf_count_[index])
+				.setPredicate(predicate);
+
+			return result;
 		}
 	}
 
