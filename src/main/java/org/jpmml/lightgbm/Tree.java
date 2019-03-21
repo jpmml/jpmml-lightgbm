@@ -38,8 +38,8 @@ import org.jpmml.converter.ModelUtil;
 import org.jpmml.converter.PredicateManager;
 import org.jpmml.converter.Schema;
 import org.jpmml.converter.ValueUtil;
-import org.jpmml.lightgbm.tree.CountingBranchNode;
-import org.jpmml.lightgbm.tree.CountingLeafNode;
+import org.jpmml.converter.tree.CountingBranchNode;
+import org.jpmml.converter.tree.CountingLeafNode;
 
 public class Tree {
 
@@ -101,7 +101,7 @@ public class Tree {
 	}
 
 	public Node encodeNode(Predicate predicate, PredicateManager predicateManager, CategoryManager categoryManager, int index, Schema schema){
-		String id = String.valueOf(index);
+		Integer id = Integer.valueOf(index);
 
 		// Non-leaf (aka internal) node
 		if(index >= 0){
@@ -125,7 +125,7 @@ public class Tree {
 					throw new IllegalArgumentException();
 				}
 
-				String value = binaryFeature.getValue();
+				Object value = binaryFeature.getValue();
 
 				leftPredicate = predicateManager.createSimplePredicate(binaryFeature, SimplePredicate.Operator.NOT_EQUAL, value);
 				rightPredicate = predicateManager.createSimplePredicate(binaryFeature, SimplePredicate.Operator.EQUAL, value);
@@ -142,16 +142,16 @@ public class Tree {
 
 				boolean indexAsValue = (categoricalFeature instanceof DirectCategoricalFeature);
 
-				List<String> values = categoricalFeature.getValues();
+				List<?> values = categoricalFeature.getValues();
 
-				java.util.function.Predicate<String> valueFilter = categoryManager.getValueFilter(name);
+				java.util.function.Predicate<Object> valueFilter = categoryManager.getValueFilter(name);
 
 				int cat_idx = ValueUtil.asInt(threshold_);
 
-				List<String> leftValues = selectValues(indexAsValue, values, valueFilter, cat_idx, true);
-				List<String> rightValues = selectValues(indexAsValue, values, valueFilter, cat_idx, false);
+				List<Object> leftValues = selectValues(indexAsValue, values, valueFilter, cat_idx, true);
+				List<Object> rightValues = selectValues(indexAsValue, values, valueFilter, cat_idx, false);
 
-				Set<String> parentValues = categoryManager.getValue(name);
+				Set<?> parentValues = categoryManager.getValue(name);
 
 				if(leftValues.size() == 0){
 					throw new IllegalArgumentException();
@@ -177,7 +177,7 @@ public class Tree {
 					throw new IllegalArgumentException();
 				}
 
-				String value = ValueUtil.formatValue(threshold_);
+				Double value = threshold_;
 
 				leftPredicate = predicateManager.createSimplePredicate(continuousFeature, SimplePredicate.Operator.LESS_OR_EQUAL, value);
 				rightPredicate = predicateManager.createSimplePredicate(continuousFeature, SimplePredicate.Operator.GREATER_THAN, value);
@@ -211,8 +211,8 @@ public class Tree {
 		}
 	}
 
-	private List<String> selectValues(boolean indexAsValue, List<String> values, java.util.function.Predicate<String> valueFilter, int cat_idx, boolean left){
-		List<String> result;
+	private List<Object> selectValues(boolean indexAsValue, List<?> values, java.util.function.Predicate<Object> valueFilter, int cat_idx, boolean left){
+		List<Object> result;
 
 		if(left){
 			result = new ArrayList<>();
@@ -230,10 +230,10 @@ public class Tree {
 				int cat = (i * 32) + j;
 
 				if(findInBitset(this.cat_threshold_, this.cat_boundaries_[cat_idx], n, cat)){
-					String value;
+					Object value;
 
 					if(indexAsValue){
-						value = LightGBMUtil.CATEGORY_FORMATTER.apply(cat);
+						value = cat;
 					} else
 
 					{

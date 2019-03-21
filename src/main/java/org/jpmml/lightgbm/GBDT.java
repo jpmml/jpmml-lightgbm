@@ -44,7 +44,7 @@ import org.jpmml.converter.ImportanceDecorator;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.PMMLUtil;
 import org.jpmml.converter.Schema;
-import org.jpmml.converter.ValueUtil;
+import org.jpmml.converter.TypeUtil;
 import org.jpmml.lightgbm.visitors.TreeModelCompactor;
 
 public class GBDT {
@@ -210,14 +210,13 @@ public class GBDT {
 					Feature feature;
 
 					if(this.pandas_categorical.size() > 0){
-						List<String> categories = this.pandas_categorical.get(categoryIndex);
+						List<?> categories = this.pandas_categorical.get(categoryIndex);
 
-						DataType dataType = ValueUtil.getDataType(categories);
+						DataType dataType = TypeUtil.getDataType(categories);
 						switch(dataType){
 							case INTEGER:
-								categories = categories.stream()
+								categories = ((List<String>)categories).stream()
 									.map(LightGBMUtil.CATEGORY_PARSER)
-									.map(LightGBMUtil.CATEGORY_FORMATTER)
 									.collect(Collectors.toList());
 								break;
 							default:
@@ -230,10 +229,9 @@ public class GBDT {
 					} else
 
 					{
-						List<String> categories = LightGBMUtil.parseValues(featureInfo).stream()
+						List<Integer> categories = LightGBMUtil.parseValues(featureInfo).stream()
 							.filter(value -> value != GBDT.CATEGORY_MISSING)
 							.sorted()
-							.map(LightGBMUtil.CATEGORY_FORMATTER)
 							.collect(Collectors.toList());
 
 						DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER, categories);
@@ -249,7 +247,7 @@ public class GBDT {
 
 			{
 				if(binary){
-					DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER, Arrays.asList("0", "1"));
+					DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER, Arrays.asList(0, 1));
 
 					features.add(new BinaryFeature(encoder, dataField, "1"));
 				} else

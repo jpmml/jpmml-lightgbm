@@ -33,7 +33,7 @@ import org.jpmml.converter.Schema;
 public class Regression extends ObjectiveFunction {
 
 	@Override
-	public Label encodeLabel(FieldName targetField, List<String> targetCategories, PMMLEncoder encoder){
+	public Label encodeLabel(FieldName targetField, List<?> targetCategories, PMMLEncoder encoder){
 
 		if(targetCategories != null){
 			throw new IllegalArgumentException();

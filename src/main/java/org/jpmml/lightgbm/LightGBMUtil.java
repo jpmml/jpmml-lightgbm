@@ -38,6 +38,7 @@ import org.jpmml.converter.Feature;
 import org.jpmml.converter.ImportanceDecorator;
 import org.jpmml.converter.ModelEncoder;
 import org.jpmml.converter.Schema;
+import org.jpmml.converter.SchemaUtil;
 import org.jpmml.converter.ValueUtil;
 import org.jpmml.converter.WildcardFeature;
 
@@ -70,9 +71,7 @@ public class LightGBMUtil {
 			private List<? extends Feature> features = schema.getFeatures();
 
 			{
-				if(this.featureNames.length != this.features.size()){
-					throw new IllegalArgumentException();
-				}
+				SchemaUtil.checkSize(this.featureNames.length, this.features);
 			}
 
 			@Override
@@ -116,9 +115,9 @@ public class LightGBMUtil {
 
 					Boolean binary = gbdt.isBinary(index);
 					if(binary != null && binary.booleanValue()){
-						wildcardFeature.toCategoricalFeature(Arrays.asList("0", "1"));
+						wildcardFeature.toCategoricalFeature(Arrays.asList(0, 1));
 
-						BinaryFeature binaryFeature = new BinaryFeature(wildcardFeature.getEncoder(), wildcardFeature, "1");
+						BinaryFeature binaryFeature = new BinaryFeature(wildcardFeature.getEncoder(), wildcardFeature, 1);
 
 						return binaryFeature;
 					}
@@ -297,7 +296,7 @@ public class LightGBMUtil {
 
 		@Override
 		public String apply(Integer integer){
-			return ValueUtil.formatValue(integer);
+			return integer.toString();
 		}
 	};
 }

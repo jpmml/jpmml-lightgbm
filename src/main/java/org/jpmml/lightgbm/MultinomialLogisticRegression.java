@@ -27,7 +27,6 @@ import org.dmg.pmml.OpType;
 import org.dmg.pmml.mining.MiningModel;
 import org.dmg.pmml.regression.RegressionModel;
 import org.jpmml.converter.CategoricalLabel;
-import org.jpmml.converter.ContinuousLabel;
 import org.jpmml.converter.FortranMatrixUtil;
 import org.jpmml.converter.ModelUtil;
 import org.jpmml.converter.Schema;
@@ -45,7 +44,7 @@ public class MultinomialLogisticRegression extends Classification {
 
 	@Override
 	public MiningModel encodeMiningModel(List<Tree> trees, Integer numIteration, Schema schema){
-		Schema segmentSchema = new Schema(new ContinuousLabel(null, DataType.DOUBLE), schema.getFeatures());
+		Schema segmentSchema = schema.toAnonymousRegressorSchema(DataType.DOUBLE);
 
 		List<MiningModel> miningModels = new ArrayList<>();
 
