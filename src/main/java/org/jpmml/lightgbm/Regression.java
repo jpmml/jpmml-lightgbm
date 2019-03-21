@@ -35,8 +35,8 @@ public class Regression extends ObjectiveFunction {
 	@Override
 	public Label encodeLabel(FieldName targetField, List<?> targetCategories, PMMLEncoder encoder){
 
-		if(targetCategories != null){
-			throw new IllegalArgumentException();
+		if(targetCategories != null && targetCategories.size() > 0){
+			throw new IllegalArgumentException("Regression requires zero target categories");
 		}
 
 		DataField dataField = encoder.createDataField(targetField, OpType.CONTINUOUS, DataType.DOUBLE);

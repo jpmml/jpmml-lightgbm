@@ -72,11 +72,24 @@ public class Section extends LinkedHashMap<String, String> {
 	}
 
 	public String getString(String key){
-		return get(key);
+		return get(key, false);
 	}
 
 	public String[] getStringArray(String key, int length){
 		return LightGBMUtil.parseStringArray(get(key), length);
+	}
+
+	public String get(String key){
+		return get(key, true);
+	}
+
+	public String get(String key, boolean required){
+
+		if(required && !super.containsKey(key)){
+			throw new IllegalArgumentException(key);
+		}
+
+		return super.get(key);
 	}
 
 	public String put(String string){
@@ -109,6 +122,6 @@ public class Section extends LinkedHashMap<String, String> {
 			value = null;
 		}
 
-		return put(key, value);
+		return super.put(key, value);
 	}
 }

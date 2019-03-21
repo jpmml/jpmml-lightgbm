@@ -175,7 +175,7 @@ public class LightGBMUtil {
 		String[] result = string.split("\\s");
 
 		if(length > -1 && result.length != length){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Expected " + length + " elements, got " + result.length + " elements");
 		}
 
 		return result;

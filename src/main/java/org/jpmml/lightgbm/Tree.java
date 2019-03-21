@@ -121,8 +121,12 @@ public class Tree {
 			if(feature instanceof BinaryFeature){
 				BinaryFeature binaryFeature = (BinaryFeature)feature;
 
-				if(hasCategoricalMask(decision_type_) || threshold_ != 0.5d){
-					throw new IllegalArgumentException();
+				if(hasCategoricalMask(decision_type_)){
+					throw new IllegalArgumentException("Expected a false (off) categorical split mask for binary feature " + binaryFeature.getName() + ", got true (on)");
+				} // End if
+
+				if(threshold_ != 0.5d){
+					throw new IllegalArgumentException("Expected 0.5 as a threshold value for binary feature " + binaryFeature.getName() + ", got " + threshold_);
 				}
 
 				Object value = binaryFeature.getValue();
@@ -135,7 +139,7 @@ public class Tree {
 				CategoricalFeature categoricalFeature = (CategoricalFeature)feature;
 
 				if(!hasCategoricalMask(decision_type_)){
-					throw new IllegalArgumentException();
+					throw new IllegalArgumentException("Expected a true (on) categorical split mask for categorical feature " + categoricalFeature.getName() + ", got false (off)");
 				}
 
 				FieldName name = categoricalFeature.getName();
@@ -154,11 +158,11 @@ public class Tree {
 				Set<?> parentValues = categoryManager.getValue(name);
 
 				if(leftValues.size() == 0){
-					throw new IllegalArgumentException();
+					throw new IllegalArgumentException("Left branch is not selectable");
 				} // End if
 
 				if(parentValues != null && rightValues.size() == parentValues.size()){
-					throw new IllegalArgumentException();
+					throw new IllegalArgumentException("Right branch is not selectable");
 				}
 
 				leftCategoryManager = categoryManager.fork(name, leftValues);
@@ -174,7 +178,7 @@ public class Tree {
 				ContinuousFeature continuousFeature = feature.toContinuousFeature();
 
 				if(hasCategoricalMask(decision_type_)){
-					throw new IllegalArgumentException();
+					throw new IllegalArgumentException("Expected a false (off) categorical split mask for continuous feature " + continuousFeature.getName() + ", got true (on)");
 				}
 
 				Double value = threshold_;
