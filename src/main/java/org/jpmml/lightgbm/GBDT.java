@@ -91,7 +91,7 @@ public class GBDT {
 			this.feature_infos_ = section.getStringArray("feature_infos", this.max_feature_idx_ + 1);
 			this.boost_from_average_ = section.containsKey("boost_from_average");
 
-			this.object_function_ = parseObjectiveFunction(section.getString("objective"));
+			this.object_function_ = loadObjectiveFunction(section);
 
 			index++;
 		}
@@ -363,6 +363,54 @@ public class GBDT {
 		return (value != null ? Double.valueOf(value) : null);
 	}
 
+	static
+	private ObjectiveFunction loadObjectiveFunction(Section section){
+		String[] tokens = section.getStringArray("objective", -1);
+		if(tokens.length == 0){
+			throw new IllegalArgumentException();
+		}
+
+		String objective = tokens[0];
+
+		if(tokens.length > 1){
+			section = new Section(section);
+
+			for(int i = 1; i < tokens.length; i++){
+				section.put(tokens[i], ':');
+			}
+		}
+
+		switch(objective){
+			// RegressionL2loss
+			case "regression":
+			case "regression_l2":
+			case "mean_squared_error":
+			case "mse":
+			// RegressionL1loss
+			case "regression_l1":
+			case "mean_absolute_error":
+			case "mae":
+			// RegressionHuberLoss
+			case "huber":
+			// RegressionFairLoss
+			case "fair":
+				return new Regression();
+			// RegressionPoissonLoss
+			case "poisson":
+			// RegressionGammaLoss
+			case "gamma":
+			// RegressionTweedieLoss
+			case "tweedie":
+				return new PoissonRegression();
+			case "binary":
+				return new BinomialLogisticRegression(section.getDouble("sigmoid"));
+			case "multiclass":
+				return new MultinomialLogisticRegression(section.getInt("num_class"));
+			default:
+				throw new IllegalArgumentException(objective);
+		}
+	}
+
 	private Map<String, String> loadFeatureSection(Section section){
 		Map<String, String> result = new LinkedHashMap<>(section);
 
@@ -437,52 +485,6 @@ public class GBDT {
 		return Stream.of(values)
 			.map(function)
 			.collect(Collectors.toList());
-	}
-
-	static
-	private ObjectiveFunction parseObjectiveFunction(String string){
-		String[] tokens = LightGBMUtil.parseStringArray(string, -1);
-
-		if(tokens.length == 0){
-			throw new IllegalArgumentException(string);
-		}
-
-		String objective = tokens[0];
-
-		Section section = new Section();
-		for(int i = 1; i < tokens.length; i++){
-			section.put(tokens[i], ':');
-		}
-
-		switch(objective){
-			// RegressionL2loss
-			case "regression":
-			case "regression_l2":
-			case "mean_squared_error":
-			case "mse":
-			// RegressionL1loss
-			case "regression_l1":
-			case "mean_absolute_error":
-			case "mae":
-			// RegressionHuberLoss
-			case "huber":
-			// RegressionFairLoss
-			case "fair":
-				return new Regression();
-			// RegressionPoissonLoss
-			case "poisson":
-			// RegressionGammaLoss
-			case "gamma":
-			// RegressionTweedieLoss
-			case "tweedie":
-				return new PoissonRegression();
-			case "binary":
-				return new BinomialLogisticRegression(section.getDouble("sigmoid"));
-			case "multiclass":
-				return new MultinomialLogisticRegression(section.getInt("num_class"));
-			default:
-				throw new IllegalArgumentException(objective);
-		}
 	}
 
 	static

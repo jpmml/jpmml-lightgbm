@@ -26,6 +26,13 @@ import com.google.common.collect.Iterables;
 
 public class Section extends LinkedHashMap<String, String> {
 
+	public Section(){
+	}
+
+	public Section(Section section){
+		super(section);
+	}
+
 	public boolean checkId(String id){
 		return checkId(id::equals);
 	}
