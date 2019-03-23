@@ -861,7 +861,7 @@ CHAS=8
 parameters:
 [boosting: gbdt]
 [objective: mean_absolute_error]
-[metric: none,mean_absolute_error]
+[metric: mean_absolute_error,none]
 [tree_learner: serial]
 [device_type: cpu]
 [data: ]

@@ -1302,7 +1302,7 @@ self=83
 parameters:
 [boosting: gbdt]
 [objective: tweedie]
-[metric: tweedie,none]
+[metric: none,tweedie]
 [tree_learner: serial]
 [device_type: cpu]
 [data: ]
