@@ -68,21 +68,26 @@ public class LightGBMUtil {
 
 			private String[] featureNames = gbdt.getFeatureNames();
 
+			private String[] featureInfos = gbdt.getFeatureInfos();
+
 			private List<? extends Feature> features = schema.getFeatures();
 
 			{
 				SchemaUtil.checkSize(this.featureNames.length, this.features);
+				SchemaUtil.checkSize(this.featureInfos.length, this.features);
 			}
 
 			@Override
 			public Feature apply(Feature feature){
 				int index = this.features.indexOf(feature);
-
 				if(index < 0){
 					throw new IllegalArgumentException();
 				}
 
-				Double importance = gbdt.getFeatureImportance(this.featureNames[index]);
+				String featureName = this.featureNames[index];
+				String featureInfo = this.featureInfos[index];
+
+				Double importance = gbdt.getFeatureImportance(featureName);
 				if(importance != null){
 					ModelEncoder encoder = (ModelEncoder)feature.getEncoder();
 
@@ -98,6 +103,13 @@ public class LightGBMUtil {
 					Boolean binary = gbdt.isBinary(index);
 					if(binary != null && binary.booleanValue()){
 						return binaryFeature;
+					}
+
+					Boolean categorical = gbdt.isCategorical(index);
+					if(categorical != null && categorical.booleanValue()){
+						CategoricalFeature categoricalFeature = new BinaryCategoricalFeature(binaryFeature.getEncoder(), binaryFeature);
+
+						return categoricalFeature;
 					}
 				} else
 
@@ -218,6 +230,11 @@ public class LightGBMUtil {
 		}
 
 		return result;
+	}
+
+	static
+	public boolean isNone(String string){
+		return string.equals("none");
 	}
 
 	static

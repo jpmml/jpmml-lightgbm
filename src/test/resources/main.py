@@ -68,6 +68,27 @@ build_audit("Audit", num_iteration = 17)
 build_audit("AuditNA")
 build_audit("AuditNA", num_iteration = 17)
 
+def build_audit_bin(name, objective = "binary"):
+	df = load_csv(name + ".csv")
+	X = df[["Age", "Income", "Hours", "Employment", "Education", "Marital", "Occupation", "Gender"]]
+	y = df["Adjusted"]
+
+	Xt = pandas.get_dummies(X, columns = ["Employment", "Education", "Marital", "Occupation", "Gender"])
+
+	lgbm = LGBMClassifier(objective = objective, n_estimators = 31)
+	lgbm.fit(Xt, y, categorical_feature = [i for i in range(3, Xt.shape[1] - 3)])
+
+	name = re.sub("Audit", "AuditBin", name);
+
+	store_lgbm(lgbm, "Classification" + name + ".txt")
+
+	adjusted = DataFrame(lgbm.predict(Xt), columns = ["_target"])
+	adjusted_proba = DataFrame(lgbm.predict_proba(Xt), columns = ["probability(0)", "probability(1)"])
+	store_csv(pandas.concat((adjusted, adjusted_proba), axis = 1), "Classification" + name + ".csv")
+
+build_audit_bin("Audit")
+build_audit_bin("AuditNA")
+
 def build_versicolor(name, objective = "binary", num_iteration = 0):
 	df = load_csv(name + ".csv")
 	X = df[["Sepal.Length", "Sepal.Width", "Dummy", "Petal.Length", "Petal.Width"]]

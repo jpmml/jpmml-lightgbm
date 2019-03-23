@@ -182,7 +182,7 @@ public class GBDT {
 			String featureName = featureNames[i];
 			String featureInfo = featureInfos[i];
 
-			if(("none").equals(featureInfo)){
+			if(LightGBMUtil.isNone(featureInfo)){
 				features.add(null);
 
 				continue;
@@ -249,7 +249,7 @@ public class GBDT {
 				if(binary){
 					DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER, Arrays.asList(0, 1));
 
-					features.add(new BinaryFeature(encoder, dataField, "1"));
+					features.add(new BinaryFeature(encoder, dataField, 1));
 				} else
 
 				{
