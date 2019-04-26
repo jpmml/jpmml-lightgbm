@@ -28,23 +28,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.dmg.pmml.DataField;
-import org.dmg.pmml.DataType;
-import org.dmg.pmml.FieldName;
-import org.dmg.pmml.Interval;
-import org.dmg.pmml.OpType;
-import org.dmg.pmml.PMML;
-import org.dmg.pmml.Visitor;
+import org.dmg.pmml.*;
 import org.dmg.pmml.mining.MiningModel;
-import org.jpmml.converter.BinaryFeature;
-import org.jpmml.converter.CategoricalFeature;
-import org.jpmml.converter.ContinuousFeature;
-import org.jpmml.converter.Feature;
-import org.jpmml.converter.ImportanceDecorator;
-import org.jpmml.converter.Label;
-import org.jpmml.converter.PMMLUtil;
-import org.jpmml.converter.Schema;
-import org.jpmml.converter.TypeUtil;
+import org.jpmml.converter.*;
 import org.jpmml.lightgbm.visitors.TreeModelCompactor;
 
 public class GBDT {
@@ -267,6 +253,14 @@ public class GBDT {
 				.setImportance(getFeatureImportance(featureName));
 
 			encoder.addDecorator(activeField, importanceDecorator);
+
+			if(categorical){
+				encoder.addDecorator(activeField,new InvalidValueDecorator()
+						.setInvalidValueTreatment(InvalidValueTreatmentMethod.AS_MISSING));
+			}else {
+				encoder.addDecorator(activeField,new InvalidValueDecorator()
+						.setInvalidValueTreatment(InvalidValueTreatmentMethod.AS_IS));
+			}
 		}
 
 		Schema schema = new Schema(label, features);
