@@ -28,6 +28,8 @@ import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.Predicate;
 import org.dmg.pmml.SimplePredicate;
 import org.dmg.pmml.True;
+import org.dmg.pmml.tree.CountingBranchNode;
+import org.dmg.pmml.tree.CountingLeafNode;
 import org.dmg.pmml.tree.Node;
 import org.dmg.pmml.tree.TreeModel;
 import org.jpmml.converter.BinaryFeature;
@@ -40,8 +42,6 @@ import org.jpmml.converter.ModelUtil;
 import org.jpmml.converter.PredicateManager;
 import org.jpmml.converter.Schema;
 import org.jpmml.converter.ValueUtil;
-import org.jpmml.converter.tree.CountingBranchNode;
-import org.jpmml.converter.tree.CountingLeafNode;
 
 public class Tree {
 
@@ -239,7 +239,7 @@ public class Tree {
 				.setId(id)
 				.setScore(null) // XXX
 				.setDefaultChild(defaultLeft ? leftChild.getId() : rightChild.getId())
-				.setRecordCount((double)this.internal_count_[index])
+				.setRecordCount(this.internal_count_[index])
 				.setPredicate(predicate)
 				.addNodes(leftChild, rightChild);
 
@@ -253,7 +253,7 @@ public class Tree {
 			Node result = new CountingLeafNode()
 				.setId(id)
 				.setScore(this.leaf_value_[index])
-				.setRecordCount((double)this.leaf_count_[index])
+				.setRecordCount(this.leaf_count_[index])
 				.setPredicate(predicate);
 
 			return result;

@@ -79,7 +79,7 @@ public class TreeModelCompactor extends AbstractTreeModelTransformer {
 
 	@Override
 	public void exitNode(Node node){
-		Double recordCount = node.getRecordCount();
+		Number recordCount = node.getRecordCount();
 		Predicate predicate = node.getPredicate();
 
 		if(recordCount != null){
