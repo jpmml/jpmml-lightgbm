@@ -174,7 +174,9 @@ public class GBDT {
 
 		List<Feature> features = new ArrayList<>();
 
-		int categoryIndex = 0;
+		boolean hasPandasCategories = (this.pandas_categorical.size() > 0);
+
+		int pandasCategoryIndex = 0;
 
 		String[] featureNames = this.feature_names_;
 		String[] featureInfos = this.feature_infos_;
@@ -184,6 +186,10 @@ public class GBDT {
 
 			if(LightGBMUtil.isNone(featureInfo)){
 				features.add(null);
+
+				if(hasPandasCategories){
+					pandasCategoryIndex++;
+				}
 
 				continue;
 			}
@@ -209,8 +215,8 @@ public class GBDT {
 				{
 					Feature feature;
 
-					if(this.pandas_categorical.size() > 0){
-						List<?> categories = this.pandas_categorical.get(categoryIndex);
+					if(hasPandasCategories){
+						List<?> categories = this.pandas_categorical.get(pandasCategoryIndex);
 
 						DataType dataType = TypeUtil.getDataType(categories);
 						switch(dataType){
@@ -226,6 +232,8 @@ public class GBDT {
 						DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, dataType, categories);
 
 						feature = new CategoricalFeature(encoder, dataField);
+
+						pandasCategoryIndex++;
 					} else
 
 					{
@@ -241,8 +249,6 @@ public class GBDT {
 
 					features.add(feature);
 				}
-
-				categoryIndex++;
 			} else
 
 			{
@@ -267,6 +273,13 @@ public class GBDT {
 				.setImportance(getFeatureImportance(featureName));
 
 			encoder.addDecorator(activeField, importanceDecorator);
+		}
+
+		if(hasPandasCategories){
+
+			if(pandasCategoryIndex != this.pandas_categorical.size()){
+				throw new IllegalArgumentException();
+			}
 		}
 
 		Schema schema = new Schema(label, features);
