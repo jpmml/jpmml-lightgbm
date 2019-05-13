@@ -27,6 +27,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -295,6 +297,29 @@ public class LightGBMUtil {
 			.map(LightGBMUtil.CATEGORY_PARSER)
 			.collect(Collectors.toList());
 	}
+
+	static
+	public String unescape(String string){
+
+		if(string == null || !string.contains("\\u")){
+			return string;
+		}
+
+		StringBuffer sb = new StringBuffer(string.length());
+
+		Matcher matcher = LightGBMUtil.PATTERN_UNICODE_ESCAPE.matcher(string);
+		while(matcher.find()){
+			int c = Integer.parseInt(matcher.group(1), 16);
+
+			matcher.appendReplacement(sb, Character.toString((char)c));
+		}
+
+		matcher.appendTail(sb);
+
+		return sb.toString();
+	}
+
+	private static final Pattern PATTERN_UNICODE_ESCAPE = Pattern.compile("\\\\u([0-9A-Fa-f]{4})");
 
 	static final Function<String, Integer> CATEGORY_PARSER = new Function<String, Integer>(){
 

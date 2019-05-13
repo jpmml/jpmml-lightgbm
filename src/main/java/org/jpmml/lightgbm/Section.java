@@ -79,11 +79,21 @@ public class Section extends LinkedHashMap<String, String> {
 	}
 
 	public String getString(String key){
-		return get(key, false);
+		String result = get(key, false);
+
+		result = LightGBMUtil.unescape(result);
+
+		return result;
 	}
 
 	public String[] getStringArray(String key, int length){
-		return LightGBMUtil.parseStringArray(get(key), length);
+		String[] result = LightGBMUtil.parseStringArray(get(key), length);
+
+		for(int i = 0; i < result.length; i++){
+			result[i] = LightGBMUtil.unescape(result[i]);
+		}
+
+		return result;
 	}
 
 	public String get(String key){

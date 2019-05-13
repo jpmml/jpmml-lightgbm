@@ -491,7 +491,7 @@ public class GBDT {
 					string = string.substring("\"".length(), string.length() - "\"".length());
 				}
 
-				return string;
+				return LightGBMUtil.unescape(string);
 			}
 		};
 
