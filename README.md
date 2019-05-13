@@ -54,6 +54,10 @@ Getting help:
 java -jar target/jpmml-lightgbm-executable-1.2-SNAPSHOT.jar --help
 ```
 
+# Documentation #
+
+* [Converting Scikit-Learn plus LightGBM pipelines to PMML documents](https://openscoring.io/blog/2019/04/07/converting_sklearn_lightgbm_pipeline_pmml/)
+
 # License #
 
 JPMML-LightGBM is dual-licensed under the [GNU Affero General Public License (AGPL) version 3.0](https://www.gnu.org/licenses/agpl-3.0.html), and a commercial license.
