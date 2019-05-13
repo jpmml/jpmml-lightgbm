@@ -27,7 +27,6 @@ import org.dmg.pmml.mining.MiningModel;
 import org.dmg.pmml.regression.RegressionModel;
 import org.jpmml.converter.ModelUtil;
 import org.jpmml.converter.Schema;
-import org.jpmml.converter.SigmoidTransformation;
 import org.jpmml.converter.mining.MiningModelUtil;
 
 public class BinomialLogisticRegression extends Classification {
@@ -46,8 +45,8 @@ public class BinomialLogisticRegression extends Classification {
 		Schema segmentSchema = schema.toAnonymousRegressorSchema(DataType.DOUBLE);
 
 		MiningModel miningModel = createMiningModel(trees, numIteration, segmentSchema)
-			.setOutput(ModelUtil.createPredictedOutput(FieldName.create("lgbmValue"), OpType.CONTINUOUS, DataType.DOUBLE, new SigmoidTransformation(-1d * BinomialLogisticRegression.this.sigmoid_)));
+			.setOutput(ModelUtil.createPredictedOutput(FieldName.create("lgbmValue"), OpType.CONTINUOUS, DataType.DOUBLE));
 
-		return MiningModelUtil.createBinaryLogisticClassification(miningModel, 1d, 0d, RegressionModel.NormalizationMethod.NONE, true, schema);
+		return MiningModelUtil.createBinaryLogisticClassification(miningModel, BinomialLogisticRegression.this.sigmoid_, 0d, RegressionModel.NormalizationMethod.LOGIT, true, schema);
 	}
 }
