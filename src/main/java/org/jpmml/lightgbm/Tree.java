@@ -93,7 +93,7 @@ public class Tree {
 	}
 
 	public TreeModel encodeTreeModel(PredicateManager predicateManager, Schema schema){
-		Node root = encodeNode(new True(), predicateManager, new CategoryManager(), 0, schema);
+		Node root = encodeNode(True.INSTANCE, predicateManager, new CategoryManager(), 0, schema);
 
 		TreeModel treeModel = new TreeModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(schema.getLabel()), root)
 			.setSplitCharacteristic(TreeModel.SplitCharacteristic.BINARY_SPLIT)
@@ -235,12 +235,10 @@ public class Tree {
 			Node leftChild = encodeNode(leftPredicate, predicateManager, leftCategoryManager, this.left_child_[index], schema);
 			Node rightChild = encodeNode(rightPredicate, predicateManager, rightCategoryManager, this.right_child_[index], schema);
 
-			Node result = new CountingBranchNode()
+			Node result = new CountingBranchNode(null, predicate)
 				.setId(id)
-				.setScore(null) // XXX
 				.setDefaultChild(defaultLeft ? leftChild.getId() : rightChild.getId())
 				.setRecordCount(this.internal_count_[index])
-				.setPredicate(predicate)
 				.addNodes(leftChild, rightChild);
 
 			return result;
@@ -250,11 +248,9 @@ public class Tree {
 		{
 			index = ~index;
 
-			Node result = new CountingLeafNode()
+			Node result = new CountingLeafNode(this.leaf_value_[index], predicate)
 				.setId(id)
-				.setScore(this.leaf_value_[index])
-				.setRecordCount(this.leaf_count_[index])
-				.setPredicate(predicate);
+				.setRecordCount(this.leaf_count_[index]);
 
 			return result;
 		}

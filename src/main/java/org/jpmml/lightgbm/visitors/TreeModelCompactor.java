@@ -65,7 +65,7 @@ public class TreeModelCompactor extends AbstractTreeModelTransformer {
 
 			node.setDefaultChild(null);
 
-			secondChild.setPredicate(new True());
+			secondChild.setPredicate(True.INSTANCE);
 		} else
 
 		{
