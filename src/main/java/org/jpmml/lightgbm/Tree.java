@@ -103,7 +103,7 @@ public class Tree {
 	}
 
 	public Node encodeNode(Predicate predicate, PredicateManager predicateManager, CategoryManager categoryManager, int index, Schema schema){
-		Integer id = Integer.valueOf(index);
+		Integer id = Integer.valueOf(~index);
 
 		// Non-leaf (aka internal) node
 		if(index >= 0){
