@@ -18,6 +18,9 @@
  */
 package org.jpmml.lightgbm;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.jpmml.converter.HasOptions;
 
 public interface HasLightGBMOptions extends HasOptions {
@@ -25,4 +28,12 @@ public interface HasLightGBMOptions extends HasOptions {
 	String OPTION_COMPACT = "compact";
 
 	String OPTION_NUM_ITERATION = "num_iteration";
+
+	default
+	public Map<String, ?> lightgbmOptions(){
+		Map<String, Object> result = new LinkedHashMap<>();
+		result.put(HasLightGBMOptions.OPTION_COMPACT, Boolean.FALSE);
+
+		return result;
+	}
 }
