@@ -414,6 +414,8 @@ public class GBDT {
 			// RegressionTweedieLoss
 			case "tweedie":
 				return new PoissonRegression();
+			case "lambdarank":
+				return new Lambdarank();
 			case "binary":
 				return new BinomialLogisticRegression(section.getDouble("sigmoid"));
 			case "multiclass":
