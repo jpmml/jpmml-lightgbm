@@ -42,7 +42,6 @@ import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.ImportanceDecorator;
 import org.jpmml.converter.Label;
-import org.jpmml.converter.PMMLUtil;
 import org.jpmml.converter.Schema;
 import org.jpmml.converter.TypeUtil;
 import org.jpmml.lightgbm.visitors.TreeModelCompactor;
@@ -259,20 +258,20 @@ public class GBDT {
 				} else
 
 				{
-					Interval interval = LightGBMUtil.parseInterval(featureInfo);
-
 					DataField dataField = encoder.createDataField(activeField, OpType.CONTINUOUS, DataType.DOUBLE);
 
-					PMMLUtil.addIntervals(dataField, Arrays.asList(interval));
+					Interval interval = LightGBMUtil.parseInterval(featureInfo);
+
+					dataField.addIntervals(interval);
 
 					features.add(new ContinuousFeature(encoder, dataField));
 				}
 			}
 
-			ImportanceDecorator importanceDecorator = new ImportanceDecorator()
-				.setImportance(getFeatureImportance(featureName));
-
-			encoder.addDecorator(activeField, importanceDecorator);
+			Double importance = getFeatureImportance(featureName);
+			if(importance != null){
+				encoder.addDecorator(activeField, new ImportanceDecorator(importance));
+			}
 		}
 
 		if(hasPandasCategories){

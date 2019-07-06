@@ -93,10 +93,7 @@ public class LightGBMUtil {
 				if(importance != null){
 					ModelEncoder encoder = (ModelEncoder)feature.getEncoder();
 
-					ImportanceDecorator importanceDecorator = new ImportanceDecorator()
-						.setImportance(importance);
-
-					encoder.addDecorator(feature.getName(), importanceDecorator);
+					encoder.addDecorator(feature.getName(), new ImportanceDecorator(importance));
 				} // End if
 
 				if(feature instanceof BinaryFeature){
