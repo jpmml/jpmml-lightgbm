@@ -32,6 +32,7 @@ import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
 import org.dmg.pmml.FieldName;
 import org.dmg.pmml.Interval;
+import org.dmg.pmml.InvalidValueTreatmentMethod;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.PMML;
 import org.dmg.pmml.Visitor;
@@ -41,6 +42,7 @@ import org.jpmml.converter.CategoricalFeature;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.ImportanceDecorator;
+import org.jpmml.converter.InvalidValueDecorator;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.Schema;
 import org.jpmml.converter.TypeUtil;
@@ -248,6 +250,8 @@ public class GBDT {
 
 					features.add(feature);
 				}
+
+				encoder.addDecorator(activeField, new InvalidValueDecorator(InvalidValueTreatmentMethod.AS_MISSING, null));
 			} else
 
 			{
@@ -266,6 +270,8 @@ public class GBDT {
 
 					features.add(new ContinuousFeature(encoder, dataField));
 				}
+
+				encoder.addDecorator(activeField, new InvalidValueDecorator(InvalidValueTreatmentMethod.AS_IS, null));
 			}
 
 			Double importance = getFeatureImportance(featureName);

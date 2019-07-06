@@ -34,6 +34,11 @@ public class ClassificationTest extends LightGBMTest {
 	}
 
 	@Test
+	public void evaluateAuditInvalid() throws Exception {
+		evaluate("Classification", "AuditInvalid");
+	}
+
+	@Test
 	public void evaluateAuditNA() throws Exception {
 		evaluate("Classification", "AuditNA", new RealNumberEquivalence(2));
 	}

@@ -58,6 +58,8 @@ public class LightGBMTest extends IntegrationTest {
 
 				String[] dataset = parseDataset();
 
+				dataset[0] = dataset[0].replace("Invalid", "");
+
 				try(InputStream is = open("/lgbm/" + getName() + dataset[0] + ".txt")){
 					gbdt = LightGBMUtil.loadGBDT(is);
 				}

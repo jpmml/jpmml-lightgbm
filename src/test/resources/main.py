@@ -1,6 +1,8 @@
 from lightgbm import LGBMClassifier, LGBMRegressor
 from pandas import DataFrame
 
+import lightgbm
+import numpy
 import pandas
 import re
 
@@ -67,6 +69,19 @@ build_audit("Audit")
 build_audit("Audit", num_iteration = 17)
 build_audit("AuditNA")
 build_audit("AuditNA", num_iteration = 17)
+
+def build_audit_invalid():
+	df = load_csv("AuditInvalid.csv", ["Employment", "Education", "Marital", "Occupation", "Gender"])
+	X = df[["Age", "Employment", "Education", "Marital", "Occupation", "Income", "Gender", "Hours"]]
+	booster = lightgbm.Booster(model_file = "lgbm/ClassificationAudit.txt")
+
+	result = booster.predict(X)
+
+	adjusted = DataFrame(numpy.where(result < 0.5, 0, 1), columns = ["_target"])
+	adjusted_proba = DataFrame(numpy.vstack((1.0 - result, result)).transpose(), columns = ["probability(0)", "probability(1)"])
+	store_csv(pandas.concat((adjusted, adjusted_proba), axis = 1), "ClassificationAuditInvalid.csv")
+
+build_audit_invalid()
 
 def build_audit_bin(name, objective = "binary"):
 	df = load_csv(name + ".csv")
