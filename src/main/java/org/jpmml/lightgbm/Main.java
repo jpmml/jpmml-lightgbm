@@ -77,7 +77,8 @@ public class Main {
 
 	@Parameter (
 		names = {"--compact"},
-		description = "Transform LightGBM-style trees to PMML-style trees"
+		description = "Transform LightGBM-style trees to PMML-style trees",
+		arity = 1
 	)
 	private boolean compact = true;
 
