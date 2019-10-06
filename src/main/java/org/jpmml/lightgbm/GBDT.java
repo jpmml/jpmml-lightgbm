@@ -160,9 +160,7 @@ public class GBDT {
 		}
 	}
 
-	public PMML encodePMML(FieldName targetField, List<String> targetCategories, Map<String, ?> options){
-		LightGBMEncoder encoder = new LightGBMEncoder();
-
+	public Schema encodeSchema(FieldName targetField, List<String> targetCategories, LightGBMEncoder encoder){
 		Label label;
 
 		{
@@ -287,7 +285,13 @@ public class GBDT {
 			}
 		}
 
-		Schema schema = new Schema(label, features);
+		return new Schema(label, features);
+	}
+
+	public PMML encodePMML(FieldName targetField, List<String> targetCategories, Map<String, ?> options){
+		LightGBMEncoder encoder = new LightGBMEncoder();
+
+		Schema schema = encodeSchema(targetField, targetCategories, encoder);
 
 		MiningModel miningModel = encodeMiningModel(options, schema);
 
