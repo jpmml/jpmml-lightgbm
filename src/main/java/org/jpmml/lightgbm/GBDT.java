@@ -85,8 +85,15 @@ public class GBDT {
 			}
 
 			this.version = section.getString("version");
-			if(this.version != null && !("v2").equals(this.version)){
-				throw new IllegalArgumentException("Version " + this.version + " is not supported");
+			if(this.version != null){
+
+				switch(this.version){
+					case "v2":
+					case "v3":
+						break;
+					default:
+						throw new IllegalArgumentException("Version " + this.version + " is not supported");
+				}
 			}
 
 			this.max_feature_idx_ = section.getInt("max_feature_idx");

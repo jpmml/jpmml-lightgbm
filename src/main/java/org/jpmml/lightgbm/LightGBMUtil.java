@@ -113,7 +113,7 @@ public class LightGBMUtil {
 		int[] result = new int[values.length];
 
 		for(int i = 0; i < result.length; i++){
-			result[i] = Integer.parseInt(values[i]);
+			result[i] = parseInt(values[i]);
 		}
 
 		return result;
@@ -126,7 +126,7 @@ public class LightGBMUtil {
 		long[] result = new long[values.length];
 
 		for(int i = 0; i < result.length; i++){
-			result[i] = Long.parseLong(values[i]);
+			result[i] = parseUnsignedInt(values[i]);
 		}
 
 		return result;
@@ -139,10 +139,31 @@ public class LightGBMUtil {
 		double[] result = new double[values.length];
 
 		for(int i = 0; i < result.length; i++){
-			result[i] = Double.parseDouble(values[i]);
+			result[i] = parseDouble(values[i]);
 		}
 
 		return result;
+	}
+
+	static
+	private int parseInt(String string){
+		return Integer.parseInt(string);
+	}
+
+	static
+	private long parseUnsignedInt(String string){
+		return Long.parseLong(string);
+	}
+
+	static
+	private double parseDouble(String string){
+
+		switch(string){
+			case "inf":
+				return Double.POSITIVE_INFINITY;
+			default:
+				return Double.parseDouble(string);
+		}
 	}
 
 	static
