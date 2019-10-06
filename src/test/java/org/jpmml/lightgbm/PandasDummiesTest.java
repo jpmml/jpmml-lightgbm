@@ -38,7 +38,6 @@ import org.jpmml.converter.CategoricalLabel;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.Label;
-import org.jpmml.converter.ModelEncoder;
 import org.jpmml.converter.PMMLUtil;
 import org.jpmml.converter.Schema;
 import org.jpmml.evaluator.ArchiveBatch;
@@ -80,7 +79,7 @@ public class PandasDummiesTest extends IntegrationTest {
 					gbdt = LightGBMUtil.loadGBDT(is);
 				}
 
-				ModelEncoder encoder = new ModelEncoder();
+				LightGBMEncoder encoder = new LightGBMEncoder();
 
 				Label label;
 
@@ -122,7 +121,7 @@ public class PandasDummiesTest extends IntegrationTest {
 
 				Schema schema = new Schema(label, features);
 
-				Schema lgbmSchema = LightGBMUtil.toLightGBMSchema(gbdt, schema);
+				Schema lgbmSchema = gbdt.toLightGBMSchema(schema);
 
 				MiningModel miningModel = gbdt.encodeMiningModel(Collections.emptyMap(), lgbmSchema);
 

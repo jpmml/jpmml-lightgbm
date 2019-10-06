@@ -44,8 +44,11 @@ import org.jpmml.converter.Feature;
 import org.jpmml.converter.ImportanceDecorator;
 import org.jpmml.converter.InvalidValueDecorator;
 import org.jpmml.converter.Label;
+import org.jpmml.converter.ModelEncoder;
 import org.jpmml.converter.Schema;
+import org.jpmml.converter.SchemaUtil;
 import org.jpmml.converter.TypeUtil;
+import org.jpmml.converter.WildcardFeature;
 import org.jpmml.lightgbm.visitors.TreeModelCompactor;
 
 public class GBDT {
@@ -179,6 +182,11 @@ public class GBDT {
 
 		String[] featureNames = this.feature_names_;
 		String[] featureInfos = this.feature_infos_;
+
+		if(featureNames.length != featureInfos.length){
+			throw new IllegalArgumentException();
+		}
+
 		for(int i = 0; i < featureNames.length; i++){
 			String featureName = featureNames[i];
 			String featureInfo = featureInfos[i];
@@ -288,6 +296,81 @@ public class GBDT {
 		return new Schema(label, features);
 	}
 
+	public Schema toLightGBMSchema(Schema schema){
+		String[] featureNames = this.feature_names_;
+		String[] featureInfos = this.feature_infos_;
+
+		Function<Feature, Feature> function = new Function<Feature, Feature>(){
+
+			private List<? extends Feature> features = schema.getFeatures();
+
+			{
+				SchemaUtil.checkSize(featureNames.length, this.features);
+				SchemaUtil.checkSize(featureInfos.length, this.features);
+			}
+
+			@Override
+			public Feature apply(Feature feature){
+				int index = this.features.indexOf(feature);
+				if(index < 0){
+					throw new IllegalArgumentException();
+				}
+
+				String featureName = featureNames[index];
+				String featureInfo = featureInfos[index];
+
+				Double importance = getFeatureImportance(featureName);
+				if(importance != null){
+					ModelEncoder encoder = (ModelEncoder)feature.getEncoder();
+
+					encoder.addDecorator(feature.getName(), new ImportanceDecorator(importance));
+				} // End if
+
+				if(feature instanceof BinaryFeature){
+					BinaryFeature binaryFeature = (BinaryFeature)feature;
+
+					Boolean binary = isBinary(index);
+					if(binary != null && binary.booleanValue()){
+						return binaryFeature;
+					}
+
+					Boolean categorical = isCategorical(index);
+					if(categorical != null && categorical.booleanValue()){
+						CategoricalFeature categoricalFeature = new BinaryCategoricalFeature(binaryFeature.getEncoder(), binaryFeature);
+
+						return categoricalFeature;
+					}
+				} else
+
+				if(feature instanceof CategoricalFeature){
+					CategoricalFeature categoricalFeature = (CategoricalFeature)feature;
+
+					Boolean categorical = isCategorical(index);
+					if(categorical != null && categorical.booleanValue()){
+						return categoricalFeature;
+					}
+				} else
+
+				if(feature instanceof WildcardFeature){
+					WildcardFeature wildcardFeature = (WildcardFeature)feature;
+
+					Boolean binary = isBinary(index);
+					if(binary != null && binary.booleanValue()){
+						wildcardFeature.toCategoricalFeature(Arrays.asList(0, 1));
+
+						BinaryFeature binaryFeature = new BinaryFeature(wildcardFeature.getEncoder(), wildcardFeature, 1);
+
+						return binaryFeature;
+					}
+				}
+
+				return feature.toContinuousFeature();
+			}
+		};
+
+		return schema.toTransformedSchema(function);
+	}
+
 	public PMML encodePMML(FieldName targetField, List<String> targetCategories, Map<String, ?> options){
 		LightGBMEncoder encoder = new LightGBMEncoder();
 
@@ -324,7 +407,7 @@ public class GBDT {
 		return this.feature_infos_;
 	}
 
-	Boolean isBinary(int feature){
+	private Boolean isBinary(int feature){
 		String featureInfo = this.feature_infos_[feature];
 
 		if(!LightGBMUtil.isBinaryInterval(featureInfo)){
@@ -350,7 +433,7 @@ public class GBDT {
 		return result;
 	}
 
-	Boolean isCategorical(int feature){
+	private Boolean isCategorical(int feature){
 		String featureInfo = this.feature_infos_[feature];
 
 		if(!LightGBMUtil.isValues(featureInfo)){
@@ -376,10 +459,7 @@ public class GBDT {
 		return result;
 	}
 
-	/**
-	 * @see #getFeatureNames()
-	 */
-	Double getFeatureImportance(String featureName){
+	private Double getFeatureImportance(String featureName){
 		String value = this.feature_importances.get(featureName);
 
 		return (value != null ? Double.valueOf(value) : null);
