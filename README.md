@@ -56,6 +56,8 @@ java -jar target/jpmml-lightgbm-executable-1.2-SNAPSHOT.jar --help
 
 # Documentation #
 
+* [Deploying LightGBM models on Java/JVM platform](https://openscoring.io/blog/2019/12/03/deploying_lightgbm_java/)
+* [Extending Scikit-Learn with GBDT plus LR ensemble (GBDT+LR) model type](https://openscoring.io/blog/2019/06/19/sklearn_gbdt_lr_ensemble/) (Using LightGBM models on the GBDT side of GBDT+LR ensemble)
 * [Converting Scikit-Learn plus LightGBM pipelines to PMML documents](https://openscoring.io/blog/2019/04/07/converting_sklearn_lightgbm_pipeline_pmml/)
 
 # License #
