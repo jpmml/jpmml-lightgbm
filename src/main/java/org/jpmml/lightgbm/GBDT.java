@@ -500,6 +500,8 @@ public class GBDT {
 			case "huber":
 			// RegressionFairLoss
 			case "fair":
+			// RegressionQuantileloss
+			case "quantile":
 				return new Regression();
 			// RegressionPoissonLoss
 			case "poisson":

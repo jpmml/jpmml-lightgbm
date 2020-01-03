@@ -185,8 +185,8 @@ def build_housing(name, objective = "regression", num_iteration = 0):
 
 build_housing("Housing", objective = "mean_squared_error")
 build_housing("Housing", objective = "mean_squared_error", num_iteration = 31)
-build_housing("HousingNA", objective = "mean_absolute_error")
-build_housing("HousingNA", objective = "mean_absolute_error", num_iteration = 31)
+build_housing("HousingNA", objective = "quantile")
+build_housing("HousingNA", objective = "quantile", num_iteration = 31)
 
 #
 # Poisson regression
