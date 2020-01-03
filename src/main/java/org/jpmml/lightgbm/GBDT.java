@@ -489,16 +489,13 @@ public class GBDT {
 			}
 		}
 
+		objective = parseObjectiveAlias(objective.toLowerCase());
+
 		switch(objective){
 			// RegressionL2loss
 			case "regression":
-			case "regression_l2":
-			case "mean_squared_error":
-			case "mse":
 			// RegressionL1loss
 			case "regression_l1":
-			case "mean_absolute_error":
-			case "mae":
 			// RegressionHuberLoss
 			case "huber":
 			// RegressionFairLoss
@@ -511,14 +508,62 @@ public class GBDT {
 			// RegressionTweedieLoss
 			case "tweedie":
 				return new PoissonRegression();
+			// LambdarankNDCG
 			case "lambdarank":
 				return new Lambdarank();
+			// BinaryLogloss
 			case "binary":
 				return new BinomialLogisticRegression(section.getDouble("sigmoid"));
+			// MulticlassSoftmax
 			case "multiclass":
 				return new MultinomialLogisticRegression(section.getInt("num_class"));
 			default:
 				throw new IllegalArgumentException(objective);
+		}
+	}
+
+	static
+	private String parseObjectiveAlias(String objective){
+
+		switch(objective){
+			case "regression":
+			case "regression_l2":
+			case "mean_squared_error":
+			case "mse":
+			case "l2":
+			case "l2_root":
+			case "root_mean_squared_error":
+			case "rmse":
+				return "regression";
+			case "regression_l1":
+			case "mean_absolute_error":
+			case "l1":
+			case "mae":
+				return "regression_l1";
+			case "multiclass":
+			case "softmax":
+				return "multiclass";
+			case "multiclassova":
+			case "multiclass_ova":
+			case "ova":
+			case "ovr":
+				return "multiclassova";
+			case "xentropy":
+			case "cross_entropy":
+				return "cross_entropy";
+			case "xentlambda":
+			case "cross_entropy_lambda":
+				return "cross_entropy_lambda";
+			case "mean_absolute_percentage_error":
+			case "mape":
+				return "mape";
+			case "none":
+			case "null":
+			case "custom":
+			case "na":
+				return "custom";
+			default:
+				return objective;
 		}
 	}
 
