@@ -28,6 +28,11 @@ public class RegressionTest extends LightGBMTest {
 	}
 
 	@Test
+	public void evaluateRFAuto() throws Exception {
+		evaluate("RFRegression", "Auto");
+	}
+
+	@Test
 	public void evaluateAutoDirect() throws Exception {
 		evaluate("Regression", "AutoDirect");
 	}

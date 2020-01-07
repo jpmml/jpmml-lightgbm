@@ -63,8 +63,6 @@ public class GBDT {
 
 	private String[] feature_infos_;
 
-	private boolean boost_from_average_;
-
 	private ObjectiveFunction object_function_;
 
 	private Tree[] models_;
@@ -100,7 +98,6 @@ public class GBDT {
 			this.label_idx_ = section.getInt("label_index");
 			this.feature_names_ = section.getStringArray("feature_names", this.max_feature_idx_ + 1);
 			this.feature_infos_ = section.getStringArray("feature_infos", this.max_feature_idx_ + 1);
-			this.boost_from_average_ = section.containsKey("boost_from_average");
 
 			this.object_function_ = loadObjectiveFunction(section);
 
@@ -479,13 +476,16 @@ public class GBDT {
 			throw new IllegalArgumentException();
 		}
 
+		boolean average_output = section.containsKey("average_output");
+
 		String objective = tokens[0];
 
+		Section config = new Section();
+
 		if(tokens.length > 1){
-			section = new Section(section);
 
 			for(int i = 1; i < tokens.length; i++){
-				section.put(tokens[i], ':');
+				config.put(tokens[i], ':');
 			}
 		}
 
@@ -502,23 +502,23 @@ public class GBDT {
 			case "fair":
 			// RegressionQuantileloss
 			case "quantile":
-				return new Regression();
+				return new Regression(average_output);
 			// RegressionPoissonLoss
 			case "poisson":
 			// RegressionGammaLoss
 			case "gamma":
 			// RegressionTweedieLoss
 			case "tweedie":
-				return new PoissonRegression();
+				return new PoissonRegression(average_output);
 			// LambdarankNDCG
 			case "lambdarank":
-				return new Lambdarank();
+				return new Lambdarank(average_output);
 			// BinaryLogloss
 			case "binary":
-				return new BinomialLogisticRegression(section.getDouble("sigmoid"));
+				return new BinomialLogisticRegression(average_output, config.getDouble("sigmoid"));
 			// MulticlassSoftmax
 			case "multiclass":
-				return new MultinomialLogisticRegression(section.getInt("num_class"));
+				return new MultinomialLogisticRegression(average_output, config.getInt("num_class"));
 			default:
 				throw new IllegalArgumentException(objective);
 		}

@@ -37,13 +37,19 @@ import org.jpmml.converter.mining.MiningModelUtil;
 abstract
 public class ObjectiveFunction {
 
+	private boolean average_output_;
+
+
+	public ObjectiveFunction(boolean average_output){
+		this.average_output_ = average_output;
+	}
+
 	abstract
 	public Label encodeLabel(FieldName targetField, List<?> targetCategories, PMMLEncoder encoder);
 
 	abstract
 	public MiningModel encodeMiningModel(List<Tree> trees, Integer numIteration, Schema schema);
 
-	static
 	protected MiningModel createMiningModel(List<Tree> trees, Integer numIteration, Schema schema){
 		ContinuousLabel continuousLabel = (ContinuousLabel)schema.getLabel();
 
@@ -69,8 +75,12 @@ public class ObjectiveFunction {
 		}
 
 		MiningModel miningModel = new MiningModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(continuousLabel))
-			.setSegmentation(MiningModelUtil.createSegmentation(Segmentation.MultipleModelMethod.SUM, treeModels));
+			.setSegmentation(MiningModelUtil.createSegmentation(this.average_output_ ? Segmentation.MultipleModelMethod.AVERAGE : Segmentation.MultipleModelMethod.SUM, treeModels));
 
 		return miningModel;
+	}
+
+	public boolean getAverageOutput(){
+		return this.average_output_;
 	}
 }

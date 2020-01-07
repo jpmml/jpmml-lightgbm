@@ -29,6 +29,11 @@ public class ClassificationTest extends LightGBMTest {
 	}
 
 	@Test
+	public void evaluateRFAudit() throws Exception {
+		evaluate("RFClassification", "Audit");
+	}
+
+	@Test
 	public void evaluateAuditLimit() throws Exception {
 		evaluate("Classification", "Audit@17", new RealNumberEquivalence(2));
 	}
@@ -51,6 +56,11 @@ public class ClassificationTest extends LightGBMTest {
 	@Test
 	public void evaluateIris() throws Exception {
 		evaluate("Classification", "Iris");
+	}
+
+	@Test
+	public void evaluateRFIris() throws Exception {
+		evaluate("RFClassification", "Iris");
 	}
 
 	@Test

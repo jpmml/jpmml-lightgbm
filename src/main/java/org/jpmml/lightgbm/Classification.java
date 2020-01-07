@@ -35,7 +35,9 @@ public class Classification extends ObjectiveFunction {
 	private int num_class_;
 
 
-	public Classification(int num_class){
+	public Classification(boolean average_output, int num_class){
+		super(average_output);
+
 		this.num_class_ = num_class;
 	}
 

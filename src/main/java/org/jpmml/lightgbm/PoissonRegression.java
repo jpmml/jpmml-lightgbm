@@ -31,6 +31,10 @@ import org.jpmml.converter.mining.MiningModelUtil;
 
 public class PoissonRegression extends Regression {
 
+	public PoissonRegression(boolean average_output){
+		super(average_output);
+	}
+
 	@Override
 	public MiningModel encodeMiningModel(List<Tree> trees, Integer numIteration, Schema schema){
 		Schema segmentSchema = schema.toAnonymousSchema();

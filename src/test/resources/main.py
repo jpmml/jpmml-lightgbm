@@ -22,25 +22,31 @@ def store_lgbm(lgbm, name):
 # Multi-class classification
 #
 
-def build_iris(name, objective = "multiclass", num_iteration = 0):
+def build_iris(name, objective = "multiclass", boosting_type = "gbdt", num_iteration = 0, **kwargs):
 	df = load_csv(name + ".csv")
 	X = df[df.columns.difference(["Species"])]
 	y = df["Species"]
 
-	lgbm = LGBMClassifier(objective = objective, n_estimators = 11)
+	lgbm = LGBMClassifier(objective = objective, boosting_type = boosting_type, n_estimators = 11, **kwargs)
 	lgbm.fit(X, y)
 
-	if(num_iteration == 0):
-		store_lgbm(lgbm, "Classification" + name + ".txt")
+	func = "Classification"
+
+	if boosting_type != "gbdt":
+		func = (boosting_type.upper() + func)
+
+	if num_iteration == 0:
+		store_lgbm(lgbm, func + name + ".txt")
 	else:
 		name = (name + "@" + str(num_iteration))
 
 	species = DataFrame(lgbm.predict(X, num_iteration = num_iteration), columns = ["_target"]).replace("setosa", "0").replace("versicolor", "1").replace("virginica", "2")
 	species_proba = DataFrame(lgbm.predict_proba(X, num_iteration = num_iteration), columns = ["probability(0)", "probability(1)", "probability(2)"])
-	store_csv(pandas.concat((species, species_proba), axis = 1), "Classification" + name + ".csv")
+	store_csv(pandas.concat((species, species_proba), axis = 1), func + name + ".csv")
 
 build_iris("Iris")
 build_iris("Iris", num_iteration = 7)
+build_iris("Iris", boosting_type = "rf", bagging_freq = 3, bagging_fraction = 0.75)
 build_iris("IrisNA")
 build_iris("IrisNA", num_iteration = 7)
 
@@ -48,25 +54,31 @@ build_iris("IrisNA", num_iteration = 7)
 # Binary classification
 #
 
-def build_audit(name, objective = "binary", num_iteration = 0):
+def build_audit(name, objective = "binary", boosting_type = "gbdt", num_iteration = 0, **kwargs):
 	df = load_csv(name + ".csv", ["Employment", "Education", "Marital", "Occupation", "Gender"])
 	X = df[["Age", "Employment", "Education", "Marital", "Occupation", "Income", "Gender", "Hours"]]
 	y = df["Adjusted"]
 
-	lgbm = LGBMClassifier(objective = objective, n_estimators = 31)
+	lgbm = LGBMClassifier(objective = objective, boosting_type = boosting_type, n_estimators = 31, **kwargs)
 	lgbm.fit(X, y)
 
-	if(num_iteration == 0):
-		store_lgbm(lgbm, "Classification" + name + ".txt")
+	func = "Classification"
+
+	if boosting_type != "gbdt":
+		func = (boosting_type.upper() + func)
+
+	if num_iteration == 0:
+		store_lgbm(lgbm, func + name + ".txt")
 	else:
 		name = (name + "@" + str(num_iteration))
 
 	adjusted = DataFrame(lgbm.predict(X, num_iteration = num_iteration), columns = ["_target"])
 	adjusted_proba = DataFrame(lgbm.predict_proba(X, num_iteration = num_iteration), columns = ["probability(0)", "probability(1)"])
-	store_csv(pandas.concat((adjusted, adjusted_proba), axis = 1), "Classification" + name + ".csv")
+	store_csv(pandas.concat((adjusted, adjusted_proba), axis = 1), func + name + ".csv")
 
 build_audit("Audit")
 build_audit("Audit", num_iteration = 17)
+build_audit("Audit", boosting_type = "rf", bagging_freq = 10, bagging_fraction = 0.75)
 build_audit("AuditNA")
 build_audit("AuditNA", num_iteration = 17)
 
@@ -112,7 +124,7 @@ def build_versicolor(name, objective = "binary", num_iteration = 0):
 	lgbm = LGBMClassifier(objective = objective, n_estimators = 11)
 	lgbm.fit(X, y)
 
-	if(num_iteration == 0):
+	if num_iteration == 0:
 		store_lgbm(lgbm, "Classification" + name + ".txt")
 	else:
 		name = (name + "@" + str(num_iteration))
@@ -128,24 +140,30 @@ build_versicolor("Versicolor", num_iteration = 9)
 # Regression
 #
 
-def build_auto(name, objective = "regression", num_iteration = 0):
+def build_auto(name, objective = "regression", boosting_type = "gbdt", num_iteration = 0, **kwargs):
 	df = load_csv(name + ".csv", ["cylinders", "model_year", "origin"])
 	X = df[["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"]]
 	y = df["mpg"]
 
-	lgbm = LGBMRegressor(objective = objective, n_estimators = 31)
+	lgbm = LGBMRegressor(objective = objective, boosting_type = boosting_type, n_estimators = 31, **kwargs)
 	lgbm.fit(X, y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"])
 
-	if(num_iteration == 0):
-		store_lgbm(lgbm, "Regression" + name + ".txt")
+	func = "Regression"
+
+	if boosting_type != "gbdt":
+		func = (boosting_type.upper() + func)
+
+	if num_iteration == 0:
+		store_lgbm(lgbm, func + name + ".txt")
 	else:
 		name = (name + "@" + str(num_iteration))
 
 	mpg = DataFrame(lgbm.predict(X, num_iteration = num_iteration), columns = ["_target"])
-	store_csv(mpg, "Regression" + name + ".csv")
+	store_csv(mpg, func + name + ".csv")
 
 build_auto("Auto")
 build_auto("Auto", num_iteration = 17)
+build_auto("Auto", boosting_type = "rf", bagging_freq = 5, bagging_fraction = 0.75)
 build_auto("AutoNA")
 build_auto("AutoNA", num_iteration = 17)
 
@@ -175,7 +193,7 @@ def build_housing(name, objective = "regression", num_iteration = 0):
 	lgbm = LGBMRegressor(objective = objective, n_estimators = 51)
 	lgbm.fit(X, y)
 
-	if(num_iteration == 0):
+	if num_iteration == 0:
 		store_lgbm(lgbm, "Regression" + name + ".txt")
 	else:
 		name = (name + "@" + str(num_iteration))
@@ -200,7 +218,7 @@ def build_visit(name, objective = "poisson", num_iteration = 0):
 	lgbm = LGBMRegressor(objective = objective, n_estimators = 71)
 	lgbm.fit(X, y, feature_name = ["age", "outwork", "female", "married", "kids", "hhninc", "educ", "self"])
 
-	if(num_iteration == 0):
+	if num_iteration == 0:
 		store_lgbm(lgbm, "Regression" + name + ".txt")
 	else:
 		name = (name + "@" + str(num_iteration))

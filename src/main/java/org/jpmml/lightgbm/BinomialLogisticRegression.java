@@ -34,8 +34,8 @@ public class BinomialLogisticRegression extends Classification {
 	private double sigmoid_;
 
 
-	public BinomialLogisticRegression(double sigmoid){
-		super(2);
+	public BinomialLogisticRegression(boolean average_output, double sigmoid){
+		super(average_output, 2);
 
 		this.sigmoid_ = sigmoid;
 	}

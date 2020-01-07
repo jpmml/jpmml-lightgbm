@@ -32,6 +32,10 @@ import org.jpmml.converter.Schema;
 
 public class Regression extends ObjectiveFunction {
 
+	public Regression(boolean average_output){
+		super(average_output);
+	}
+
 	@Override
 	public Label encodeLabel(FieldName targetField, List<?> targetCategories, PMMLEncoder encoder){
 
