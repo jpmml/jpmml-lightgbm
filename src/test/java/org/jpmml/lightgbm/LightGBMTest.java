@@ -31,10 +31,10 @@ import org.dmg.pmml.MiningField;
 import org.dmg.pmml.PMML;
 import org.dmg.pmml.Visitor;
 import org.dmg.pmml.VisitorAction;
-import org.jpmml.evaluator.ArchiveBatch;
-import org.jpmml.evaluator.IntegrationTest;
-import org.jpmml.evaluator.IntegrationTestBatch;
-import org.jpmml.evaluator.RealNumberEquivalence;
+import org.jpmml.evaluator.testing.ArchiveBatch;
+import org.jpmml.evaluator.testing.IntegrationTest;
+import org.jpmml.evaluator.testing.IntegrationTestBatch;
+import org.jpmml.evaluator.testing.RealNumberEquivalence;
 import org.jpmml.model.visitors.AbstractVisitor;
 
 public class LightGBMTest extends IntegrationTest {

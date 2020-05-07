@@ -32,7 +32,7 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import org.dmg.pmml.FieldName;
 import org.dmg.pmml.PMML;
-import org.jpmml.model.MetroJAXBUtil;
+import org.jpmml.model.metro.MetroJAXBUtil;
 
 public class Main {
 

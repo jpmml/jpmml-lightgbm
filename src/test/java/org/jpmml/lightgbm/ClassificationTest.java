@@ -18,7 +18,7 @@
  */
 package org.jpmml.lightgbm;
 
-import org.jpmml.evaluator.RealNumberEquivalence;
+import org.jpmml.evaluator.testing.RealNumberEquivalence;
 import org.junit.Test;
 
 public class ClassificationTest extends LightGBMTest {
