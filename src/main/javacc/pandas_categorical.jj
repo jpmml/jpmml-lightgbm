@@ -1,0 +1,134 @@
+/*
+ * Copyright (c) 2020 Villu Ruusmann
+ *
+ * This file is part of JPMML-LightGBM
+ *
+ * JPMML-LightGBM is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * JPMML-LightGBM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with JPMML-LightGBM.  If not, see <http://www.gnu.org/licenses/>.
+ */
+options {
+	JAVA_TEMPLATE_TYPE = "modern";
+	JDK_VERSION = "1.8";
+	STATIC = false;
+}
+
+PARSER_BEGIN(PandasCategoricalParser)
+package org.jpmml.lightgbm;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PandasCategoricalParser {
+}
+
+PARSER_END(PandasCategoricalParser)
+
+SPECIAL_TOKEN:
+{
+	" "
+}
+
+TOKEN:
+{
+	< LBRACKET: "[" >
+	|
+	< RBRACKET: "]" >
+	|
+	< COMMA: "," >
+}
+
+TOKEN:
+{
+	< NULL: "null" >
+}
+
+TOKEN:
+{
+	< INT:
+		(<SIGN>)? (<DIGIT>)+
+	>
+	|
+	< FLOAT:
+		(<SIGN>)? (<DIGIT>)+ "." (<DIGIT>)* (<EXPONENT>)?
+		|
+		(<SIGN>)? "." (<DIGIT>)+ (<EXPONENT>)?
+		|
+		(<SIGN>)? (<DIGIT>)+ <EXPONENT>
+	>
+	|
+	< STRING: "\"" (~["\""])* "\"" >
+	|
+	< #SIGN: ["+", "-"] >
+	|
+	< #DIGIT: ["0" - "9"] >
+	|
+	< #EXPONENT: ["e", "E"] (<SIGN>)? (<DIGIT>)+ >
+}
+
+public List<List<String>> parsePandasCategorical():
+{
+	List<List<String>> result = new ArrayList<List<String>>();
+	List<String> categories = null;
+}
+{
+	(
+		LOOKAHEAD("pandas_categorical:" <NULL>)
+		"pandas_categorical:" <NULL>
+		|
+		LOOKAHEAD("pandas_categorical:" <LBRACKET> <RBRACKET>)
+		"pandas_categorical:" <LBRACKET> <RBRACKET>
+		|
+		"pandas_categorical:" <LBRACKET> categories = categories() { result.add(categories); } ( <COMMA> categories = categories() { result.add(categories); } )* <RBRACKET>
+	)
+
+	{
+		return result;
+	}
+}
+
+public List<String> categories():
+{
+	List<String> result = new ArrayList<String>();
+	String category = null;
+}
+{
+	<LBRACKET> category = category() { result.add(category); } (<COMMA> category = category() { result.add(category); })* <RBRACKET>
+
+	{
+		return result;
+	}
+}
+
+public String category():
+{
+	Token token;
+}
+{
+	(
+		token = <INT>
+		|
+		token = <FLOAT>
+		|
+		token = <STRING>
+	)
+
+	{
+		String image = token.image;
+
+		if(token.kind == STRING){
+			image = LightGBMUtil.unescape(image.substring(1, image.length() - 1));
+		}
+
+		return image;
+	}
+}

@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
@@ -578,71 +577,15 @@ public class GBDT {
 	}
 
 	private List<List<String>> loadPandasCategorical(Section section){
-		List<List<String>> result = new ArrayList<>();
-
 		String id = section.id();
 
-		if(("pandas_categorical:null").equals(id)){
-			return result;
-		} // End if
+		try {
+			PandasCategoricalParser parser = new PandasCategoricalParser(id);
 
-		if(!id.startsWith("pandas_categorical:[") || !id.endsWith("]")){
-			throw new IllegalArgumentException(id);
+			return parser.parsePandasCategorical();
+		} catch(Exception e){
+			throw new IllegalArgumentException(id, e);
 		}
-
-		id = id.substring("pandas_categorical:[".length(), id.length() - "]".length());
-
-		while(true){
-			int index = id.indexOf(']');
-
-			if(index < 0){
-				break;
-			}
-
-			String values = id.substring(0, index + 1);
-
-			if(!values.startsWith("[") || !values.endsWith("]")){
-				throw new IllegalArgumentException(values);
-			}
-
-			values = values.substring("[".length(), values.length() - "]".length());
-
-			result.add(loadPandasCategoryValues(values));
-
-			id = id.substring(index + 1);
-
-			if(id.startsWith(", ")){
-				id = id.substring(", ".length());
-			}
-		}
-
-		if(!("").equals(id)){
-			throw new IllegalArgumentException(id);
-		}
-
-		return result;
-	}
-
-	static
-	private List<String> loadPandasCategoryValues(String string){
-		String[] values = string.split(",\\s");
-
-		Function<String, String> function = new Function<String, String>(){
-
-			@Override
-			public String apply(String string){
-
-				if((string.length() > 1) && (string.startsWith("\"") && string.endsWith("\""))){
-					string = string.substring("\"".length(), string.length() - "\"".length());
-				}
-
-				return LightGBMUtil.unescape(string);
-			}
-		};
-
-		return Stream.of(values)
-			.map(function)
-			.collect(Collectors.toList());
 	}
 
 	static
