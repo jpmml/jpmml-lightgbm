@@ -73,6 +73,7 @@ public class LightGBMTest extends IntegrationTest {
 
 				Map<String, Object> options = new LinkedHashMap<>();
 				options.put(HasLightGBMOptions.OPTION_COMPACT, numIteration != null);
+				options.put(HasLightGBMOptions.OPTION_NAN_AS_MISSING, true);
 				options.put(HasLightGBMOptions.OPTION_NUM_ITERATION, numIteration);
 
 				PMML pmml = gbdt.encodePMML(null, null, options);
@@ -103,7 +104,22 @@ public class LightGBMTest extends IntegrationTest {
 
 				dataset[0] = dataset[0].replace("Direct", "");
 
-				return loadRecords("/csv/" + dataset[0] + ".csv");
+				List<Map<FieldName, String>> table = loadRecords("/csv/" + dataset[0] + ".csv");
+
+				// XXX
+				if(("AuditNA").equals(dataset[0])){
+					FieldName income = FieldName.create("Income");
+
+					for(Map<FieldName, String> row : table){
+						String value = row.get(income);
+
+						if(value == null){
+							row.put(income, "NaN");
+						}
+					}
+				}
+
+				return table;
 			}
 
 			@Override

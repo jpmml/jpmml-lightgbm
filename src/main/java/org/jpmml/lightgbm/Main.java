@@ -70,17 +70,24 @@ public class Main {
 	private List<String> targetCategories = null;
 
 	@Parameter (
-		names = {"--num-iteration"},
-		description = "Limit the number of trees. Defaults to all trees"
-	)
-	private Integer numIteration = null;
-
-	@Parameter (
 		names = {"--compact"},
 		description = "Transform LightGBM-style trees to PMML-style trees",
 		arity = 1
 	)
 	private boolean compact = true;
+
+	@Parameter (
+		names = "--nan-as-missing",
+		description = "Treat Not-a-Number (NaN) values as missing values",
+		arity = 1
+	)
+	private boolean nanAsMissing = true;
+
+	@Parameter (
+		names = {"--num-iteration"},
+		description = "Limit the number of trees. Defaults to all trees"
+	)
+	private Integer numIteration = null;
 
 
 	static
@@ -127,6 +134,7 @@ public class Main {
 
 		Map<String, Object> options = new LinkedHashMap<>();
 		options.put(HasLightGBMOptions.OPTION_COMPACT, this.compact);
+		options.put(HasLightGBMOptions.OPTION_NAN_AS_MISSING, this.nanAsMissing);
 		options.put(HasLightGBMOptions.OPTION_NUM_ITERATION, this.numIteration);
 
 		PMML pmml = gbdt.encodePMML(this.targetName != null ? FieldName.create(this.targetName) : null, this.targetCategories, options);

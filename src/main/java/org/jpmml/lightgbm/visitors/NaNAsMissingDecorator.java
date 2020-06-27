@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Villu Ruusmann
+ * Copyright (c) 2020 Villu Ruusmann
  *
  * This file is part of JPMML-LightGBM
  *
@@ -16,28 +16,32 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with JPMML-LightGBM.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jpmml.lightgbm;
+package org.jpmml.lightgbm.visitors;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.Collections;
 
-import org.jpmml.converter.HasNativeConfiguration;
-import org.jpmml.converter.HasOptions;
+import org.dmg.pmml.DataField;
+import org.dmg.pmml.DataType;
+import org.dmg.pmml.Value.Property;
+import org.dmg.pmml.VisitorAction;
+import org.jpmml.converter.PMMLUtil;
+import org.jpmml.converter.visitors.ActiveFieldFinder;
 
-public interface HasLightGBMOptions extends HasOptions, HasNativeConfiguration {
-
-	String OPTION_COMPACT = "compact";
-
-	String OPTION_NAN_AS_MISSING = "nan_as_missing";
-
-	String OPTION_NUM_ITERATION = "num_iteration";
+public class NaNAsMissingDecorator extends ActiveFieldFinder {
 
 	@Override
-	default
-	public Map<String, ?> getNativeConfiguration(){
-		Map<String, Object> result = new LinkedHashMap<>();
-		result.put(HasLightGBMOptions.OPTION_COMPACT, Boolean.FALSE);
+	public VisitorAction visit(DataField dataField){
+		DataType dataType = dataField.getDataType();
 
-		return result;
+		switch(dataType){
+			case FLOAT:
+			case DOUBLE:
+				PMMLUtil.addValues(dataField, Collections.singletonList("NaN"), Property.MISSING);
+				break;
+			default:
+				break;
+		}
+
+		return super.visit(dataField);
 	}
 }

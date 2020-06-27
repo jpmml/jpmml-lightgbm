@@ -48,6 +48,7 @@ import org.jpmml.converter.Schema;
 import org.jpmml.converter.SchemaUtil;
 import org.jpmml.converter.TypeUtil;
 import org.jpmml.converter.WildcardFeature;
+import org.jpmml.lightgbm.visitors.NaNAsMissingDecorator;
 import org.jpmml.lightgbm.visitors.TreeModelCompactor;
 
 public class GBDT {
@@ -377,11 +378,19 @@ public class GBDT {
 	public PMML encodePMML(FieldName targetField, List<String> targetCategories, Map<String, ?> options){
 		LightGBMEncoder encoder = new LightGBMEncoder();
 
+		Boolean nanAsMissing = (Boolean)options.get(HasLightGBMOptions.OPTION_NAN_AS_MISSING);
+
 		Schema schema = encodeSchema(targetField, targetCategories, encoder);
 
 		MiningModel miningModel = encodeMiningModel(options, schema);
 
 		PMML pmml = encoder.encodePMML(miningModel);
+
+		if((Boolean.TRUE).equals(nanAsMissing)){
+			Visitor visitor = new NaNAsMissingDecorator();
+
+			visitor.applyTo(pmml);
+		}
 
 		return pmml;
 	}
