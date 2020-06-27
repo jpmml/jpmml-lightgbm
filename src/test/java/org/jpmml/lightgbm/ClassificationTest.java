@@ -18,10 +18,63 @@
  */
 package org.jpmml.lightgbm;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
+
+import com.google.common.base.Equivalence;
+import org.dmg.pmml.FieldName;
+import org.jpmml.evaluator.ResultField;
+import org.jpmml.evaluator.testing.ArchiveBatch;
+import org.jpmml.evaluator.testing.IntegrationTest;
 import org.jpmml.evaluator.testing.RealNumberEquivalence;
 import org.junit.Test;
 
 public class ClassificationTest extends LightGBMTest {
+
+	@Override
+	protected ArchiveBatch createBatch(String name, String dataset, Predicate<ResultField> predicate, Equivalence<Object> equivalence){
+		ArchiveBatch result = new LightGBMTestBatch(name, dataset, predicate, equivalence){
+
+			@Override
+			public IntegrationTest getIntegrationTest(){
+				return ClassificationTest.this;
+			}
+
+			@Override
+			public String getModelTxtPath(){
+				String path = super.getModelTxtPath();
+
+				path = path.replace("Invalid", "");
+
+				return path;
+			}
+
+			@Override
+			public List<Map<FieldName, String>> getInput() throws IOException {
+				String[] dataset = parseDataset();
+
+				List<Map<FieldName, String>> table = super.getInput();
+
+				if(("AuditNA").equals(dataset[0])){
+					FieldName income = FieldName.create("Income");
+
+					for(Map<FieldName, String> row : table){
+						String value = row.get(income);
+
+						if(value == null){
+							row.put(income, "NaN");
+						}
+					}
+				}
+
+				return table;
+			}
+		};
+
+		return result;
+	}
 
 	@Test
 	public void evaluateAudit() throws Exception {
