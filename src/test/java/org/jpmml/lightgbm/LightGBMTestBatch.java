@@ -38,6 +38,10 @@ public class LightGBMTestBatch extends IntegrationTestBatch {
 		super(name, dataset, predicate, equivalence);
 	}
 
+	@Override
+	abstract
+	public LightGBMTest getIntegrationTest();
+
 	public Map<String, Object> getOptions(){
 		String[] dataset = parseDataset();
 

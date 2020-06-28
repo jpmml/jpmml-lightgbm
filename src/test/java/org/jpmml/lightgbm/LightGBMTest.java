@@ -37,7 +37,7 @@ public class LightGBMTest extends IntegrationTest {
 		ArchiveBatch result = new LightGBMTestBatch(name, dataset, predicate, equivalence){
 
 			@Override
-			public IntegrationTest getIntegrationTest(){
+			public LightGBMTest getIntegrationTest(){
 				return LightGBMTest.this;
 			}
 		};

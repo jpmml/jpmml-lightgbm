@@ -27,7 +27,6 @@ import com.google.common.base.Equivalence;
 import org.dmg.pmml.FieldName;
 import org.jpmml.evaluator.ResultField;
 import org.jpmml.evaluator.testing.ArchiveBatch;
-import org.jpmml.evaluator.testing.IntegrationTest;
 import org.jpmml.evaluator.testing.RealNumberEquivalence;
 import org.junit.Test;
 
@@ -38,7 +37,7 @@ public class ClassificationTest extends LightGBMTest {
 		ArchiveBatch result = new LightGBMTestBatch(name, dataset, predicate, equivalence){
 
 			@Override
-			public IntegrationTest getIntegrationTest(){
+			public ClassificationTest getIntegrationTest(){
 				return ClassificationTest.this;
 			}
 

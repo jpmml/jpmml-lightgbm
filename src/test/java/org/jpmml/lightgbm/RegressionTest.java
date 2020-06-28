@@ -28,7 +28,6 @@ import org.dmg.pmml.Visitor;
 import org.dmg.pmml.VisitorAction;
 import org.jpmml.evaluator.ResultField;
 import org.jpmml.evaluator.testing.ArchiveBatch;
-import org.jpmml.evaluator.testing.IntegrationTest;
 import org.jpmml.model.visitors.AbstractVisitor;
 import org.junit.Test;
 
@@ -39,7 +38,7 @@ public class RegressionTest extends LightGBMTest {
 		ArchiveBatch result = new LightGBMTestBatch(name, dataset, predicate, equivalence){
 
 			@Override
-			public IntegrationTest getIntegrationTest(){
+			public RegressionTest getIntegrationTest(){
 				return RegressionTest.this;
 			}
 
