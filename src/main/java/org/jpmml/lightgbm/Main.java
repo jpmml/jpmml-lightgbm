@@ -137,7 +137,7 @@ public class Main {
 		options.put(HasLightGBMOptions.OPTION_NAN_AS_MISSING, this.nanAsMissing);
 		options.put(HasLightGBMOptions.OPTION_NUM_ITERATION, this.numIteration);
 
-		PMML pmml = gbdt.encodePMML(this.targetName != null ? FieldName.create(this.targetName) : null, this.targetCategories, options);
+		PMML pmml = gbdt.encodePMML(options, this.targetName != null ? FieldName.create(this.targetName) : null, this.targetCategories);
 
 		try(OutputStream os = new FileOutputStream(this.output)){
 			MetroJAXBUtil.marshalPMML(pmml, os);

@@ -74,7 +74,7 @@ public class LightGBMTestBatch extends IntegrationTestBatch {
 
 		Map<String, ?> options = getOptions();
 
-		PMML pmml = gbdt.encodePMML(null, null, options);
+		PMML pmml = gbdt.encodePMML(options, null, null);
 
 		validatePMML(pmml);
 

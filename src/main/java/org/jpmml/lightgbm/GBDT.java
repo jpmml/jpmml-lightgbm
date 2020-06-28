@@ -375,7 +375,7 @@ public class GBDT {
 		return schema.toTransformedSchema(function);
 	}
 
-	public PMML encodePMML(FieldName targetField, List<String> targetCategories, Map<String, ?> options){
+	public PMML encodePMML(Map<String, ?> options, FieldName targetField, List<String> targetCategories){
 		LightGBMEncoder encoder = new LightGBMEncoder();
 
 		Boolean nanAsMissing = (Boolean)options.get(HasLightGBMOptions.OPTION_NAN_AS_MISSING);
