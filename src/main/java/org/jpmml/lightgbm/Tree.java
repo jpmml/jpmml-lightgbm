@@ -37,7 +37,6 @@ import org.jpmml.converter.CategoricalFeature;
 import org.jpmml.converter.CategoryManager;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
-import org.jpmml.converter.FeatureUtil;
 import org.jpmml.converter.ModelUtil;
 import org.jpmml.converter.PredicateManager;
 import org.jpmml.converter.Schema;
@@ -124,11 +123,11 @@ public class Tree {
 				BinaryFeature binaryFeature = (BinaryFeature)feature;
 
 				if(hasCategoricalMask(decision_type_)){
-					throw new IllegalArgumentException("Expected a false (off) categorical split mask for binary feature " + FeatureUtil.getName(binaryFeature) + ", got true (on)");
+					throw new IllegalArgumentException("Expected a false (off) categorical split mask for binary feature " + binaryFeature.getName() + ", got true (on)");
 				} // End if
 
 				if(threshold_ != 0.5d){
-					throw new IllegalArgumentException("Expected 0.5 as a threshold value for binary feature " + FeatureUtil.getName(binaryFeature) + ", got " + threshold_);
+					throw new IllegalArgumentException("Expected 0.5 as a threshold value for binary feature " + binaryFeature.getName() + ", got " + threshold_);
 				}
 
 				Object value = binaryFeature.getValue();
@@ -141,7 +140,7 @@ public class Tree {
 				BinaryCategoricalFeature binaryCategoricalFeature = (BinaryCategoricalFeature)feature;
 
 				if(!hasCategoricalMask(decision_type_)){
-					throw new IllegalArgumentException("Expected a true (on) categorical split mask for binary categorical feature " + FeatureUtil.getName(binaryCategoricalFeature) + ", got false (off)");
+					throw new IllegalArgumentException("Expected a true (on) categorical split mask for binary categorical feature " + binaryCategoricalFeature.getName() + ", got false (off)");
 				}
 
 				FieldName name = binaryCategoricalFeature.getName();
@@ -184,7 +183,7 @@ public class Tree {
 				CategoricalFeature categoricalFeature = (CategoricalFeature)feature;
 
 				if(!hasCategoricalMask(decision_type_)){
-					throw new IllegalArgumentException("Expected a true (on) categorical split mask for categorical feature " + FeatureUtil.getName(categoricalFeature) + ", got false (off)");
+					throw new IllegalArgumentException("Expected a true (on) categorical split mask for categorical feature " + categoricalFeature.getName() + ", got false (off)");
 				}
 
 				FieldName name = categoricalFeature.getName();
@@ -223,7 +222,7 @@ public class Tree {
 				ContinuousFeature continuousFeature = feature.toContinuousFeature();
 
 				if(hasCategoricalMask(decision_type_)){
-					throw new IllegalArgumentException("Expected a false (off) categorical split mask for continuous feature " + FeatureUtil.getName(continuousFeature) + ", got true (on)");
+					throw new IllegalArgumentException("Expected a false (off) categorical split mask for continuous feature " + continuousFeature.getName() + ", got true (on)");
 				}
 
 				Double value = threshold_;
