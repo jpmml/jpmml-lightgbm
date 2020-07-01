@@ -213,8 +213,8 @@ public class Tree {
 				leftCategoryManager = categoryManager.fork(name, leftValues);
 				rightCategoryManager = categoryManager.fork(name, rightValues);
 
-				leftPredicate = predicateManager.createSimpleSetPredicate(categoricalFeature, leftValues);
-				rightPredicate = predicateManager.createSimpleSetPredicate(categoricalFeature, rightValues);
+				leftPredicate = predicateManager.createPredicate(categoricalFeature, leftValues);
+				rightPredicate = predicateManager.createPredicate(categoricalFeature, rightValues);
 
 				defaultLeft = false;
 			} else

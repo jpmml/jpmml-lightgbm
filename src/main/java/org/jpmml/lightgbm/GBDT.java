@@ -48,7 +48,7 @@ import org.jpmml.converter.Schema;
 import org.jpmml.converter.SchemaUtil;
 import org.jpmml.converter.TypeUtil;
 import org.jpmml.converter.WildcardFeature;
-import org.jpmml.lightgbm.visitors.NaNAsMissingDecorator;
+import org.jpmml.converter.visitors.NaNAsMissingDecorator;
 import org.jpmml.lightgbm.visitors.TreeModelCompactor;
 
 public class GBDT {
