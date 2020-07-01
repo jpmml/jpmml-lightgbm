@@ -69,22 +69,31 @@ public class Main {
 	)
 	private List<String> targetCategories = null;
 
+	/**
+	 * @see HasLightGBMOptions#OPTION_COMPACT
+	 */
 	@Parameter (
-		names = {"--compact"},
+		names = {"--X-compact"},
 		description = "Transform LightGBM-style trees to PMML-style trees",
 		arity = 1
 	)
 	private boolean compact = true;
 
+	/**
+	 * @see HasLightGBMOptions#OPTION_NAN_AS_MISSING
+	 */
 	@Parameter (
-		names = "--nan-as-missing",
+		names = {"--X-nan-as-missing"},
 		description = "Treat Not-a-Number (NaN) values as missing values",
 		arity = 1
 	)
 	private boolean nanAsMissing = true;
 
+	/**
+	 * @see HasLightGBMOptions#OPTION_NUM_ITERATION
+	 */
 	@Parameter (
-		names = {"--num-iteration"},
+		names = {"--X-num-iteration"},
 		description = "Limit the number of trees. Defaults to all trees"
 	)
 	private Integer numIteration = null;
