@@ -92,7 +92,7 @@ public class Tree {
 	}
 
 	public TreeModel encodeTreeModel(PredicateManager predicateManager, Schema schema){
-		Node root = encodeNode(True.INSTANCE, predicateManager, new CategoryManager(), 0, schema);
+		Node root = encodeNode(0, True.INSTANCE, new CategoryManager(), predicateManager, schema);
 
 		TreeModel treeModel = new TreeModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(schema.getLabel()), root)
 			.setSplitCharacteristic(TreeModel.SplitCharacteristic.BINARY_SPLIT)
@@ -101,7 +101,7 @@ public class Tree {
 		return treeModel;
 	}
 
-	public Node encodeNode(Predicate predicate, PredicateManager predicateManager, CategoryManager categoryManager, int index, Schema schema){
+	public Node encodeNode(int index, Predicate predicate, CategoryManager categoryManager, PredicateManager predicateManager, Schema schema){
 		Integer id = Integer.valueOf(~index);
 
 		// Non-leaf (aka internal) node
@@ -231,8 +231,8 @@ public class Tree {
 				rightPredicate = predicateManager.createSimplePredicate(continuousFeature, SimplePredicate.Operator.GREATER_THAN, value);
 			}
 
-			Node leftChild = encodeNode(leftPredicate, predicateManager, leftCategoryManager, this.left_child_[index], schema);
-			Node rightChild = encodeNode(rightPredicate, predicateManager, rightCategoryManager, this.right_child_[index], schema);
+			Node leftChild = encodeNode(this.left_child_[index], leftPredicate, leftCategoryManager, predicateManager, schema);
+			Node rightChild = encodeNode(this.right_child_[index], rightPredicate, rightCategoryManager, predicateManager, schema);
 
 			Node result = new CountingBranchNode(null, predicate)
 				.setId(id)
