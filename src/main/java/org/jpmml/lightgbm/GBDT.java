@@ -297,7 +297,7 @@ public class GBDT {
 			}
 		}
 
-		return new Schema(label, features);
+		return new Schema(encoder, label, features);
 	}
 
 	public Schema toLightGBMSchema(Schema schema){
@@ -305,6 +305,8 @@ public class GBDT {
 		String[] featureInfos = this.feature_infos_;
 
 		Function<Feature, Feature> function = new Function<Feature, Feature>(){
+
+			private ModelEncoder encoder = (ModelEncoder)schema.getEncoder();
 
 			private List<? extends Feature> features = schema.getFeatures();
 
@@ -325,9 +327,7 @@ public class GBDT {
 
 				Double importance = getFeatureImportance(featureName);
 				if(importance != null){
-					ModelEncoder encoder = (ModelEncoder)feature.getEncoder();
-
-					encoder.addDecorator(feature.getName(), new ImportanceDecorator(importance));
+					this.encoder.addDecorator(feature.getName(), new ImportanceDecorator(importance));
 				} // End if
 
 				if(feature instanceof BinaryFeature){
@@ -340,7 +340,7 @@ public class GBDT {
 
 					Boolean categorical = isCategorical(index);
 					if(categorical != null && categorical.booleanValue()){
-						CategoricalFeature categoricalFeature = new BinaryCategoricalFeature(binaryFeature.getEncoder(), binaryFeature);
+						CategoricalFeature categoricalFeature = new BinaryCategoricalFeature(this.encoder, binaryFeature);
 
 						return categoricalFeature;
 					}
@@ -362,7 +362,7 @@ public class GBDT {
 					if(binary != null && binary.booleanValue()){
 						wildcardFeature.toCategoricalFeature(Arrays.asList(0, 1));
 
-						BinaryFeature binaryFeature = new BinaryFeature(wildcardFeature.getEncoder(), wildcardFeature, 1);
+						BinaryFeature binaryFeature = new BinaryFeature(this.encoder, wildcardFeature, 1);
 
 						return binaryFeature;
 					}

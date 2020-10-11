@@ -22,11 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.dmg.pmml.DataType;
-import org.dmg.pmml.FieldName;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.mining.MiningModel;
 import org.dmg.pmml.regression.RegressionModel;
 import org.jpmml.converter.CategoricalLabel;
+import org.jpmml.converter.FieldNameUtil;
 import org.jpmml.converter.FortranMatrixUtil;
 import org.jpmml.converter.ModelUtil;
 import org.jpmml.converter.Schema;
@@ -52,7 +52,7 @@ public class MultinomialLogisticRegression extends Classification {
 
 		for(int i = 0, rows = categoricalLabel.size(), columns = (trees.size() / rows); i < rows; i++){
 			MiningModel miningModel = createMiningModel(FortranMatrixUtil.getRow(trees, rows, columns, i), numIteration, segmentSchema)
-				.setOutput(ModelUtil.createPredictedOutput(FieldName.create("lgbmValue(" + categoricalLabel.getValue(i) + ")"), OpType.CONTINUOUS, DataType.DOUBLE));
+				.setOutput(ModelUtil.createPredictedOutput(FieldNameUtil.create("lgbmValue", categoricalLabel.getValue(i)), OpType.CONTINUOUS, DataType.DOUBLE));
 
 			miningModels.add(miningModel);
 		}

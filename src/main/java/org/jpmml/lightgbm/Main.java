@@ -33,6 +33,8 @@ import com.beust.jcommander.ParameterException;
 import org.dmg.pmml.FieldName;
 import org.dmg.pmml.PMML;
 import org.jpmml.model.metro.MetroJAXBUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Main {
 
@@ -138,7 +140,17 @@ public class Main {
 		GBDT gbdt;
 
 		try(InputStream is = new FileInputStream(this.input)){
+			logger.info("Loading GBDT..");
+
+			long begin = System.currentTimeMillis();
 			gbdt = LightGBMUtil.loadGBDT(is);
+			long end = System.currentTimeMillis();
+
+			logger.info("Loaded GBDT in {} ms.", (end - begin));
+		} catch(Exception e){
+			logger.error("Failed to load GBDT", e);
+
+			throw e;
 		}
 
 		Map<String, Object> options = new LinkedHashMap<>();
@@ -146,10 +158,36 @@ public class Main {
 		options.put(HasLightGBMOptions.OPTION_NAN_AS_MISSING, this.nanAsMissing);
 		options.put(HasLightGBMOptions.OPTION_NUM_ITERATION, this.numIteration);
 
-		PMML pmml = gbdt.encodePMML(options, this.targetName != null ? FieldName.create(this.targetName) : null, this.targetCategories);
+		PMML pmml;
+
+		try {
+			logger.info("Converting GBDT to PMML..");
+
+			long begin = System.currentTimeMillis();
+			pmml = gbdt.encodePMML(options, this.targetName != null ? FieldName.create(this.targetName) : null, this.targetCategories);
+			long end = System.currentTimeMillis();
+
+			logger.info("Converted GBDT to PMML in {} ms.", (end - begin));
+		} catch(Exception e){
+			logger.error("Failed to convert GBDT to PMML", e);
+
+			throw e;
+		}
 
 		try(OutputStream os = new FileOutputStream(this.output)){
+			logger.info("Marshalling PMML..");
+
+			long begin = System.currentTimeMillis();
 			MetroJAXBUtil.marshalPMML(pmml, os);
+			long end = System.currentTimeMillis();
+
+			logger.info("Marshalled PMML in {} ms.", (end - begin));
+		} catch(Exception e){
+			logger.error("Failed to marshal PMML", e);
+
+			throw e;
 		}
 	}
+
+	private static final Logger logger = LoggerFactory.getLogger(Main.class);
 }

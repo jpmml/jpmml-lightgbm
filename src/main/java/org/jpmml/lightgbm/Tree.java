@@ -237,7 +237,7 @@ public class Tree {
 			Node result = new CountingBranchNode(null, predicate)
 				.setId(id)
 				.setDefaultChild(defaultLeft ? leftChild.getId() : rightChild.getId())
-				.setRecordCount(this.internal_count_[index])
+				.setRecordCount(ValueUtil.narrow(this.internal_count_[index]))
 				.addNodes(leftChild, rightChild);
 
 			return result;
@@ -249,7 +249,7 @@ public class Tree {
 
 			Node result = new CountingLeafNode(this.leaf_value_[index], predicate)
 				.setId(id)
-				.setRecordCount(this.leaf_count_[index]);
+				.setRecordCount(ValueUtil.narrow(this.leaf_count_[index]));
 
 			return result;
 		}

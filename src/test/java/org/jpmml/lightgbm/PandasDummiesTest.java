@@ -121,7 +121,7 @@ public class PandasDummiesTest extends IntegrationTest {
 					}
 				}
 
-				Schema schema = new Schema(label, features);
+				Schema schema = new Schema(encoder, label, features);
 
 				Schema lgbmSchema = gbdt.toLightGBMSchema(schema);
 
