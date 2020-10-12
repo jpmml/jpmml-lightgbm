@@ -131,7 +131,7 @@ public class GBDT {
 		if(index < sections.size()){
 			Section section = sections.get(index);
 
-			if(!section.checkId("feature importances:")){
+			if(!section.checkId("feature importances:") && !section.checkId("feature_importances:")){
 				break feature_importances;
 			}
 

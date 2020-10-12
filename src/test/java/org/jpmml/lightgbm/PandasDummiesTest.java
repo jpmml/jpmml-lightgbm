@@ -51,12 +51,12 @@ import org.junit.Test;
 public class PandasDummiesTest extends IntegrationTest {
 
 	public PandasDummiesTest(){
-		super(new RealNumberEquivalence(1));
+		super(new RealNumberEquivalence(2));
 	}
 
 	@Test
 	public void evaluateAuditBin() throws Exception {
-		evaluate("Classification", "AuditBin", new RealNumberEquivalence(2));
+		evaluate("Classification", "AuditBin");
 	}
 
 	@Test

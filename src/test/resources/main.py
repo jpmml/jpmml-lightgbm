@@ -173,13 +173,13 @@ def build_auto_direct(name):
 	y = df["mpg"]
 
 	lgbm = LGBMRegressor(n_estimators = 31)
-	lgbm.fit(X.as_matrix(), y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"], categorical_feature =  ["cylinders", "model_year", "origin"])
+	lgbm.fit(X.values, y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"], categorical_feature =  ["cylinders", "model_year", "origin"])
 
 	name = re.sub("Auto", "AutoDirect", name);
 
 	store_lgbm(lgbm, "Regression" + name + ".txt")
 
-	mpg = DataFrame(lgbm.predict(X.as_matrix()), columns = ["_target"])
+	mpg = DataFrame(lgbm.predict(X.values), columns = ["_target"])
 	store_csv(mpg, "Regression" + name + ".csv")
 
 build_auto_direct("Auto")
