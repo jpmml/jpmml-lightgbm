@@ -234,7 +234,7 @@ public class Tree {
 			Node leftChild = encodeNode(this.left_child_[index], leftPredicate, leftCategoryManager, predicateManager, schema);
 			Node rightChild = encodeNode(this.right_child_[index], rightPredicate, rightCategoryManager, predicateManager, schema);
 
-			Node result = new CountingBranchNode(null, predicate)
+			Node result = new CountingBranchNode(this.leaf_value_[index], predicate)
 				.setId(id)
 				.setDefaultChild(defaultLeft ? leftChild.getId() : rightChild.getId())
 				.setRecordCount(ValueUtil.narrow(this.internal_count_[index]))
