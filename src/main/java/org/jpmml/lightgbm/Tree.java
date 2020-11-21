@@ -75,15 +75,26 @@ public class Tree {
 		this.num_leaves_ = section.getInt("num_leaves");
 		this.num_cat_ = section.getInt("num_cat");
 
-		this.left_child_ = section.getIntArray("left_child", this.num_leaves_ - 1);
-		this.right_child_ = section.getIntArray("right_child", this.num_leaves_ - 1);
-		this.split_feature_real_ = section.getIntArray("split_feature", this.num_leaves_ - 1);
-		this.threshold_ = section.getDoubleArray("threshold", this.num_leaves_ - 1);
-		this.decision_type_ = section.getIntArray("decision_type", this.num_leaves_ - 1);
-		this.leaf_value_ = section.getDoubleArray("leaf_value", this.num_leaves_);
-		this.leaf_count_ = section.getIntArray("leaf_count", this.num_leaves_);
-		this.internal_value_ = section.getDoubleArray("internal_value", this.num_leaves_ - 1);
-		this.internal_count_ = section.getIntArray("internal_count", this.num_leaves_ - 1);
+		if(this.num_leaves_ == 1){
+			this.leaf_value_ = section.getDoubleArray("leaf_value", this.num_leaves_);
+			this.leaf_count_ = new int[]{0};
+		} else
+
+		if(this.num_leaves_ > 1){
+			this.left_child_ = section.getIntArray("left_child", this.num_leaves_ - 1);
+			this.right_child_ = section.getIntArray("right_child", this.num_leaves_ - 1);
+			this.split_feature_real_ = section.getIntArray("split_feature", this.num_leaves_ - 1);
+			this.threshold_ = section.getDoubleArray("threshold", this.num_leaves_ - 1);
+			this.decision_type_ = section.getIntArray("decision_type", this.num_leaves_ - 1);
+			this.leaf_value_ = section.getDoubleArray("leaf_value", this.num_leaves_);
+			this.leaf_count_ = section.getIntArray("leaf_count", this.num_leaves_);
+			this.internal_value_ = section.getDoubleArray("internal_value", this.num_leaves_ - 1);
+			this.internal_count_ = section.getIntArray("internal_count", this.num_leaves_ - 1);
+		} else
+
+		{
+			throw new IllegalArgumentException("Expected one or more leaves, got " + this.num_leaves_ + " leaves");
+		} // End if
 
 		if(this.num_cat_ > 0){
 			this.cat_boundaries_ = section.getIntArray("cat_boundaries", this.num_cat_ + 1);
@@ -105,7 +116,7 @@ public class Tree {
 		Integer id = Integer.valueOf(~index);
 
 		// Non-leaf (aka internal) node
-		if(index >= 0){
+		if((this.num_leaves_ > 1) && (index >= 0)){
 			Feature feature = schema.getFeature(this.split_feature_real_[index]);
 
 			double threshold_ = this.threshold_[index];
@@ -245,7 +256,9 @@ public class Tree {
 
 		// Leaf node
 		{
-			index = ~index;
+			if(this.num_leaves_ > 1){
+				index = ~index;
+			}
 
 			Node result = new CountingLeafNode(this.leaf_value_[index], predicate)
 				.setId(id)

@@ -27,7 +27,7 @@ def build_iris(name, objective = "multiclass", boosting_type = "gbdt", num_itera
 	X = df[df.columns.difference(["Species"])]
 	y = df["Species"]
 
-	lgbm = LGBMClassifier(objective = objective, boosting_type = boosting_type, n_estimators = 11, **kwargs)
+	lgbm = LGBMClassifier(objective = objective, boosting_type = boosting_type, n_estimators = (11 if name.endswith("NA") else 200), **kwargs)
 	lgbm.fit(X, y)
 
 	func = "Classification"
