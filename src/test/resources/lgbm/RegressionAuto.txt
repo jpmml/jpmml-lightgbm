@@ -646,6 +646,7 @@ parameters:
 [learning_rate: 0.1]
 [num_leaves: 31]
 [num_threads: -1]
+[deterministic: 0]
 [force_col_wise: 0]
 [force_row_wise: 0]
 [histogram_pool_size: -1]
@@ -726,7 +727,7 @@ parameters:
 [fair_c: 1]
 [poisson_max_delta_step: 0.7]
 [tweedie_variance_power: 1.5]
-[lambdarank_truncation_level: 20]
+[lambdarank_truncation_level: 30]
 [lambdarank_norm: 1]
 [label_gain: ]
 [eval_at: ]
@@ -740,6 +741,7 @@ parameters:
 [gpu_platform_id: -1]
 [gpu_device_id: -1]
 [gpu_use_dp: 0]
+[num_gpu: 1]
 
 end of parameters
 
