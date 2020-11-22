@@ -102,6 +102,10 @@ public class Tree {
 		}
 	}
 
+	public boolean isEmpty(){
+		return (this.num_leaves_ == 1);
+	}
+
 	public TreeModel encodeTreeModel(PredicateManager predicateManager, Schema schema){
 		Node root = encodeNode(0, True.INSTANCE, new CategoryManager(), predicateManager, schema);
 
@@ -116,7 +120,7 @@ public class Tree {
 		Integer id = Integer.valueOf(~index);
 
 		// Non-leaf (aka internal) node
-		if((this.num_leaves_ > 1) && (index >= 0)){
+		if(!isEmpty() && (index >= 0)){
 			Feature feature = schema.getFeature(this.split_feature_real_[index]);
 
 			double threshold_ = this.threshold_[index];
@@ -256,7 +260,7 @@ public class Tree {
 
 		// Leaf node
 		{
-			if(this.num_leaves_ > 1){
+			if(!isEmpty()){
 				index = ~index;
 			}
 
@@ -316,6 +320,10 @@ public class Tree {
 	Boolean isBinary(int feature){
 		Boolean result = null;
 
+		if(isEmpty()){
+			return result;
+		}
+
 		for(int i = 0; i < this.split_feature_real_.length; i++){
 
 			if(this.split_feature_real_[i] == feature){
@@ -337,6 +345,10 @@ public class Tree {
 
 	Boolean isCategorical(int feature){
 		Boolean result = null;
+
+		if(isEmpty()){
+			return result;
+		}
 
 		for(int i = 0; i < this.split_feature_real_.length; i++){
 
