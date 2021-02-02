@@ -327,7 +327,7 @@ public class GBDT {
 
 				Double importance = getFeatureImportance(featureName);
 				if(importance != null){
-					this.encoder.addDecorator(feature.getName(), new ImportanceDecorator(importance));
+					this.encoder.addFeatureImportance(feature.getName(), importance);
 				} // End if
 
 				if(feature instanceof BinaryFeature){
