@@ -1,4 +1,4 @@
-JPMML-LightGBM
+JPMML-LightGBM [![Build Status](https://github.com/jpmml/jpmml-lightgbm/workflows/maven/badge.svg)](https://github.com/jpmml/jpmml-lightgbm/actions?query=workflow%3A%22maven%22)
 ==============
 
 Java library and command-line application for converting [LightGBM](https://github.com/Microsoft/LightGBM) models to PMML.
