@@ -7,7 +7,7 @@ max_feature_idx=6
 objective=regression
 feature_names=cylinders displacement horsepower weight acceleration model_year origin
 feature_infos=-1:4:8:6:3 [68:455] [46:230] [1613:5140] [8:24.800000000000001] -1:73:78:76:82:75:70:79:80:81:71:72:77:74 -1:1:3:2
-tree_sizes=1364 1248 1406 1279 1363 1365 1522 1524 1445 1447 1270 1283 1325 1271 1324 1356 1331 1361 1342 1444 1444 1449 1553 1458 1386 1379 1360 1356 1464 1449 1452
+tree_sizes=1376 1260 1418 1291 1375 1377 1534 1536 1457 1459 1282 1295 1337 1283 1336 1368 1343 1373 1354 1456 1456 1461 1565 1470 1398 1391 1372 1368 1476 1461 1464
 
 Tree=0
 num_leaves=16
@@ -24,6 +24,7 @@ leaf_count=22 20 37 25 20 29 22 26 23 30 31 27 20 21 25 20
 internal_value=23.5146 24.0199 22.8228 24.3115 23.6201 24.0615 24.5297 24.6429 22.615 23.7283 23.0998 24.2091 22.6908 23.0379 22.6402
 internal_weight=0 230 168 133 97 62 71 45 96 68 72 40 66 52 41
 internal_count=398 230 168 133 97 62 71 45 96 68 72 40 66 52 41
+is_linear=0
 shrinkage=1
 
 
@@ -42,6 +43,7 @@ leaf_count=23 20 37 32 30 29 30 21 30 31 24 29 34 28
 internal_value=0 0.454793 -0.622633 0.7172 0.0949977 0.484894 0.908136 -0.809624 0.192321 -0.373312 0.985047 -0.741357 -0.428985
 internal_weight=0 230 168 133 97 60 73 96 68 72 52 66 52
 internal_count=398 230 168 133 97 60 73 96 68 72 52 66 52
+is_linear=0
 shrinkage=0.1
 
 
@@ -60,6 +62,7 @@ leaf_count=21 20 20 25 37 29 22 26 24 30 31 27 20 21 25 20
 internal_value=0 0.409314 -0.56037 0.223574 0.085498 0.439597 0.825265 0.922538 -0.728662 0.173089 -0.33598 0.561909 -0.667221 -0.386086 -0.712552
 internal_weight=0 230 168 159 97 62 71 45 96 68 72 40 66 52 41
 internal_count=398 230 168 159 97 62 71 45 96 68 72 40 66 52 41
+is_linear=0
 shrinkage=0.1
 
 
@@ -80,6 +83,7 @@ internal_weight=0 230 117 168 113 58 59 83 96 72 48 66 52
 internal_count=398 230 117 168 113 58 59 83 96 72 48 66 52
 cat_boundaries=0 3
 cat_threshold=0 0 507904
+is_linear=0
 shrinkage=0.1
 
 
@@ -100,6 +104,7 @@ internal_weight=0 209 104 189 105 102 59 45 75 70 87 57 48 40
 internal_count=398 209 104 189 105 102 59 45 75 70 87 57 48 40
 cat_boundaries=0 3
 cat_threshold=0 0 507904
+is_linear=0
 shrinkage=0.1
 
 
@@ -120,6 +125,7 @@ internal_weight=0 209 104 189 105 102 59 45 75 70 87 57 49 40
 internal_count=398 209 104 189 105 102 59 45 75 70 87 57 49 40
 cat_boundaries=0 3
 cat_threshold=0 0 507904
+is_linear=0
 shrinkage=0.1
 
 
@@ -140,6 +146,7 @@ internal_weight=0 230 113 117 168 88 71 48 91 68 77 48 70 50 42 42
 internal_count=398 230 113 117 168 88 71 48 91 68 77 48 70 50 42 42
 cat_boundaries=0 3
 cat_threshold=0 0 499712
+is_linear=0
 shrinkage=0.1
 
 
@@ -160,6 +167,7 @@ internal_weight=0 230 113 117 168 88 71 48 96 69 68 72 48 50 42 47
 internal_count=398 230 113 117 168 88 71 48 96 69 68 72 48 50 42 47
 cat_boundaries=0 3
 cat_threshold=0 0 499712
+is_linear=0
 shrinkage=0.1
 
 
@@ -180,6 +188,7 @@ internal_weight=0 230 113 117 168 88 71 91 68 77 70 41 42 50 42
 internal_count=398 230 113 117 168 88 71 91 68 77 70 41 42 50 42
 cat_boundaries=0 3
 cat_threshold=0 0 499712
+is_linear=0
 shrinkage=0.1
 
 
@@ -200,6 +209,7 @@ internal_weight=0 230 117 168 113 59 58 96 69 63 50 72 47 42 41
 internal_count=398 230 117 168 113 59 58 96 69 63 50 72 47 42 41
 cat_boundaries=0 3
 cat_threshold=0 0 507904
+is_linear=0
 shrinkage=0.1
 
 
@@ -220,6 +230,7 @@ internal_weight=0 204 103 194 101 107 69 76 46 87 55 65 45
 internal_count=398 204 103 194 101 107 69 76 46 87 55 65 45
 cat_boundaries=0 1 4
 cat_threshold=16 0 0 507904
+is_linear=0
 shrinkage=0.1
 
 
@@ -240,6 +251,7 @@ internal_weight=0 234 113 121 164 95 59 66 98 54 66 71 41
 internal_count=398 234 113 121 164 95 59 66 98 54 66 71 41
 cat_boundaries=0 3
 cat_threshold=0 0 507904
+is_linear=0
 shrinkage=0.1
 
 
@@ -260,6 +272,7 @@ internal_weight=0 280 118 118 63 54 55 162 43 64 41 91 61 71
 internal_count=398 280 118 118 63 54 55 162 43 64 41 91 61 71
 cat_boundaries=0 3 4 5 6
 cat_threshold=0 0 491520 16 2 8
+is_linear=0
 shrinkage=0.1
 
 
@@ -280,6 +293,7 @@ internal_weight=0 234 124 110 164 49 57 67 61 98 73 66 47
 internal_count=398 234 124 110 164 49 57 67 61 98 73 66 47
 cat_boundaries=0 3 4
 cat_threshold=0 0 499712 2
+is_linear=0
 shrinkage=0.1
 
 
@@ -300,6 +314,7 @@ internal_weight=0 280 118 118 63 55 68 162 43 42 50 71 91 58
 internal_count=398 280 118 118 63 55 68 162 43 42 50 71 91 58
 cat_boundaries=0 3 4 5 6
 cat_threshold=0 0 491520 16 2 8
+is_linear=0
 shrinkage=0.1
 
 
@@ -320,6 +335,7 @@ internal_weight=0 280 118 118 90 70 63 162 114 87 48 55 63 41
 internal_count=398 280 118 118 90 70 63 162 114 87 48 55 63 41
 cat_boundaries=0 3 4
 cat_threshold=0 0 491520 16
+is_linear=0
 shrinkage=0.1
 
 
@@ -340,6 +356,7 @@ internal_weight=0 280 118 118 63 47 55 162 71 43 46 71 91 53
 internal_count=398 280 118 118 63 47 55 162 71 43 46 71 91 53
 cat_boundaries=0 3 4 5 6
 cat_threshold=0 0 491520 16 2 8
+is_linear=0
 shrinkage=0.1
 
 
@@ -360,6 +377,7 @@ internal_weight=0 273 125 110 87 163 56 86 54 46 117 95 74 53
 internal_count=398 273 125 110 87 163 56 86 54 46 117 95 74 53
 cat_boundaries=0 3 4
 cat_threshold=0 0 475136 4
+is_linear=0
 shrinkage=0.1
 
 
@@ -380,6 +398,7 @@ internal_weight=0 280 118 118 90 55 63 70 162 43 71 91 45 58
 internal_count=398 280 118 118 90 55 63 70 162 43 71 91 45 58
 cat_boundaries=0 3 4 5
 cat_threshold=0 0 491520 16 2
+is_linear=0
 shrinkage=0.1
 
 
@@ -400,6 +419,7 @@ internal_weight=0 273 125 110 88 40 163 86 54 48 46 117 95 74 53
 internal_count=398 273 125 110 88 40 163 86 54 48 46 117 95 74 53
 cat_boundaries=0 3 4
 cat_threshold=0 0 475136 4
+is_linear=0
 shrinkage=0.1
 
 
@@ -420,6 +440,7 @@ internal_weight=0 281 117 80 111 59 170 90 69 70 49 101 68 49 44
 internal_count=398 281 117 80 111 59 170 90 69 70 49 101 68 49 44
 cat_boundaries=0 3 4
 cat_threshold=0 0 466944 2
+is_linear=0
 shrinkage=0.1
 
 
@@ -440,6 +461,7 @@ internal_weight=0 273 175 61 125 114 89 98 78 58 41 47 68 48 40
 internal_count=398 273 175 61 125 114 89 98 78 58 41 47 68 48 40
 cat_boundaries=0 3
 cat_threshold=0 0 960
+is_linear=0
 shrinkage=0.1
 
 
@@ -460,6 +482,7 @@ internal_weight=0 125 273 157 103 76 55 137 110 89 65 116 70 42 46 41
 internal_count=398 125 273 157 103 76 55 137 110 89 65 116 70 42 46 41
 cat_boundaries=0 3
 cat_threshold=0 0 376832
+is_linear=0
 shrinkage=0.1
 
 
@@ -480,6 +503,7 @@ internal_weight=0 281 117 59 111 58 170 150 130 90 70 49 103 74 50
 internal_count=398 281 117 59 111 58 170 150 130 90 70 49 103 74 50
 cat_boundaries=0 3 4
 cat_threshold=0 0 466944 2
+is_linear=0
 shrinkage=0.1
 
 
@@ -500,6 +524,7 @@ internal_weight=0 281 117 55 180 90 101 62 66 90 72 42 60 40
 internal_count=398 281 117 55 180 90 101 62 66 90 72 42 60 40
 cat_boundaries=0 3
 cat_threshold=0 0 368640
+is_linear=0
 shrinkage=0.1
 
 
@@ -520,6 +545,7 @@ internal_weight=0 273 253 113 78 50 125 140 119 93 96 54 73 53
 internal_count=398 273 253 113 78 50 125 140 119 93 96 54 73 53
 cat_boundaries=0 3 6
 cat_threshold=0 0 960 0 0 364544
+is_linear=0
 shrinkage=0.1
 
 
@@ -540,6 +566,7 @@ internal_weight=0 271 127 158 86 54 72 107 113 90 50 45 77 57
 internal_count=398 271 127 158 86 54 72 107 113 90 50 45 77 57
 cat_boundaries=0 3 4 5
 cat_threshold=0 0 2880 2 2
+is_linear=0
 shrinkage=0.1
 
 
@@ -560,6 +587,7 @@ internal_weight=0 124 274 101 125 149 70 79 43 58 58 89 52 45
 internal_count=398 124 274 101 125 149 70 79 43 58 58 89 52 45
 cat_boundaries=0 3 6 7 8
 cat_threshold=0 0 352256 0 0 960 2 8
+is_linear=0
 shrinkage=0.1
 
 
@@ -580,6 +608,7 @@ internal_weight=0 130 62 268 124 67 68 144 93 72 51 57 46 51 43
 internal_count=398 130 62 268 124 67 68 144 93 72 51 57 46 51 43
 cat_boundaries=0 3 6
 cat_threshold=0 0 348160 0 0 1856
+is_linear=0
 shrinkage=0.1
 
 
@@ -600,6 +629,7 @@ internal_weight=0 125 80 42 273 127 146 60 45 107 46 40 61 86 65
 internal_count=398 125 80 42 273 127 146 60 45 107 46 40 61 86 65
 cat_boundaries=0 3 6 7
 cat_threshold=0 0 475136 0 0 2880 2
+is_linear=0
 shrinkage=0.1
 
 
@@ -620,6 +650,7 @@ internal_weight=0 125 273 103 82 253 138 96 42 55 115 76 49 70 45
 internal_count=398 125 273 103 82 253 138 96 42 55 115 76 49 70 45
 cat_boundaries=0 3 6 7
 cat_threshold=0 0 376832 0 0 1920 2
+is_linear=0
 shrinkage=0.1
 
 
@@ -640,6 +671,7 @@ parameters:
 [metric: l2]
 [tree_learner: serial]
 [device_type: cpu]
+[linear_tree: 0]
 [data: ]
 [valid: ]
 [num_iterations: 31]
@@ -668,6 +700,7 @@ parameters:
 [max_delta_step: 0]
 [lambda_l1: 0]
 [lambda_l2: 0]
+[linear_lambda: 0]
 [min_gain_to_split: 0]
 [drop_rate: 0.1]
 [max_drop: 50]

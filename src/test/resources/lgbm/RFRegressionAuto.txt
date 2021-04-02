@@ -8,7 +8,7 @@ objective=regression
 average_output
 feature_names=cylinders displacement horsepower weight acceleration model_year origin
 feature_infos=-1:1:4:3:0 [68:455] [46:230] [1613:5140] [8:24.800000000000001] -1:3:8:6:12:5:0:9:10:11:1:2:7:4 -1:0:2:1
-tree_sizes=997 997 997 997 997 1129 1129 1129 1129 1129 982 982 982 982 982 995 995 995 995 995 979 979 979 979 979 983 983 983 983 983 1070
+tree_sizes=1009 1009 1009 1009 1009 1141 1141 1141 1141 1141 994 994 994 994 994 1007 1007 1007 1007 1007 991 991 991 991 991 995 995 995 995 995 1082
 
 Tree=0
 num_leaves=11
@@ -27,6 +27,7 @@ internal_weight=0 153 141 99 77 65 76 54 54 51
 internal_count=294 153 141 99 77 65 76 54 54 51
 cat_boundaries=0 1
 cat_threshold=4
+is_linear=0
 shrinkage=1
 
 
@@ -47,6 +48,7 @@ internal_weight=0 153 141 99 77 65 76 54 54 51
 internal_count=294 153 141 99 77 65 76 54 54 51
 cat_boundaries=0 1
 cat_threshold=4
+is_linear=0
 shrinkage=1
 
 
@@ -67,6 +69,7 @@ internal_weight=0 153 141 99 77 65 76 54 54 51
 internal_count=294 153 141 99 77 65 76 54 54 51
 cat_boundaries=0 1
 cat_threshold=4
+is_linear=0
 shrinkage=1
 
 
@@ -87,6 +90,7 @@ internal_weight=0 153 141 99 77 65 76 54 54 51
 internal_count=294 153 141 99 77 65 76 54 54 51
 cat_boundaries=0 1
 cat_threshold=4
+is_linear=0
 shrinkage=1
 
 
@@ -107,6 +111,7 @@ internal_weight=0 153 141 99 77 65 76 54 54 51
 internal_count=294 153 141 99 77 65 76 54 54 51
 cat_boundaries=0 1
 cat_threshold=4
+is_linear=0
 shrinkage=1
 
 
@@ -125,6 +130,7 @@ leaf_count=22 21 20 29 21 31 23 23 21 20 22 25 23
 internal_value=23.5146 28.7849 17.1218 26.4745 33.4057 28.9256 19.8731 14.664 24.8016 25.607 15.3574 18.987
 internal_weight=0 159 142 106 53 43 67 75 63 43 54 46
 internal_count=301 159 142 106 53 43 67 75 63 43 54 46
+is_linear=0
 shrinkage=1
 
 
@@ -143,6 +149,7 @@ leaf_count=22 21 20 29 21 31 23 23 21 20 22 25 23
 internal_value=23.5146 28.7849 17.1218 26.4745 33.4057 28.9256 19.8731 14.664 24.8016 25.607 15.3574 18.987
 internal_weight=0 159 142 106 53 43 67 75 63 43 54 46
 internal_count=301 159 142 106 53 43 67 75 63 43 54 46
+is_linear=0
 shrinkage=1
 
 
@@ -161,6 +168,7 @@ leaf_count=22 21 20 29 21 31 23 23 21 20 22 25 23
 internal_value=23.5146 28.7849 17.1218 26.4745 33.4057 28.9256 19.8731 14.664 24.8016 25.607 15.3574 18.987
 internal_weight=0 159 142 106 53 43 67 75 63 43 54 46
 internal_count=301 159 142 106 53 43 67 75 63 43 54 46
+is_linear=0
 shrinkage=1
 
 
@@ -179,6 +187,7 @@ leaf_count=22 21 20 29 21 31 23 23 21 20 22 25 23
 internal_value=23.5146 28.7849 17.1218 26.4745 33.4057 28.9256 19.8731 14.664 24.8016 25.607 15.3574 18.987
 internal_weight=0 159 142 106 53 43 67 75 63 43 54 46
 internal_count=301 159 142 106 53 43 67 75 63 43 54 46
+is_linear=0
 shrinkage=1
 
 
@@ -197,6 +206,7 @@ leaf_count=22 21 20 29 21 31 23 23 21 20 22 25 23
 internal_value=23.5146 28.7849 17.1218 26.4745 33.4057 28.9256 19.8731 14.664 24.8016 25.607 15.3574 18.987
 internal_weight=0 159 142 106 53 43 67 75 63 43 54 46
 internal_count=301 159 142 106 53 43 67 75 63 43 54 46
+is_linear=0
 shrinkage=1
 
 
@@ -215,6 +225,7 @@ leaf_count=27 29 37 21 33 27 25 24 28 23 22
 internal_value=23.5146 29.4694 17.9066 20.6155 33.6074 26.9867 14.5603 25.6774 15.5818 19.3691
 internal_weight=0 144 152 84 54 90 68 53 44 55
 internal_count=296 144 152 84 54 90 68 53 44 55
+is_linear=0
 shrinkage=1
 
 
@@ -233,6 +244,7 @@ leaf_count=27 29 37 21 33 27 25 24 28 23 22
 internal_value=23.5146 29.4694 17.9066 20.6155 33.6074 26.9867 14.5603 25.6774 15.5818 19.3691
 internal_weight=0 144 152 84 54 90 68 53 44 55
 internal_count=296 144 152 84 54 90 68 53 44 55
+is_linear=0
 shrinkage=1
 
 
@@ -251,6 +263,7 @@ leaf_count=27 29 37 21 33 27 25 24 28 23 22
 internal_value=23.5146 29.4694 17.9066 20.6155 33.6074 26.9867 14.5603 25.6774 15.5818 19.3691
 internal_weight=0 144 152 84 54 90 68 53 44 55
 internal_count=296 144 152 84 54 90 68 53 44 55
+is_linear=0
 shrinkage=1
 
 
@@ -269,6 +282,7 @@ leaf_count=27 29 37 21 33 27 25 24 28 23 22
 internal_value=23.5146 29.4694 17.9066 20.6155 33.6074 26.9867 14.5603 25.6774 15.5818 19.3691
 internal_weight=0 144 152 84 54 90 68 53 44 55
 internal_count=296 144 152 84 54 90 68 53 44 55
+is_linear=0
 shrinkage=1
 
 
@@ -287,6 +301,7 @@ leaf_count=27 29 37 21 33 27 25 24 28 23 22
 internal_value=23.5146 29.4694 17.9066 20.6155 33.6074 26.9867 14.5603 25.6774 15.5818 19.3691
 internal_weight=0 144 152 84 54 90 68 53 44 55
 internal_count=296 144 152 84 54 90 68 53 44 55
+is_linear=0
 shrinkage=1
 
 
@@ -307,6 +322,7 @@ internal_weight=0 154 137 80 60 74 77 56 46 51
 internal_count=291 154 137 80 60 74 77 56 46 51
 cat_boundaries=0 1
 cat_threshold=4
+is_linear=0
 shrinkage=1
 
 
@@ -327,6 +343,7 @@ internal_weight=0 154 137 80 60 74 77 56 46 51
 internal_count=291 154 137 80 60 74 77 56 46 51
 cat_boundaries=0 1
 cat_threshold=4
+is_linear=0
 shrinkage=1
 
 
@@ -347,6 +364,7 @@ internal_weight=0 154 137 80 60 74 77 56 46 51
 internal_count=291 154 137 80 60 74 77 56 46 51
 cat_boundaries=0 1
 cat_threshold=4
+is_linear=0
 shrinkage=1
 
 
@@ -367,6 +385,7 @@ internal_weight=0 154 137 80 60 74 77 56 46 51
 internal_count=291 154 137 80 60 74 77 56 46 51
 cat_boundaries=0 1
 cat_threshold=4
+is_linear=0
 shrinkage=1
 
 
@@ -387,6 +406,7 @@ internal_weight=0 154 137 80 60 74 77 56 46 51
 internal_count=291 154 137 80 60 74 77 56 46 51
 cat_boundaries=0 1
 cat_threshold=4
+is_linear=0
 shrinkage=1
 
 
@@ -405,6 +425,7 @@ leaf_count=35 34 29 22 32 20 23 20 33 24 29
 internal_value=23.5146 28.9645 16.5504 32.2378 25.372 33.7534 14.4535 26.1984 19.1172 15.1804
 internal_weight=0 172 129 90 82 58 71 62 58 51
 internal_count=301 172 129 90 82 58 71 62 58 51
+is_linear=0
 shrinkage=1
 
 
@@ -423,6 +444,7 @@ leaf_count=35 34 29 22 32 20 23 20 33 24 29
 internal_value=23.5146 28.9645 16.5504 32.2378 25.372 33.7534 14.4535 26.1984 19.1172 15.1804
 internal_weight=0 172 129 90 82 58 71 62 58 51
 internal_count=301 172 129 90 82 58 71 62 58 51
+is_linear=0
 shrinkage=1
 
 
@@ -441,6 +463,7 @@ leaf_count=35 34 29 22 32 20 23 20 33 24 29
 internal_value=23.5146 28.9645 16.5504 32.2378 25.372 33.7534 14.4535 26.1984 19.1172 15.1804
 internal_weight=0 172 129 90 82 58 71 62 58 51
 internal_count=301 172 129 90 82 58 71 62 58 51
+is_linear=0
 shrinkage=1
 
 
@@ -459,6 +482,7 @@ leaf_count=35 34 29 22 32 20 23 20 33 24 29
 internal_value=23.5146 28.9645 16.5504 32.2378 25.372 33.7534 14.4535 26.1984 19.1172 15.1804
 internal_weight=0 172 129 90 82 58 71 62 58 51
 internal_count=301 172 129 90 82 58 71 62 58 51
+is_linear=0
 shrinkage=1
 
 
@@ -477,6 +501,7 @@ leaf_count=35 34 29 22 32 20 23 20 33 24 29
 internal_value=23.5146 28.9645 16.5504 32.2378 25.372 33.7534 14.4535 26.1984 19.1172 15.1804
 internal_weight=0 172 129 90 82 58 71 62 58 51
 internal_count=301 172 129 90 82 58 71 62 58 51
+is_linear=0
 shrinkage=1
 
 
@@ -495,6 +520,7 @@ leaf_count=34 29 34 26 38 29 20 22 22 20 28
 internal_value=23.5146 28.4723 16.3192 26.0377 32.8778 27.2592 14.5671 26.1524 19.0367 15.2704
 internal_weight=0 177 125 114 63 76 76 42 49 54
 internal_count=302 177 125 114 63 76 76 42 49 54
+is_linear=0
 shrinkage=1
 
 
@@ -513,6 +539,7 @@ leaf_count=34 29 34 26 38 29 20 22 22 20 28
 internal_value=23.5146 28.4723 16.3192 26.0377 32.8778 27.2592 14.5671 26.1524 19.0367 15.2704
 internal_weight=0 177 125 114 63 76 76 42 49 54
 internal_count=302 177 125 114 63 76 76 42 49 54
+is_linear=0
 shrinkage=1
 
 
@@ -531,6 +558,7 @@ leaf_count=34 29 34 26 38 29 20 22 22 20 28
 internal_value=23.5146 28.4723 16.3192 26.0377 32.8778 27.2592 14.5671 26.1524 19.0367 15.2704
 internal_weight=0 177 125 114 63 76 76 42 49 54
 internal_count=302 177 125 114 63 76 76 42 49 54
+is_linear=0
 shrinkage=1
 
 
@@ -549,6 +577,7 @@ leaf_count=34 29 34 26 38 29 20 22 22 20 28
 internal_value=23.5146 28.4723 16.3192 26.0377 32.8778 27.2592 14.5671 26.1524 19.0367 15.2704
 internal_weight=0 177 125 114 63 76 76 42 49 54
 internal_count=302 177 125 114 63 76 76 42 49 54
+is_linear=0
 shrinkage=1
 
 
@@ -567,6 +596,7 @@ leaf_count=34 29 34 26 38 29 20 22 22 20 28
 internal_value=23.5146 28.4723 16.3192 26.0377 32.8778 27.2592 14.5671 26.1524 19.0367 15.2704
 internal_weight=0 177 125 114 63 76 76 42 49 54
 internal_count=302 177 125 114 63 76 76 42 49 54
+is_linear=0
 shrinkage=1
 
 
@@ -587,6 +617,7 @@ internal_weight=0 168 120 98 70 55 72 43 48 48 50
 internal_count=288 168 120 98 70 55 72 43 48 48 50
 cat_boundaries=0 1
 cat_threshold=4
+is_linear=0
 shrinkage=1
 
 
@@ -605,6 +636,7 @@ parameters:
 [metric: l2]
 [tree_learner: serial]
 [device_type: cpu]
+[linear_tree: 0]
 [data: ]
 [valid: ]
 [num_iterations: 31]
@@ -633,6 +665,7 @@ parameters:
 [max_delta_step: 0]
 [lambda_l1: 0]
 [lambda_l2: 0]
+[linear_lambda: 0]
 [min_gain_to_split: 0]
 [drop_rate: 0.1]
 [max_drop: 50]

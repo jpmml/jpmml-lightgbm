@@ -8,7 +8,7 @@ objective=multiclass num_class:3
 average_output
 feature_names=Petal.Length Petal.Width Sepal.Length Sepal.Width
 feature_infos=[1:6.9000000000000004] [0.10000000000000001:2.5] [4.2999999999999998:7.9000000000000004] [2:4.4000000000000004]
-tree_sizes=427 512 429 427 512 429 427 512 429 431 524 529 432 524 529 432 524 529 433 429 431 433 429 431 433 429 431 523 531 426 523 531 426 523 531 426 428 528 426 428 528 426 428 528 426 432 512 429 432 512 429 432 512 429 433 410 432 433 410 432 433 410 432 531 509 330 531 509 330 531 509 330 427 423 426 427 423 426 427 423 426 331 428 424 331 428 424 331 428 424 428 414 429 428 414 429 428 414 429 433 430 433 434 430 433 434 430 433 534 415 424 534 415 424 534 415 424 429 426 523 429 426 523 429 426 523 434 531 517 434 531 517 434 531 517 413 510 432 413 510 432 413 510 432 434 430 427 434 430 427 434 430 427 429 411 432 429 411 432 429 411 432 429 512 522 429 512 522 429 512 522 331 415 331 331 415 331 331 415 331 433 504 430 433 504 430 433 504 430 433 430 433 433 430 433 433 430 433 412 406 427 412 406 427 412 406 427 433 533 432 433 533 432 433 533 432 434 521 525 434 521 525 434 521 525 434 416 426 434 416 426 434 416 426 434 525 529 434 525 529 434 525 529 429 415 432 429 415 432 429 415 432 534 428 433 534 428 433 534 428 433 429 411 426 429 411 426 429 411 426 429 426 433 429 426 433 429 426 433 412 407 426 412 407 426 412 407 426 532 414 431 532 414 431 532 414 431 433 528 432 433 528 432 433 528 432 434 616 534 434 616 534 434 616 534 528 415 528 528 415 528 528 415 528 433 627 523 433 627 523 433 627 523 428 432 428 428 432 428 428 432 428 429 516 528 429 516 528 429 516 528 428 520 433 428 520 433 428 520 433 332 524 523 332 524 523 332 524 523 332 521 524 332 521 524 332 521 524 433 507 426 433 507 426 433 507 426 434 428 530 434 428 530 434 428 530 429 514 430 429 514 430 429 514 430 434 430 433 434 430 433 434 430 433 428 504 431 428 504 431 428 504 431 533 608 518 533 608 518 533 608 518 332 514 427 332 514 427 332 514 427 533 415 332 533 415 332 533 415 332 434 430 432 434 430 432 434 430 432 525 415 427 525 415 427 525 415 427 414 608 520 414 608 520 414 608 520 429 432 424 429 432 424 429 432 424 434 431 432 434 431 432 434 431 432 428 432 528 428 432 528 428 432 528 434 507 528 434 507 528 434 507 528 433 529 427 433 529 427 433 529 427 433 521 432 433 521 432 433 521 432 431 528 505 431 528 505 431 528 505 331 531 527 331 531 527 331 531 527 434 430 434 434 430 434 434 430 434 327 429 432 327 429 432 327 429 432 434 507 431 434 507 431 434 507 431 434 527 431 434 527 431 434 527 431 434 527 521 434 527 521 434 527 521 428 410 527 428 410 527
+tree_sizes=439 524 441 439 524 441 439 524 441 443 536 541 444 536 541 444 536 541 445 441 443 445 441 443 445 441 443 535 543 438 535 543 438 535 543 438 440 540 438 440 540 438 440 540 438 444 524 441 444 524 441 444 524 441 445 422 444 445 422 444 445 422 444 543 521 342 543 521 342 543 521 342 439 435 438 439 435 438 439 435 438 343 440 436 343 440 436 343 440 436 440 426 441 440 426 441 440 426 441 445 442 445 446 442 445 446 442 445 546 427 436 546 427 436 546 427 436 441 438 535 441 438 535 441 438 535 446 543 529 446 543 529 446 543 529 425 522 444 425 522 444 425 522 444 446 442 439 446 442 439 446 442 439 441 423 444 441 423 444 441 423 444 441 524 534 441 524 534 441 524 534 343 427 343 343 427 343 343 427 343 445 516 442 445 516 442 445 516 442 445 442 445 445 442 445 445 442 445 424 418 439 424 418 439 424 418 439 445 545 444 445 545 444 445 545 444 446 533 537 446 533 537 446 533 537 446 428 438 446 428 438 446 428 438 446 537 541 446 537 541 446 537 541 441 427 444 441 427 444 441 427 444 546 440 445 546 440 445 546 440 445 441 423 438 441 423 438 441 423 438 441 438 445 441 438 445 441 438 445 424 419 438 424 419 438 424 419 438 544 426 443 544 426 443 544 426 443 445 540 444 445 540 444 445 540 444 446 628 546 446 628 546 446 628 546 540 427 540 540 427 540 540 427 540 445 639 535 445 639 535 445 639 535 440 444 440 440 444 440 440 444 440 441 528 540 441 528 540 441 528 540 440 532 445 440 532 445 440 532 445 344 536 535 344 536 535 344 536 535 344 533 536 344 533 536 344 533 536 445 519 438 445 519 438 445 519 438 446 440 542 446 440 542 446 440 542 441 526 442 441 526 442 441 526 442 446 442 445 446 442 445 446 442 445 440 516 443 440 516 443 440 516 443 545 620 530 545 620 530 545 620 530 344 526 439 344 526 439 344 526 439 545 427 344 545 427 344 545 427 344 446 442 444 446 442 444 446 442 444 537 427 439 537 427 439 537 427 439 426 620 532 426 620 532 426 620 532 441 444 436 441 444 436 441 444 436 446 443 444 446 443 444 446 443 444 440 444 540 440 444 540 440 444 540 446 519 540 446 519 540 446 519 540 445 541 439 445 541 439 445 541 439 445 533 444 445 533 444 445 533 444 443 540 517 443 540 517 443 540 517 343 543 539 343 543 539 343 543 539 446 442 446 446 442 446 446 442 446 339 441 444 339 441 444 339 441 444 446 519 443 446 519 443 446 519 443 446 539 443 446 539 443 446 539 443 446 539 533 446 539 533 446 539 533 440 422 539 440 422 539
 
 Tree=0
 num_leaves=3
@@ -25,6 +25,7 @@ leaf_count=38 41 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 26
 internal_count=116 78
+is_linear=0
 shrinkage=1
 
 
@@ -43,6 +44,7 @@ leaf_count=36 22 37 21
 internal_value=-1.09861 -0.598612 0.552551
 internal_weight=0 26.6667 14.3333
 internal_count=116 80 43
+is_linear=0
 shrinkage=1
 
 
@@ -61,6 +63,7 @@ leaf_count=58 37 21
 internal_value=-1.09861 -1.94671
 internal_weight=0 26.3333
 internal_count=116 79
+is_linear=0
 shrinkage=1
 
 
@@ -79,6 +82,7 @@ leaf_count=38 41 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 26
 internal_count=116 78
+is_linear=0
 shrinkage=1
 
 
@@ -97,6 +101,7 @@ leaf_count=36 22 37 21
 internal_value=-1.09861 -0.598612 0.552551
 internal_weight=0 26.6667 14.3333
 internal_count=116 80 43
+is_linear=0
 shrinkage=1
 
 
@@ -115,6 +120,7 @@ leaf_count=58 37 21
 internal_value=-1.09861 -1.94671
 internal_weight=0 26.3333
 internal_count=116 79
+is_linear=0
 shrinkage=1
 
 
@@ -133,6 +139,7 @@ leaf_count=38 41 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 26
 internal_count=116 78
+is_linear=0
 shrinkage=1
 
 
@@ -151,6 +158,7 @@ leaf_count=36 22 37 21
 internal_value=-1.09861 -0.598612 0.552551
 internal_weight=0 26.6667 14.3333
 internal_count=116 80 43
+is_linear=0
 shrinkage=1
 
 
@@ -169,6 +177,7 @@ leaf_count=58 37 21
 internal_value=-1.09861 -1.94671
 internal_weight=0 26.3333
 internal_count=116 79
+is_linear=0
 shrinkage=1
 
 
@@ -187,6 +196,7 @@ leaf_count=38 43 30
 internal_value=-1.09861 -2.09861
 internal_weight=0 24.3333
 internal_count=111 73
+is_linear=0
 shrinkage=1
 
 
@@ -205,6 +215,7 @@ leaf_count=38 29 20 24
 internal_value=-1.09861 -0.742448 -1.82589
 internal_weight=0 24.3333 14.6667
 internal_count=111 73 44
+is_linear=0
 shrinkage=1
 
 
@@ -223,6 +234,7 @@ leaf_count=43 20 24 24
 internal_value=-1.09861 0.62866 -2.09861
 internal_weight=0 14.6667 22.3333
 internal_count=111 44 67
+is_linear=0
 shrinkage=1
 
 
@@ -241,6 +253,7 @@ leaf_count=38 43 30
 internal_value=-1.09861 -2.09861
 internal_weight=0 24.3333
 internal_count=111 73
+is_linear=0
 shrinkage=1
 
 
@@ -259,6 +272,7 @@ leaf_count=38 29 20 24
 internal_value=-1.09861 -0.742448 -1.82589
 internal_weight=0 24.3333 14.6667
 internal_count=111 73 44
+is_linear=0
 shrinkage=1
 
 
@@ -277,6 +291,7 @@ leaf_count=43 20 24 24
 internal_value=-1.09861 0.62866 -2.09861
 internal_weight=0 14.6667 22.3333
 internal_count=111 44 67
+is_linear=0
 shrinkage=1
 
 
@@ -295,6 +310,7 @@ leaf_count=38 43 30
 internal_value=-1.09861 -2.09861
 internal_weight=0 24.3333
 internal_count=111 73
+is_linear=0
 shrinkage=1
 
 
@@ -313,6 +329,7 @@ leaf_count=38 29 20 24
 internal_value=-1.09861 -0.742448 -1.82589
 internal_weight=0 24.3333 14.6667
 internal_count=111 73 44
+is_linear=0
 shrinkage=1
 
 
@@ -331,6 +348,7 @@ leaf_count=43 20 24 24
 internal_value=-1.09861 0.62866 -2.09861
 internal_weight=0 14.6667 22.3333
 internal_count=111 44 67
+is_linear=0
 shrinkage=1
 
 
@@ -349,6 +367,7 @@ leaf_count=30 37 39
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=106 76
+is_linear=0
 shrinkage=1
 
 
@@ -367,6 +386,7 @@ leaf_count=30 36 40
 internal_value=-1.09861 -0.470041
 internal_weight=0 23.3333
 internal_count=106 70
+is_linear=0
 shrinkage=1
 
 
@@ -385,6 +405,7 @@ leaf_count=47 39 20
 internal_value=-1.09861 -2.05384
 internal_weight=0 22.3333
 internal_count=106 67
+is_linear=0
 shrinkage=1
 
 
@@ -403,6 +424,7 @@ leaf_count=30 37 39
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=106 76
+is_linear=0
 shrinkage=1
 
 
@@ -421,6 +443,7 @@ leaf_count=30 36 40
 internal_value=-1.09861 -0.470041
 internal_weight=0 23.3333
 internal_count=106 70
+is_linear=0
 shrinkage=1
 
 
@@ -439,6 +462,7 @@ leaf_count=47 39 20
 internal_value=-1.09861 -2.05384
 internal_weight=0 22.3333
 internal_count=106 67
+is_linear=0
 shrinkage=1
 
 
@@ -457,6 +481,7 @@ leaf_count=30 37 39
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=106 76
+is_linear=0
 shrinkage=1
 
 
@@ -475,6 +500,7 @@ leaf_count=30 36 40
 internal_value=-1.09861 -0.470041
 internal_weight=0 23.3333
 internal_count=106 70
+is_linear=0
 shrinkage=1
 
 
@@ -493,6 +519,7 @@ leaf_count=47 39 20
 internal_value=-1.09861 -2.05384
 internal_weight=0 22.3333
 internal_count=106 67
+is_linear=0
 shrinkage=1
 
 
@@ -511,6 +538,7 @@ leaf_count=20 38 22 37
 internal_value=-1.09861 0.829959 -2.09861
 internal_weight=0 14 25
 internal_count=117 42 75
+is_linear=0
 shrinkage=1
 
 
@@ -529,6 +557,7 @@ leaf_count=40 21 36 20
 internal_value=-1.09861 -0.540171 0.755046
 internal_weight=0 25.6667 13.6667
 internal_count=117 77 41
+is_linear=0
 shrinkage=1
 
 
@@ -547,6 +576,7 @@ leaf_count=61 36 20
 internal_value=-1.09861 -2.06158
 internal_weight=0 27
 internal_count=117 81
+is_linear=0
 shrinkage=1
 
 
@@ -565,6 +595,7 @@ leaf_count=20 38 22 37
 internal_value=-1.09861 0.829959 -2.09861
 internal_weight=0 14 25
 internal_count=117 42 75
+is_linear=0
 shrinkage=1
 
 
@@ -583,6 +614,7 @@ leaf_count=40 21 36 20
 internal_value=-1.09861 -0.540171 0.755046
 internal_weight=0 25.6667 13.6667
 internal_count=117 77 41
+is_linear=0
 shrinkage=1
 
 
@@ -601,6 +633,7 @@ leaf_count=61 36 20
 internal_value=-1.09861 -2.06158
 internal_weight=0 27
 internal_count=117 81
+is_linear=0
 shrinkage=1
 
 
@@ -619,6 +652,7 @@ leaf_count=20 38 22 37
 internal_value=-1.09861 0.829959 -2.09861
 internal_weight=0 14 25
 internal_count=117 42 75
+is_linear=0
 shrinkage=1
 
 
@@ -637,6 +671,7 @@ leaf_count=40 21 36 20
 internal_value=-1.09861 -0.540171 0.755046
 internal_weight=0 25.6667 13.6667
 internal_count=117 77 41
+is_linear=0
 shrinkage=1
 
 
@@ -655,6 +690,7 @@ leaf_count=61 36 20
 internal_value=-1.09861 -2.06158
 internal_weight=0 27
 internal_count=117 81
+is_linear=0
 shrinkage=1
 
 
@@ -673,6 +709,7 @@ leaf_count=37 37 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=109 72
+is_linear=0
 shrinkage=1
 
 
@@ -691,6 +728,7 @@ leaf_count=35 22 31 21
 internal_value=-1.09861 -0.476991 0.692085
 internal_weight=0 24.6667 14.3333
 internal_count=109 74 43
+is_linear=0
 shrinkage=1
 
 
@@ -709,6 +747,7 @@ leaf_count=57 31 21
 internal_value=-1.09861 -2.02169
 internal_weight=0 26
 internal_count=109 78
+is_linear=0
 shrinkage=1
 
 
@@ -727,6 +766,7 @@ leaf_count=37 37 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=109 72
+is_linear=0
 shrinkage=1
 
 
@@ -745,6 +785,7 @@ leaf_count=35 22 31 21
 internal_value=-1.09861 -0.476991 0.692085
 internal_weight=0 24.6667 14.3333
 internal_count=109 74 43
+is_linear=0
 shrinkage=1
 
 
@@ -763,6 +804,7 @@ leaf_count=57 31 21
 internal_value=-1.09861 -2.02169
 internal_weight=0 26
 internal_count=109 78
+is_linear=0
 shrinkage=1
 
 
@@ -781,6 +823,7 @@ leaf_count=37 37 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=109 72
+is_linear=0
 shrinkage=1
 
 
@@ -799,6 +842,7 @@ leaf_count=35 22 31 21
 internal_value=-1.09861 -0.476991 0.692085
 internal_weight=0 24.6667 14.3333
 internal_count=109 74 43
+is_linear=0
 shrinkage=1
 
 
@@ -817,6 +861,7 @@ leaf_count=57 31 21
 internal_value=-1.09861 -2.02169
 internal_weight=0 26
 internal_count=109 78
+is_linear=0
 shrinkage=1
 
 
@@ -835,6 +880,7 @@ leaf_count=40 37 34
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.6667
 internal_count=111 71
+is_linear=0
 shrinkage=1
 
 
@@ -853,6 +899,7 @@ leaf_count=38 20 32 21
 internal_value=-1.09861 -0.495873 0.681876
 internal_weight=0 24.3333 13.6667
 internal_count=111 73 41
+is_linear=0
 shrinkage=1
 
 
@@ -871,6 +918,7 @@ leaf_count=58 32 21
 internal_value=-1.09861 -2.02266
 internal_weight=0 26.3333
 internal_count=111 79
+is_linear=0
 shrinkage=1
 
 
@@ -889,6 +937,7 @@ leaf_count=40 37 34
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.6667
 internal_count=111 71
+is_linear=0
 shrinkage=1
 
 
@@ -907,6 +956,7 @@ leaf_count=38 20 32 21
 internal_value=-1.09861 -0.495873 0.681876
 internal_weight=0 24.3333 13.6667
 internal_count=111 73 41
+is_linear=0
 shrinkage=1
 
 
@@ -925,6 +975,7 @@ leaf_count=58 32 21
 internal_value=-1.09861 -2.02266
 internal_weight=0 26.3333
 internal_count=111 79
+is_linear=0
 shrinkage=1
 
 
@@ -943,6 +994,7 @@ leaf_count=40 37 34
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.6667
 internal_count=111 71
+is_linear=0
 shrinkage=1
 
 
@@ -961,6 +1013,7 @@ leaf_count=38 20 32 21
 internal_value=-1.09861 -0.495873 0.681876
 internal_weight=0 24.3333 13.6667
 internal_count=111 73 41
+is_linear=0
 shrinkage=1
 
 
@@ -979,6 +1032,7 @@ leaf_count=58 32 21
 internal_value=-1.09861 -2.02266
 internal_weight=0 26.3333
 internal_count=111 79
+is_linear=0
 shrinkage=1
 
 
@@ -997,6 +1051,7 @@ leaf_count=39 30 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 24.3333
 internal_count=112 73
+is_linear=0
 shrinkage=1
 
 
@@ -1015,6 +1070,7 @@ leaf_count=37 40 35
 internal_value=-1.09861 -0.618612
 internal_weight=0 25
 internal_count=112 75
+is_linear=0
 shrinkage=1
 
 
@@ -1033,6 +1089,7 @@ leaf_count=52 39 21
 internal_value=-1.09861 -2.05752
 internal_weight=0 24.3333
 internal_count=112 73
+is_linear=0
 shrinkage=1
 
 
@@ -1051,6 +1108,7 @@ leaf_count=39 30 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 24.3333
 internal_count=112 73
+is_linear=0
 shrinkage=1
 
 
@@ -1069,6 +1127,7 @@ leaf_count=37 40 35
 internal_value=-1.09861 -0.618612
 internal_weight=0 25
 internal_count=112 75
+is_linear=0
 shrinkage=1
 
 
@@ -1087,6 +1146,7 @@ leaf_count=52 39 21
 internal_value=-1.09861 -2.05752
 internal_weight=0 24.3333
 internal_count=112 73
+is_linear=0
 shrinkage=1
 
 
@@ -1105,6 +1165,7 @@ leaf_count=39 30 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 24.3333
 internal_count=112 73
+is_linear=0
 shrinkage=1
 
 
@@ -1123,6 +1184,7 @@ leaf_count=37 40 35
 internal_value=-1.09861 -0.618612
 internal_weight=0 25
 internal_count=112 75
+is_linear=0
 shrinkage=1
 
 
@@ -1141,6 +1203,7 @@ leaf_count=52 39 21
 internal_value=-1.09861 -2.05752
 internal_weight=0 24.3333
 internal_count=112 73
+is_linear=0
 shrinkage=1
 
 
@@ -1159,6 +1222,7 @@ leaf_count=20 37 21 34
 internal_value=-1.09861 0.828217 -2.09861
 internal_weight=0 13.6667 23.6667
 internal_count=112 41 71
+is_linear=0
 shrinkage=1
 
 
@@ -1177,6 +1241,7 @@ leaf_count=38 20 34 20
 internal_value=-1.09861 -0.598612 0.601388
 internal_weight=0 24.6667 13.3333
 internal_count=112 74 40
+is_linear=0
 shrinkage=1
 
 
@@ -1195,6 +1260,7 @@ leaf_count=74 38
 internal_value=-1.09861
 internal_weight=0
 internal_count=112
+is_linear=0
 shrinkage=1
 
 
@@ -1213,6 +1279,7 @@ leaf_count=20 37 21 34
 internal_value=-1.09861 0.828217 -2.09861
 internal_weight=0 13.6667 23.6667
 internal_count=112 41 71
+is_linear=0
 shrinkage=1
 
 
@@ -1231,6 +1298,7 @@ leaf_count=38 20 34 20
 internal_value=-1.09861 -0.598612 0.601388
 internal_weight=0 24.6667 13.3333
 internal_count=112 74 40
+is_linear=0
 shrinkage=1
 
 
@@ -1249,6 +1317,7 @@ leaf_count=74 38
 internal_value=-1.09861
 internal_weight=0
 internal_count=112
+is_linear=0
 shrinkage=1
 
 
@@ -1267,6 +1336,7 @@ leaf_count=20 37 21 34
 internal_value=-1.09861 0.828217 -2.09861
 internal_weight=0 13.6667 23.6667
 internal_count=112 41 71
+is_linear=0
 shrinkage=1
 
 
@@ -1285,6 +1355,7 @@ leaf_count=38 20 34 20
 internal_value=-1.09861 -0.598612 0.601388
 internal_weight=0 24.6667 13.3333
 internal_count=112 74 40
+is_linear=0
 shrinkage=1
 
 
@@ -1303,6 +1374,7 @@ leaf_count=74 38
 internal_value=-1.09861
 internal_weight=0
 internal_count=112
+is_linear=0
 shrinkage=1
 
 
@@ -1321,6 +1393,7 @@ leaf_count=40 43 29
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=112 72
+is_linear=0
 shrinkage=1
 
 
@@ -1339,6 +1412,7 @@ leaf_count=40 38 34
 internal_value=-1.09861 -0.556946
 internal_weight=0 24
 internal_count=112 72
+is_linear=0
 shrinkage=1
 
 
@@ -1357,6 +1431,7 @@ leaf_count=57 34 21
 internal_value=-1.09861 -2.02169
 internal_weight=0 26
 internal_count=112 78
+is_linear=0
 shrinkage=1
 
 
@@ -1375,6 +1450,7 @@ leaf_count=40 43 29
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=112 72
+is_linear=0
 shrinkage=1
 
 
@@ -1393,6 +1469,7 @@ leaf_count=40 38 34
 internal_value=-1.09861 -0.556946
 internal_weight=0 24
 internal_count=112 72
+is_linear=0
 shrinkage=1
 
 
@@ -1411,6 +1488,7 @@ leaf_count=57 34 21
 internal_value=-1.09861 -2.02169
 internal_weight=0 26
 internal_count=112 78
+is_linear=0
 shrinkage=1
 
 
@@ -1429,6 +1507,7 @@ leaf_count=40 43 29
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=112 72
+is_linear=0
 shrinkage=1
 
 
@@ -1447,6 +1526,7 @@ leaf_count=40 38 34
 internal_value=-1.09861 -0.556946
 internal_weight=0 24
 internal_count=112 72
+is_linear=0
 shrinkage=1
 
 
@@ -1465,6 +1545,7 @@ leaf_count=57 34 21
 internal_value=-1.09861 -2.02169
 internal_weight=0 26
 internal_count=112 78
+is_linear=0
 shrinkage=1
 
 
@@ -1483,6 +1564,7 @@ leaf_count=37 73
 internal_value=-1.09861
 internal_weight=0
 internal_count=110
+is_linear=0
 shrinkage=1
 
 
@@ -1501,6 +1583,7 @@ leaf_count=37 35 38
 internal_value=-1.09861 -0.61916
 internal_weight=0 24.3333
 internal_count=110 73
+is_linear=0
 shrinkage=1
 
 
@@ -1519,6 +1602,7 @@ leaf_count=21 38 51
 internal_value=-1.09861 -2.05695
 internal_weight=0 24
 internal_count=110 72
+is_linear=0
 shrinkage=1
 
 
@@ -1537,6 +1621,7 @@ leaf_count=37 73
 internal_value=-1.09861
 internal_weight=0
 internal_count=110
+is_linear=0
 shrinkage=1
 
 
@@ -1555,6 +1640,7 @@ leaf_count=37 35 38
 internal_value=-1.09861 -0.61916
 internal_weight=0 24.3333
 internal_count=110 73
+is_linear=0
 shrinkage=1
 
 
@@ -1573,6 +1659,7 @@ leaf_count=21 38 51
 internal_value=-1.09861 -2.05695
 internal_weight=0 24
 internal_count=110 72
+is_linear=0
 shrinkage=1
 
 
@@ -1591,6 +1678,7 @@ leaf_count=37 73
 internal_value=-1.09861
 internal_weight=0
 internal_count=110
+is_linear=0
 shrinkage=1
 
 
@@ -1609,6 +1697,7 @@ leaf_count=37 35 38
 internal_value=-1.09861 -0.61916
 internal_weight=0 24.3333
 internal_count=110 73
+is_linear=0
 shrinkage=1
 
 
@@ -1627,6 +1716,7 @@ leaf_count=21 38 51
 internal_value=-1.09861 -2.05695
 internal_weight=0 24
 internal_count=110 72
+is_linear=0
 shrinkage=1
 
 
@@ -1645,6 +1735,7 @@ leaf_count=37 37 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=109 72
+is_linear=0
 shrinkage=1
 
 
@@ -1663,6 +1754,7 @@ leaf_count=35 36 38
 internal_value=-1.09861 -0.679693
 internal_weight=0 24.6667
 internal_count=109 74
+is_linear=0
 shrinkage=1
 
 
@@ -1681,6 +1773,7 @@ leaf_count=21 38 50
 internal_value=-1.09861 -2.05636
 internal_weight=0 23.6667
 internal_count=109 71
+is_linear=0
 shrinkage=1
 
 
@@ -1699,6 +1792,7 @@ leaf_count=37 37 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=109 72
+is_linear=0
 shrinkage=1
 
 
@@ -1717,6 +1811,7 @@ leaf_count=35 36 38
 internal_value=-1.09861 -0.679693
 internal_weight=0 24.6667
 internal_count=109 74
+is_linear=0
 shrinkage=1
 
 
@@ -1735,6 +1830,7 @@ leaf_count=21 38 50
 internal_value=-1.09861 -2.05636
 internal_weight=0 23.6667
 internal_count=109 71
+is_linear=0
 shrinkage=1
 
 
@@ -1753,6 +1849,7 @@ leaf_count=37 37 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=109 72
+is_linear=0
 shrinkage=1
 
 
@@ -1771,6 +1868,7 @@ leaf_count=35 36 38
 internal_value=-1.09861 -0.679693
 internal_weight=0 24.6667
 internal_count=109 74
+is_linear=0
 shrinkage=1
 
 
@@ -1789,6 +1887,7 @@ leaf_count=21 38 50
 internal_value=-1.09861 -2.05636
 internal_weight=0 23.6667
 internal_count=109 71
+is_linear=0
 shrinkage=1
 
 
@@ -1807,6 +1906,7 @@ leaf_count=35 37 39
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=111 76
+is_linear=0
 shrinkage=1
 
 
@@ -1825,6 +1925,7 @@ leaf_count=35 38 38
 internal_value=-1.09861 -0.598612
 internal_weight=0 25.3333
 internal_count=111 76
+is_linear=0
 shrinkage=1
 
 
@@ -1843,6 +1944,7 @@ leaf_count=51 38 22
 internal_value=-1.09861 -2.01642
 internal_weight=0 24.3333
 internal_count=111 73
+is_linear=0
 shrinkage=1
 
 
@@ -1861,6 +1963,7 @@ leaf_count=35 37 39
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=111 76
+is_linear=0
 shrinkage=1
 
 
@@ -1879,6 +1982,7 @@ leaf_count=35 38 38
 internal_value=-1.09861 -0.598612
 internal_weight=0 25.3333
 internal_count=111 76
+is_linear=0
 shrinkage=1
 
 
@@ -1897,6 +2001,7 @@ leaf_count=51 38 22
 internal_value=-1.09861 -2.01642
 internal_weight=0 24.3333
 internal_count=111 73
+is_linear=0
 shrinkage=1
 
 
@@ -1915,6 +2020,7 @@ leaf_count=35 37 39
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=111 76
+is_linear=0
 shrinkage=1
 
 
@@ -1933,6 +2039,7 @@ leaf_count=35 38 38
 internal_value=-1.09861 -0.598612
 internal_weight=0 25.3333
 internal_count=111 76
+is_linear=0
 shrinkage=1
 
 
@@ -1951,6 +2058,7 @@ leaf_count=51 38 22
 internal_value=-1.09861 -2.01642
 internal_weight=0 24.3333
 internal_count=111 73
+is_linear=0
 shrinkage=1
 
 
@@ -1969,6 +2077,7 @@ leaf_count=21 40 20 37
 internal_value=-1.09861 0.828217 -2.09861
 internal_weight=0 13.6667 25.6667
 internal_count=118 41 77
+is_linear=0
 shrinkage=1
 
 
@@ -1987,6 +2096,7 @@ leaf_count=39 39 40
 internal_value=-1.09861 -0.693549
 internal_weight=0 26.3333
 internal_count=118 79
+is_linear=0
 shrinkage=1
 
 
@@ -2005,6 +2115,7 @@ leaf_count=58 40 20
 internal_value=-1.09861 -1.98323
 internal_weight=0 26
 internal_count=118 78
+is_linear=0
 shrinkage=1
 
 
@@ -2023,6 +2134,7 @@ leaf_count=21 40 20 37
 internal_value=-1.09861 0.828217 -2.09861
 internal_weight=0 13.6667 25.6667
 internal_count=118 41 77
+is_linear=0
 shrinkage=1
 
 
@@ -2041,6 +2153,7 @@ leaf_count=39 39 40
 internal_value=-1.09861 -0.693549
 internal_weight=0 26.3333
 internal_count=118 79
+is_linear=0
 shrinkage=1
 
 
@@ -2059,6 +2172,7 @@ leaf_count=58 40 20
 internal_value=-1.09861 -1.98323
 internal_weight=0 26
 internal_count=118 78
+is_linear=0
 shrinkage=1
 
 
@@ -2077,6 +2191,7 @@ leaf_count=21 40 20 37
 internal_value=-1.09861 0.828217 -2.09861
 internal_weight=0 13.6667 25.6667
 internal_count=118 41 77
+is_linear=0
 shrinkage=1
 
 
@@ -2095,6 +2210,7 @@ leaf_count=39 39 40
 internal_value=-1.09861 -0.693549
 internal_weight=0 26.3333
 internal_count=118 79
+is_linear=0
 shrinkage=1
 
 
@@ -2113,6 +2229,7 @@ leaf_count=58 40 20
 internal_value=-1.09861 -1.98323
 internal_weight=0 26
 internal_count=118 78
+is_linear=0
 shrinkage=1
 
 
@@ -2131,6 +2248,7 @@ leaf_count=35 37 38
 internal_value=-1.09861 -2.09861
 internal_weight=0 25
 internal_count=110 75
+is_linear=0
 shrinkage=1
 
 
@@ -2149,6 +2267,7 @@ leaf_count=35 38 37
 internal_value=-1.09861 -0.658612
 internal_weight=0 25
 internal_count=110 75
+is_linear=0
 shrinkage=1
 
 
@@ -2167,6 +2286,7 @@ leaf_count=49 20 21 20
 internal_value=-1.09861 0.681876 -2.05513
 internal_weight=0 13.6667 23
 internal_count=110 41 69
+is_linear=0
 shrinkage=1
 
 
@@ -2185,6 +2305,7 @@ leaf_count=35 37 38
 internal_value=-1.09861 -2.09861
 internal_weight=0 25
 internal_count=110 75
+is_linear=0
 shrinkage=1
 
 
@@ -2203,6 +2324,7 @@ leaf_count=35 38 37
 internal_value=-1.09861 -0.658612
 internal_weight=0 25
 internal_count=110 75
+is_linear=0
 shrinkage=1
 
 
@@ -2221,6 +2343,7 @@ leaf_count=49 20 21 20
 internal_value=-1.09861 0.681876 -2.05513
 internal_weight=0 13.6667 23
 internal_count=110 41 69
+is_linear=0
 shrinkage=1
 
 
@@ -2239,6 +2362,7 @@ leaf_count=35 37 38
 internal_value=-1.09861 -2.09861
 internal_weight=0 25
 internal_count=110 75
+is_linear=0
 shrinkage=1
 
 
@@ -2257,6 +2381,7 @@ leaf_count=35 38 37
 internal_value=-1.09861 -0.658612
 internal_weight=0 25
 internal_count=110 75
+is_linear=0
 shrinkage=1
 
 
@@ -2275,6 +2400,7 @@ leaf_count=49 20 21 20
 internal_value=-1.09861 0.681876 -2.05513
 internal_weight=0 13.6667 23
 internal_count=110 41 69
+is_linear=0
 shrinkage=1
 
 
@@ -2293,6 +2419,7 @@ leaf_count=42 33 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=118 76
+is_linear=0
 shrinkage=1
 
 
@@ -2311,6 +2438,7 @@ leaf_count=22 41 22 33
 internal_value=-1.09861 -0.189521 -1.69321
 internal_weight=0 14.6667 24.6667
 internal_count=118 44 74
+is_linear=0
 shrinkage=1
 
 
@@ -2329,6 +2457,7 @@ leaf_count=57 20 20 21
 internal_value=-1.09861 0.601388 -2.02169
 internal_weight=0 13.3333 26
 internal_count=118 40 78
+is_linear=0
 shrinkage=1
 
 
@@ -2347,6 +2476,7 @@ leaf_count=42 33 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=118 76
+is_linear=0
 shrinkage=1
 
 
@@ -2365,6 +2495,7 @@ leaf_count=22 41 22 33
 internal_value=-1.09861 -0.189521 -1.69321
 internal_weight=0 14.6667 24.6667
 internal_count=118 44 74
+is_linear=0
 shrinkage=1
 
 
@@ -2383,6 +2514,7 @@ leaf_count=57 20 20 21
 internal_value=-1.09861 0.601388 -2.02169
 internal_weight=0 13.3333 26
 internal_count=118 40 78
+is_linear=0
 shrinkage=1
 
 
@@ -2401,6 +2533,7 @@ leaf_count=42 33 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=118 76
+is_linear=0
 shrinkage=1
 
 
@@ -2419,6 +2552,7 @@ leaf_count=22 41 22 33
 internal_value=-1.09861 -0.189521 -1.69321
 internal_weight=0 14.6667 24.6667
 internal_count=118 44 74
+is_linear=0
 shrinkage=1
 
 
@@ -2437,6 +2571,7 @@ leaf_count=57 20 20 21
 internal_value=-1.09861 0.601388 -2.02169
 internal_weight=0 13.3333 26
 internal_count=118 40 78
+is_linear=0
 shrinkage=1
 
 
@@ -2455,6 +2590,7 @@ leaf_count=36 38 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 25
 internal_count=111 75
+is_linear=0
 shrinkage=1
 
 
@@ -2473,6 +2609,7 @@ leaf_count=36 21 34 20
 internal_value=-1.09861 -0.498612 0.681876
 internal_weight=0 25 13.6667
 internal_count=111 75 41
+is_linear=0
 shrinkage=1
 
 
@@ -2491,6 +2628,7 @@ leaf_count=57 34 20
 internal_value=-1.09861 -1.98173
 internal_weight=0 25.6667
 internal_count=111 77
+is_linear=0
 shrinkage=1
 
 
@@ -2509,6 +2647,7 @@ leaf_count=36 38 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 25
 internal_count=111 75
+is_linear=0
 shrinkage=1
 
 
@@ -2527,6 +2666,7 @@ leaf_count=36 21 34 20
 internal_value=-1.09861 -0.498612 0.681876
 internal_weight=0 25 13.6667
 internal_count=111 75 41
+is_linear=0
 shrinkage=1
 
 
@@ -2545,6 +2685,7 @@ leaf_count=57 34 20
 internal_value=-1.09861 -1.98173
 internal_weight=0 25.6667
 internal_count=111 77
+is_linear=0
 shrinkage=1
 
 
@@ -2563,6 +2704,7 @@ leaf_count=36 38 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 25
 internal_count=111 75
+is_linear=0
 shrinkage=1
 
 
@@ -2581,6 +2723,7 @@ leaf_count=36 21 34 20
 internal_value=-1.09861 -0.498612 0.681876
 internal_weight=0 25 13.6667
 internal_count=111 75 41
+is_linear=0
 shrinkage=1
 
 
@@ -2599,6 +2742,7 @@ leaf_count=57 34 20
 internal_value=-1.09861 -1.98173
 internal_weight=0 25.6667
 internal_count=111 77
+is_linear=0
 shrinkage=1
 
 
@@ -2617,6 +2761,7 @@ leaf_count=41 43 27
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.3333
 internal_count=111 70
+is_linear=0
 shrinkage=1
 
 
@@ -2635,6 +2780,7 @@ leaf_count=41 36 34
 internal_value=-1.09861 -0.598612
 internal_weight=0 23.3333
 internal_count=111 70
+is_linear=0
 shrinkage=1
 
 
@@ -2653,6 +2799,7 @@ leaf_count=54 36 21
 internal_value=-1.09861 -2.01861
 internal_weight=0 25
 internal_count=111 75
+is_linear=0
 shrinkage=1
 
 
@@ -2671,6 +2818,7 @@ leaf_count=41 43 27
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.3333
 internal_count=111 70
+is_linear=0
 shrinkage=1
 
 
@@ -2689,6 +2837,7 @@ leaf_count=41 36 34
 internal_value=-1.09861 -0.598612
 internal_weight=0 23.3333
 internal_count=111 70
+is_linear=0
 shrinkage=1
 
 
@@ -2707,6 +2856,7 @@ leaf_count=54 36 21
 internal_value=-1.09861 -2.01861
 internal_weight=0 25
 internal_count=111 75
+is_linear=0
 shrinkage=1
 
 
@@ -2725,6 +2875,7 @@ leaf_count=41 43 27
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.3333
 internal_count=111 70
+is_linear=0
 shrinkage=1
 
 
@@ -2743,6 +2894,7 @@ leaf_count=41 36 34
 internal_value=-1.09861 -0.598612
 internal_weight=0 23.3333
 internal_count=111 70
+is_linear=0
 shrinkage=1
 
 
@@ -2761,6 +2913,7 @@ leaf_count=54 36 21
 internal_value=-1.09861 -2.01861
 internal_weight=0 25
 internal_count=111 75
+is_linear=0
 shrinkage=1
 
 
@@ -2779,6 +2932,7 @@ leaf_count=41 29 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 22
 internal_count=107 66
+is_linear=0
 shrinkage=1
 
 
@@ -2797,6 +2951,7 @@ leaf_count=38 30 39
 internal_value=-1.09861 -0.837743
 internal_weight=0 23
 internal_count=107 69
+is_linear=0
 shrinkage=1
 
 
@@ -2815,6 +2970,7 @@ leaf_count=48 39 20
 internal_value=-1.09861 -2.05449
 internal_weight=0 22.6667
 internal_count=107 68
+is_linear=0
 shrinkage=1
 
 
@@ -2833,6 +2989,7 @@ leaf_count=41 29 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 22
 internal_count=107 66
+is_linear=0
 shrinkage=1
 
 
@@ -2851,6 +3008,7 @@ leaf_count=38 30 39
 internal_value=-1.09861 -0.837743
 internal_weight=0 23
 internal_count=107 69
+is_linear=0
 shrinkage=1
 
 
@@ -2869,6 +3027,7 @@ leaf_count=48 39 20
 internal_value=-1.09861 -2.05449
 internal_weight=0 22.6667
 internal_count=107 68
+is_linear=0
 shrinkage=1
 
 
@@ -2887,6 +3046,7 @@ leaf_count=41 29 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 22
 internal_count=107 66
+is_linear=0
 shrinkage=1
 
 
@@ -2905,6 +3065,7 @@ leaf_count=38 30 39
 internal_value=-1.09861 -0.837743
 internal_weight=0 23
 internal_count=107 69
+is_linear=0
 shrinkage=1
 
 
@@ -2923,6 +3084,7 @@ leaf_count=48 39 20
 internal_value=-1.09861 -2.05449
 internal_weight=0 22.6667
 internal_count=107 68
+is_linear=0
 shrinkage=1
 
 
@@ -2941,6 +3103,7 @@ leaf_count=37 37 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=109 72
+is_linear=0
 shrinkage=1
 
 
@@ -2959,6 +3122,7 @@ leaf_count=35 34 20 20
 internal_value=-1.09861 -0.639153 -1.87361
 internal_weight=0 24.6667 13.3333
 internal_count=109 74 40
+is_linear=0
 shrinkage=1
 
 
@@ -2977,6 +3141,7 @@ leaf_count=43 20 20 26
 internal_value=-1.09861 0.676388 -2.09861
 internal_weight=0 13.3333 23
 internal_count=109 40 69
+is_linear=0
 shrinkage=1
 
 
@@ -2995,6 +3160,7 @@ leaf_count=37 37 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=109 72
+is_linear=0
 shrinkage=1
 
 
@@ -3013,6 +3179,7 @@ leaf_count=35 34 20 20
 internal_value=-1.09861 -0.639153 -1.87361
 internal_weight=0 24.6667 13.3333
 internal_count=109 74 40
+is_linear=0
 shrinkage=1
 
 
@@ -3031,6 +3198,7 @@ leaf_count=43 20 20 26
 internal_value=-1.09861 0.676388 -2.09861
 internal_weight=0 13.3333 23
 internal_count=109 40 69
+is_linear=0
 shrinkage=1
 
 
@@ -3049,6 +3217,7 @@ leaf_count=37 37 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=109 72
+is_linear=0
 shrinkage=1
 
 
@@ -3067,6 +3236,7 @@ leaf_count=35 34 20 20
 internal_value=-1.09861 -0.639153 -1.87361
 internal_weight=0 24.6667 13.3333
 internal_count=109 74 40
+is_linear=0
 shrinkage=1
 
 
@@ -3085,6 +3255,7 @@ leaf_count=43 20 20 26
 internal_value=-1.09861 0.676388 -2.09861
 internal_weight=0 13.3333 23
 internal_count=109 40 69
+is_linear=0
 shrinkage=1
 
 
@@ -3103,6 +3274,7 @@ leaf_count=36 60
 internal_value=-1.09861
 internal_weight=0
 internal_count=96
+is_linear=0
 shrinkage=1
 
 
@@ -3121,6 +3293,7 @@ leaf_count=34 26 36
 internal_value=-1.09861 -0.695386
 internal_weight=0 20.6667
 internal_count=96 62
+is_linear=0
 shrinkage=1
 
 
@@ -3139,6 +3312,7 @@ leaf_count=60 36
 internal_value=-1.09861
 internal_weight=0
 internal_count=96
+is_linear=0
 shrinkage=1
 
 
@@ -3157,6 +3331,7 @@ leaf_count=36 60
 internal_value=-1.09861
 internal_weight=0
 internal_count=96
+is_linear=0
 shrinkage=1
 
 
@@ -3175,6 +3350,7 @@ leaf_count=34 26 36
 internal_value=-1.09861 -0.695386
 internal_weight=0 20.6667
 internal_count=96 62
+is_linear=0
 shrinkage=1
 
 
@@ -3193,6 +3369,7 @@ leaf_count=60 36
 internal_value=-1.09861
 internal_weight=0
 internal_count=96
+is_linear=0
 shrinkage=1
 
 
@@ -3211,6 +3388,7 @@ leaf_count=36 60
 internal_value=-1.09861
 internal_weight=0
 internal_count=96
+is_linear=0
 shrinkage=1
 
 
@@ -3229,6 +3407,7 @@ leaf_count=34 26 36
 internal_value=-1.09861 -0.695386
 internal_weight=0 20.6667
 internal_count=96 62
+is_linear=0
 shrinkage=1
 
 
@@ -3247,6 +3426,7 @@ leaf_count=60 36
 internal_value=-1.09861
 internal_weight=0
 internal_count=96
+is_linear=0
 shrinkage=1
 
 
@@ -3265,6 +3445,7 @@ leaf_count=40 43 33
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=116 76
+is_linear=0
 shrinkage=1
 
 
@@ -3283,6 +3464,7 @@ leaf_count=38 22 36 20
 internal_value=-1.09861 -0.560151 0.615673
 internal_weight=0 26 14
 internal_count=116 78 42
+is_linear=0
 shrinkage=1
 
 
@@ -3301,6 +3483,7 @@ leaf_count=60 36 20
 internal_value=-1.09861 -1.98611
 internal_weight=0 26.6667
 internal_count=116 80
+is_linear=0
 shrinkage=1
 
 
@@ -3319,6 +3502,7 @@ leaf_count=40 43 33
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=116 76
+is_linear=0
 shrinkage=1
 
 
@@ -3337,6 +3521,7 @@ leaf_count=38 22 36 20
 internal_value=-1.09861 -0.560151 0.615673
 internal_weight=0 26 14
 internal_count=116 78 42
+is_linear=0
 shrinkage=1
 
 
@@ -3355,6 +3540,7 @@ leaf_count=60 36 20
 internal_value=-1.09861 -1.98611
 internal_weight=0 26.6667
 internal_count=116 80
+is_linear=0
 shrinkage=1
 
 
@@ -3373,6 +3559,7 @@ leaf_count=40 43 33
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=116 76
+is_linear=0
 shrinkage=1
 
 
@@ -3391,6 +3578,7 @@ leaf_count=38 22 36 20
 internal_value=-1.09861 -0.560151 0.615673
 internal_weight=0 26 14
 internal_count=116 78 42
+is_linear=0
 shrinkage=1
 
 
@@ -3409,6 +3597,7 @@ leaf_count=60 36 20
 internal_value=-1.09861 -1.98611
 internal_weight=0 26.6667
 internal_count=116 80
+is_linear=0
 shrinkage=1
 
 
@@ -3427,6 +3616,7 @@ leaf_count=40 39 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=116 76
+is_linear=0
 shrinkage=1
 
 
@@ -3445,6 +3635,7 @@ leaf_count=40 39 37
 internal_value=-1.09861 -0.598612
 internal_weight=0 25.3333
 internal_count=116 76
+is_linear=0
 shrinkage=1
 
 
@@ -3463,6 +3654,7 @@ leaf_count=57 37 22
 internal_value=-1.09861 -2.02266
 internal_weight=0 26.3333
 internal_count=116 79
+is_linear=0
 shrinkage=1
 
 
@@ -3481,6 +3673,7 @@ leaf_count=40 39 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=116 76
+is_linear=0
 shrinkage=1
 
 
@@ -3499,6 +3692,7 @@ leaf_count=40 39 37
 internal_value=-1.09861 -0.598612
 internal_weight=0 25.3333
 internal_count=116 76
+is_linear=0
 shrinkage=1
 
 
@@ -3517,6 +3711,7 @@ leaf_count=57 37 22
 internal_value=-1.09861 -2.02266
 internal_weight=0 26.3333
 internal_count=116 79
+is_linear=0
 shrinkage=1
 
 
@@ -3535,6 +3730,7 @@ leaf_count=40 39 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=116 76
+is_linear=0
 shrinkage=1
 
 
@@ -3553,6 +3749,7 @@ leaf_count=40 39 37
 internal_value=-1.09861 -0.598612
 internal_weight=0 25.3333
 internal_count=116 76
+is_linear=0
 shrinkage=1
 
 
@@ -3571,6 +3768,7 @@ leaf_count=57 37 22
 internal_value=-1.09861 -2.02266
 internal_weight=0 26.3333
 internal_count=116 79
+is_linear=0
 shrinkage=1
 
 
@@ -3589,6 +3787,7 @@ leaf_count=33 38 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 25
 internal_count=108 75
+is_linear=0
 shrinkage=1
 
 
@@ -3607,6 +3806,7 @@ leaf_count=33 36 39
 internal_value=-1.09861 -0.598612
 internal_weight=0 24
 internal_count=108 72
+is_linear=0
 shrinkage=1
 
 
@@ -3625,6 +3825,7 @@ leaf_count=50 36 22
 internal_value=-1.09861 -1.97361
 internal_weight=0 24
 internal_count=108 72
+is_linear=0
 shrinkage=1
 
 
@@ -3643,6 +3844,7 @@ leaf_count=33 38 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 25
 internal_count=108 75
+is_linear=0
 shrinkage=1
 
 
@@ -3661,6 +3863,7 @@ leaf_count=33 36 39
 internal_value=-1.09861 -0.598612
 internal_weight=0 24
 internal_count=108 72
+is_linear=0
 shrinkage=1
 
 
@@ -3679,6 +3882,7 @@ leaf_count=50 36 22
 internal_value=-1.09861 -1.97361
 internal_weight=0 24
 internal_count=108 72
+is_linear=0
 shrinkage=1
 
 
@@ -3697,6 +3901,7 @@ leaf_count=33 38 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 25
 internal_count=108 75
+is_linear=0
 shrinkage=1
 
 
@@ -3715,6 +3920,7 @@ leaf_count=33 36 39
 internal_value=-1.09861 -0.598612
 internal_weight=0 24
 internal_count=108 72
+is_linear=0
 shrinkage=1
 
 
@@ -3733,6 +3939,7 @@ leaf_count=50 36 22
 internal_value=-1.09861 -1.97361
 internal_weight=0 24
 internal_count=108 72
+is_linear=0
 shrinkage=1
 
 
@@ -3751,6 +3958,7 @@ leaf_count=32 37 40
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.6667
 internal_count=109 77
+is_linear=0
 shrinkage=1
 
 
@@ -3769,6 +3977,7 @@ leaf_count=30 36 23 20
 internal_value=-1.09861 -0.454777 0.692085
 internal_weight=0 24.3333 14.3333
 internal_count=109 73 43
+is_linear=0
 shrinkage=1
 
 
@@ -3787,6 +3996,7 @@ leaf_count=53 36 20
 internal_value=-1.09861 -2.01642
 internal_weight=0 24.3333
 internal_count=109 73
+is_linear=0
 shrinkage=1
 
 
@@ -3805,6 +4015,7 @@ leaf_count=32 37 40
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.6667
 internal_count=109 77
+is_linear=0
 shrinkage=1
 
 
@@ -3823,6 +4034,7 @@ leaf_count=30 36 23 20
 internal_value=-1.09861 -0.454777 0.692085
 internal_weight=0 24.3333 14.3333
 internal_count=109 73 43
+is_linear=0
 shrinkage=1
 
 
@@ -3841,6 +4053,7 @@ leaf_count=53 36 20
 internal_value=-1.09861 -2.01642
 internal_weight=0 24.3333
 internal_count=109 73
+is_linear=0
 shrinkage=1
 
 
@@ -3859,6 +4072,7 @@ leaf_count=32 37 40
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.6667
 internal_count=109 77
+is_linear=0
 shrinkage=1
 
 
@@ -3877,6 +4091,7 @@ leaf_count=30 36 23 20
 internal_value=-1.09861 -0.454777 0.692085
 internal_weight=0 24.3333 14.3333
 internal_count=109 73 43
+is_linear=0
 shrinkage=1
 
 
@@ -3895,6 +4110,7 @@ leaf_count=53 36 20
 internal_value=-1.09861 -2.01642
 internal_weight=0 24.3333
 internal_count=109 73
+is_linear=0
 shrinkage=1
 
 
@@ -3913,6 +4129,7 @@ leaf_count=41 43 33
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=117 76
+is_linear=0
 shrinkage=1
 
 
@@ -3931,6 +4148,7 @@ leaf_count=39 38 20 20
 internal_value=-1.09861 -0.521689 -1.79861
 internal_weight=0 26 13.3333
 internal_count=117 78 40
+is_linear=0
 shrinkage=1
 
 
@@ -3949,6 +4167,7 @@ leaf_count=43 20 20 34
 internal_value=-1.09861 0.601388 -2.09861
 internal_weight=0 13.3333 25.6667
 internal_count=117 40 77
+is_linear=0
 shrinkage=1
 
 
@@ -3967,6 +4186,7 @@ leaf_count=41 43 33
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=117 76
+is_linear=0
 shrinkage=1
 
 
@@ -3985,6 +4205,7 @@ leaf_count=39 38 20 20
 internal_value=-1.09861 -0.521689 -1.79861
 internal_weight=0 26 13.3333
 internal_count=117 78 40
+is_linear=0
 shrinkage=1
 
 
@@ -4003,6 +4224,7 @@ leaf_count=43 20 20 34
 internal_value=-1.09861 0.601388 -2.09861
 internal_weight=0 13.3333 25.6667
 internal_count=117 40 77
+is_linear=0
 shrinkage=1
 
 
@@ -4021,6 +4243,7 @@ leaf_count=41 43 33
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=117 76
+is_linear=0
 shrinkage=1
 
 
@@ -4039,6 +4262,7 @@ leaf_count=39 38 20 20
 internal_value=-1.09861 -0.521689 -1.79861
 internal_weight=0 26 13.3333
 internal_count=117 78 40
+is_linear=0
 shrinkage=1
 
 
@@ -4057,6 +4281,7 @@ leaf_count=43 20 20 34
 internal_value=-1.09861 0.601388 -2.09861
 internal_weight=0 13.3333 25.6667
 internal_count=117 40 77
+is_linear=0
 shrinkage=1
 
 
@@ -4075,6 +4300,7 @@ leaf_count=37 43 25
 internal_value=-1.09861 -2.09861
 internal_weight=0 22.6667
 internal_count=105 68
+is_linear=0
 shrinkage=1
 
 
@@ -4093,6 +4319,7 @@ leaf_count=35 34 36
 internal_value=-1.09861 -0.727184
 internal_weight=0 23.3333
 internal_count=105 70
+is_linear=0
 shrinkage=1
 
 
@@ -4111,6 +4338,7 @@ leaf_count=49 36 20
 internal_value=-1.09861 -2.01166
 internal_weight=0 23
 internal_count=105 69
+is_linear=0
 shrinkage=1
 
 
@@ -4129,6 +4357,7 @@ leaf_count=37 43 25
 internal_value=-1.09861 -2.09861
 internal_weight=0 22.6667
 internal_count=105 68
+is_linear=0
 shrinkage=1
 
 
@@ -4147,6 +4376,7 @@ leaf_count=35 34 36
 internal_value=-1.09861 -0.727184
 internal_weight=0 23.3333
 internal_count=105 70
+is_linear=0
 shrinkage=1
 
 
@@ -4165,6 +4395,7 @@ leaf_count=49 36 20
 internal_value=-1.09861 -2.01166
 internal_weight=0 23
 internal_count=105 69
+is_linear=0
 shrinkage=1
 
 
@@ -4183,6 +4414,7 @@ leaf_count=37 43 25
 internal_value=-1.09861 -2.09861
 internal_weight=0 22.6667
 internal_count=105 68
+is_linear=0
 shrinkage=1
 
 
@@ -4201,6 +4433,7 @@ leaf_count=35 34 36
 internal_value=-1.09861 -0.727184
 internal_weight=0 23.3333
 internal_count=105 70
+is_linear=0
 shrinkage=1
 
 
@@ -4219,6 +4452,7 @@ leaf_count=49 36 20
 internal_value=-1.09861 -2.01166
 internal_weight=0 23
 internal_count=105 69
+is_linear=0
 shrinkage=1
 
 
@@ -4237,6 +4471,7 @@ leaf_count=39 43 33
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=115 76
+is_linear=0
 shrinkage=1
 
 
@@ -4255,6 +4490,7 @@ leaf_count=37 37 21 20
 internal_value=-1.09861 -0.637074 -1.8791
 internal_weight=0 26 13.6667
 internal_count=115 78 41
+is_linear=0
 shrinkage=1
 
 
@@ -4273,6 +4509,7 @@ leaf_count=53 21 20 21
 internal_value=-1.09861 0.681876 -2.05807
 internal_weight=0 13.6667 24.6667
 internal_count=115 41 74
+is_linear=0
 shrinkage=1
 
 
@@ -4291,6 +4528,7 @@ leaf_count=39 43 33
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=115 76
+is_linear=0
 shrinkage=1
 
 
@@ -4309,6 +4547,7 @@ leaf_count=37 37 21 20
 internal_value=-1.09861 -0.637074 -1.8791
 internal_weight=0 26 13.6667
 internal_count=115 78 41
+is_linear=0
 shrinkage=1
 
 
@@ -4327,6 +4566,7 @@ leaf_count=53 21 20 21
 internal_value=-1.09861 0.681876 -2.05807
 internal_weight=0 13.6667 24.6667
 internal_count=115 41 74
+is_linear=0
 shrinkage=1
 
 
@@ -4345,6 +4585,7 @@ leaf_count=39 43 33
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=115 76
+is_linear=0
 shrinkage=1
 
 
@@ -4363,6 +4604,7 @@ leaf_count=37 37 21 20
 internal_value=-1.09861 -0.637074 -1.8791
 internal_weight=0 26 13.6667
 internal_count=115 78 41
+is_linear=0
 shrinkage=1
 
 
@@ -4381,6 +4623,7 @@ leaf_count=53 21 20 21
 internal_value=-1.09861 0.681876 -2.05807
 internal_weight=0 13.6667 24.6667
 internal_count=115 41 74
+is_linear=0
 shrinkage=1
 
 
@@ -4399,6 +4642,7 @@ leaf_count=41 37 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=113 72
+is_linear=0
 shrinkage=1
 
 
@@ -4417,6 +4661,7 @@ leaf_count=39 38 36
 internal_value=-1.09861 -0.558072
 internal_weight=0 24.6667
 internal_count=113 74
+is_linear=0
 shrinkage=1
 
 
@@ -4435,6 +4680,7 @@ leaf_count=57 36 20
 internal_value=-1.09861 -2.05965
 internal_weight=0 25.6667
 internal_count=113 77
+is_linear=0
 shrinkage=1
 
 
@@ -4453,6 +4699,7 @@ leaf_count=41 37 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=113 72
+is_linear=0
 shrinkage=1
 
 
@@ -4471,6 +4718,7 @@ leaf_count=39 38 36
 internal_value=-1.09861 -0.558072
 internal_weight=0 24.6667
 internal_count=113 74
+is_linear=0
 shrinkage=1
 
 
@@ -4489,6 +4737,7 @@ leaf_count=57 36 20
 internal_value=-1.09861 -2.05965
 internal_weight=0 25.6667
 internal_count=113 77
+is_linear=0
 shrinkage=1
 
 
@@ -4507,6 +4756,7 @@ leaf_count=41 37 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=113 72
+is_linear=0
 shrinkage=1
 
 
@@ -4525,6 +4775,7 @@ leaf_count=39 38 36
 internal_value=-1.09861 -0.558072
 internal_weight=0 24.6667
 internal_count=113 74
+is_linear=0
 shrinkage=1
 
 
@@ -4543,6 +4794,7 @@ leaf_count=57 36 20
 internal_value=-1.09861 -2.05965
 internal_weight=0 25.6667
 internal_count=113 77
+is_linear=0
 shrinkage=1
 
 
@@ -4561,6 +4813,7 @@ leaf_count=21 43 20 34
 internal_value=-1.09861 0.828217 -2.09861
 internal_weight=0 13.6667 25.6667
 internal_count=118 41 77
+is_linear=0
 shrinkage=1
 
 
@@ -4579,6 +4832,7 @@ leaf_count=39 40 39
 internal_value=-1.09861 -0.6176
 internal_weight=0 26.3333
 internal_count=118 79
+is_linear=0
 shrinkage=1
 
 
@@ -4597,6 +4851,7 @@ leaf_count=57 39 22
 internal_value=-1.09861 -2.02266
 internal_weight=0 26.3333
 internal_count=118 79
+is_linear=0
 shrinkage=1
 
 
@@ -4615,6 +4870,7 @@ leaf_count=21 43 20 34
 internal_value=-1.09861 0.828217 -2.09861
 internal_weight=0 13.6667 25.6667
 internal_count=118 41 77
+is_linear=0
 shrinkage=1
 
 
@@ -4633,6 +4889,7 @@ leaf_count=39 40 39
 internal_value=-1.09861 -0.6176
 internal_weight=0 26.3333
 internal_count=118 79
+is_linear=0
 shrinkage=1
 
 
@@ -4651,6 +4908,7 @@ leaf_count=57 39 22
 internal_value=-1.09861 -2.02266
 internal_weight=0 26.3333
 internal_count=118 79
+is_linear=0
 shrinkage=1
 
 
@@ -4669,6 +4927,7 @@ leaf_count=21 43 20 34
 internal_value=-1.09861 0.828217 -2.09861
 internal_weight=0 13.6667 25.6667
 internal_count=118 41 77
+is_linear=0
 shrinkage=1
 
 
@@ -4687,6 +4946,7 @@ leaf_count=39 40 39
 internal_value=-1.09861 -0.6176
 internal_weight=0 26.3333
 internal_count=118 79
+is_linear=0
 shrinkage=1
 
 
@@ -4705,6 +4965,7 @@ leaf_count=57 39 22
 internal_value=-1.09861 -2.02266
 internal_weight=0 26.3333
 internal_count=118 79
+is_linear=0
 shrinkage=1
 
 
@@ -4723,6 +4984,7 @@ leaf_count=36 37 29
 internal_value=-1.09861 -2.09861
 internal_weight=0 22
 internal_count=102 66
+is_linear=0
 shrinkage=1
 
 
@@ -4741,6 +5003,7 @@ leaf_count=34 36 32
 internal_value=-1.09861 -0.734976
 internal_weight=0 22
 internal_count=102 66
+is_linear=0
 shrinkage=1
 
 
@@ -4759,6 +5022,7 @@ leaf_count=20 36 46
 internal_value=-1.09861 -2.05316
 internal_weight=0 22
 internal_count=102 66
+is_linear=0
 shrinkage=1
 
 
@@ -4777,6 +5041,7 @@ leaf_count=36 37 29
 internal_value=-1.09861 -2.09861
 internal_weight=0 22
 internal_count=102 66
+is_linear=0
 shrinkage=1
 
 
@@ -4795,6 +5060,7 @@ leaf_count=34 36 32
 internal_value=-1.09861 -0.734976
 internal_weight=0 22
 internal_count=102 66
+is_linear=0
 shrinkage=1
 
 
@@ -4813,6 +5079,7 @@ leaf_count=20 36 46
 internal_value=-1.09861 -2.05316
 internal_weight=0 22
 internal_count=102 66
+is_linear=0
 shrinkage=1
 
 
@@ -4831,6 +5098,7 @@ leaf_count=36 37 29
 internal_value=-1.09861 -2.09861
 internal_weight=0 22
 internal_count=102 66
+is_linear=0
 shrinkage=1
 
 
@@ -4849,6 +5117,7 @@ leaf_count=34 36 32
 internal_value=-1.09861 -0.734976
 internal_weight=0 22
 internal_count=102 66
+is_linear=0
 shrinkage=1
 
 
@@ -4867,6 +5136,7 @@ leaf_count=20 36 46
 internal_value=-1.09861 -2.05316
 internal_weight=0 22
 internal_count=102 66
+is_linear=0
 shrinkage=1
 
 
@@ -4885,6 +5155,7 @@ leaf_count=34 37 32
 internal_value=-1.09861 -2.09861
 internal_weight=0 23
 internal_count=103 69
+is_linear=0
 shrinkage=1
 
 
@@ -4903,6 +5174,7 @@ leaf_count=34 37 32
 internal_value=-1.09861 -0.533395
 internal_weight=0 23
 internal_count=103 69
+is_linear=0
 shrinkage=1
 
 
@@ -4921,6 +5193,7 @@ leaf_count=50 32 21
 internal_value=-1.09861 -1.97185
 internal_weight=0 23.6667
 internal_count=103 71
+is_linear=0
 shrinkage=1
 
 
@@ -4939,6 +5212,7 @@ leaf_count=34 37 32
 internal_value=-1.09861 -2.09861
 internal_weight=0 23
 internal_count=103 69
+is_linear=0
 shrinkage=1
 
 
@@ -4957,6 +5231,7 @@ leaf_count=34 37 32
 internal_value=-1.09861 -0.533395
 internal_weight=0 23
 internal_count=103 69
+is_linear=0
 shrinkage=1
 
 
@@ -4975,6 +5250,7 @@ leaf_count=50 32 21
 internal_value=-1.09861 -1.97185
 internal_weight=0 23.6667
 internal_count=103 71
+is_linear=0
 shrinkage=1
 
 
@@ -4993,6 +5269,7 @@ leaf_count=34 37 32
 internal_value=-1.09861 -2.09861
 internal_weight=0 23
 internal_count=103 69
+is_linear=0
 shrinkage=1
 
 
@@ -5011,6 +5288,7 @@ leaf_count=34 37 32
 internal_value=-1.09861 -0.533395
 internal_weight=0 23
 internal_count=103 69
+is_linear=0
 shrinkage=1
 
 
@@ -5029,6 +5307,7 @@ leaf_count=50 32 21
 internal_value=-1.09861 -1.97185
 internal_weight=0 23.6667
 internal_count=103 71
+is_linear=0
 shrinkage=1
 
 
@@ -5047,6 +5326,7 @@ leaf_count=33 37 38
 internal_value=-1.09861 -2.09861
 internal_weight=0 25
 internal_count=108 75
+is_linear=0
 shrinkage=1
 
 
@@ -5065,6 +5345,7 @@ leaf_count=33 39 36
 internal_value=-1.09861 -0.418612
 internal_weight=0 25
 internal_count=108 75
+is_linear=0
 shrinkage=1
 
 
@@ -5083,6 +5364,7 @@ leaf_count=37 36 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=108 72
+is_linear=0
 shrinkage=1
 
 
@@ -5101,6 +5383,7 @@ leaf_count=33 37 38
 internal_value=-1.09861 -2.09861
 internal_weight=0 25
 internal_count=108 75
+is_linear=0
 shrinkage=1
 
 
@@ -5119,6 +5402,7 @@ leaf_count=33 39 36
 internal_value=-1.09861 -0.418612
 internal_weight=0 25
 internal_count=108 75
+is_linear=0
 shrinkage=1
 
 
@@ -5137,6 +5421,7 @@ leaf_count=37 36 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=108 72
+is_linear=0
 shrinkage=1
 
 
@@ -5155,6 +5440,7 @@ leaf_count=33 37 38
 internal_value=-1.09861 -2.09861
 internal_weight=0 25
 internal_count=108 75
+is_linear=0
 shrinkage=1
 
 
@@ -5173,6 +5459,7 @@ leaf_count=33 39 36
 internal_value=-1.09861 -0.418612
 internal_weight=0 25
 internal_count=108 75
+is_linear=0
 shrinkage=1
 
 
@@ -5191,6 +5478,7 @@ leaf_count=37 36 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=108 72
+is_linear=0
 shrinkage=1
 
 
@@ -5209,6 +5497,7 @@ leaf_count=20 34 21 37
 internal_value=-1.09861 0.828217 -2.09861
 internal_weight=0 13.6667 23.6667
 internal_count=112 41 71
+is_linear=0
 shrinkage=1
 
 
@@ -5227,6 +5516,7 @@ leaf_count=38 38 36
 internal_value=-1.09861 -0.679693
 internal_weight=0 24.6667
 internal_count=112 74
+is_linear=0
 shrinkage=1
 
 
@@ -5245,6 +5535,7 @@ leaf_count=54 38 20
 internal_value=-1.09861 -2.01753
 internal_weight=0 24.6667
 internal_count=112 74
+is_linear=0
 shrinkage=1
 
 
@@ -5263,6 +5554,7 @@ leaf_count=20 34 21 37
 internal_value=-1.09861 0.828217 -2.09861
 internal_weight=0 13.6667 23.6667
 internal_count=112 41 71
+is_linear=0
 shrinkage=1
 
 
@@ -5281,6 +5573,7 @@ leaf_count=38 38 36
 internal_value=-1.09861 -0.679693
 internal_weight=0 24.6667
 internal_count=112 74
+is_linear=0
 shrinkage=1
 
 
@@ -5299,6 +5592,7 @@ leaf_count=54 38 20
 internal_value=-1.09861 -2.01753
 internal_weight=0 24.6667
 internal_count=112 74
+is_linear=0
 shrinkage=1
 
 
@@ -5317,6 +5611,7 @@ leaf_count=20 34 21 37
 internal_value=-1.09861 0.828217 -2.09861
 internal_weight=0 13.6667 23.6667
 internal_count=112 41 71
+is_linear=0
 shrinkage=1
 
 
@@ -5335,6 +5630,7 @@ leaf_count=38 38 36
 internal_value=-1.09861 -0.679693
 internal_weight=0 24.6667
 internal_count=112 74
+is_linear=0
 shrinkage=1
 
 
@@ -5353,6 +5649,7 @@ leaf_count=54 38 20
 internal_value=-1.09861 -2.01753
 internal_weight=0 24.6667
 internal_count=112 74
+is_linear=0
 shrinkage=1
 
 
@@ -5371,6 +5668,7 @@ leaf_count=43 37 31
 internal_value=-1.09861 -2.09861
 internal_weight=0 22.6667
 internal_count=111 68
+is_linear=0
 shrinkage=1
 
 
@@ -5389,6 +5687,7 @@ leaf_count=23 41 20 27
 internal_value=-1.09861 -0.424194 -1.83391
 internal_weight=0 14.3333 22.6667
 internal_count=111 43 68
+is_linear=0
 shrinkage=1
 
 
@@ -5407,6 +5706,7 @@ leaf_count=54 37 20
 internal_value=-1.09861 -2.01753
 internal_weight=0 24.6667
 internal_count=111 74
+is_linear=0
 shrinkage=1
 
 
@@ -5425,6 +5725,7 @@ leaf_count=43 37 31
 internal_value=-1.09861 -2.09861
 internal_weight=0 22.6667
 internal_count=111 68
+is_linear=0
 shrinkage=1
 
 
@@ -5443,6 +5744,7 @@ leaf_count=23 41 20 27
 internal_value=-1.09861 -0.424194 -1.83391
 internal_weight=0 14.3333 22.6667
 internal_count=111 43 68
+is_linear=0
 shrinkage=1
 
 
@@ -5461,6 +5763,7 @@ leaf_count=54 37 20
 internal_value=-1.09861 -2.01753
 internal_weight=0 24.6667
 internal_count=111 74
+is_linear=0
 shrinkage=1
 
 
@@ -5479,6 +5782,7 @@ leaf_count=43 37 31
 internal_value=-1.09861 -2.09861
 internal_weight=0 22.6667
 internal_count=111 68
+is_linear=0
 shrinkage=1
 
 
@@ -5497,6 +5801,7 @@ leaf_count=23 41 20 27
 internal_value=-1.09861 -0.424194 -1.83391
 internal_weight=0 14.3333 22.6667
 internal_count=111 43 68
+is_linear=0
 shrinkage=1
 
 
@@ -5515,6 +5820,7 @@ leaf_count=54 37 20
 internal_value=-1.09861 -2.01753
 internal_weight=0 24.6667
 internal_count=111 74
+is_linear=0
 shrinkage=1
 
 
@@ -5533,6 +5839,7 @@ leaf_count=41 42 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 26.3333
 internal_count=120 79
+is_linear=0
 shrinkage=1
 
 
@@ -5551,6 +5858,7 @@ leaf_count=38 20 21 21 20
 internal_value=-1.09861 -0.635198 0.681876 -1.95227
 internal_weight=0 27.3333 13.6667 13.6667
 internal_count=120 82 41 41
+is_linear=0
 shrinkage=1
 
 
@@ -5569,6 +5877,7 @@ leaf_count=59 21 20 20
 internal_value=-1.09861 -2.06064 0.755046
 internal_weight=0 26.3333 13.6667
 internal_count=120 79 41
+is_linear=0
 shrinkage=1
 
 
@@ -5587,6 +5896,7 @@ leaf_count=41 42 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 26.3333
 internal_count=120 79
+is_linear=0
 shrinkage=1
 
 
@@ -5605,6 +5915,7 @@ leaf_count=38 20 21 21 20
 internal_value=-1.09861 -0.635198 0.681876 -1.95227
 internal_weight=0 27.3333 13.6667 13.6667
 internal_count=120 82 41 41
+is_linear=0
 shrinkage=1
 
 
@@ -5623,6 +5934,7 @@ leaf_count=59 21 20 20
 internal_value=-1.09861 -2.06064 0.755046
 internal_weight=0 26.3333 13.6667
 internal_count=120 79 41
+is_linear=0
 shrinkage=1
 
 
@@ -5641,6 +5953,7 @@ leaf_count=41 42 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 26.3333
 internal_count=120 79
+is_linear=0
 shrinkage=1
 
 
@@ -5659,6 +5972,7 @@ leaf_count=38 20 21 21 20
 internal_value=-1.09861 -0.635198 0.681876 -1.95227
 internal_weight=0 27.3333 13.6667 13.6667
 internal_count=120 82 41 41
+is_linear=0
 shrinkage=1
 
 
@@ -5677,6 +5991,7 @@ leaf_count=59 21 20 20
 internal_value=-1.09861 -2.06064 0.755046
 internal_weight=0 26.3333 13.6667
 internal_count=120 79 41
+is_linear=0
 shrinkage=1
 
 
@@ -5695,6 +6010,7 @@ leaf_count=24 29 20 43
 internal_value=-1.09861 0.833206 -2.09861
 internal_weight=0 14.6667 24
 internal_count=116 44 72
+is_linear=0
 shrinkage=1
 
 
@@ -5713,6 +6029,7 @@ leaf_count=42 35 39
 internal_value=-1.09861 -0.720234
 internal_weight=0 24.6667
 internal_count=116 74
+is_linear=0
 shrinkage=1
 
 
@@ -5731,6 +6048,7 @@ leaf_count=20 39 20 37
 internal_value=-1.09861 -2.05965 -2.09861
 internal_weight=0 25.6667 19
 internal_count=116 77 57
+is_linear=0
 shrinkage=1
 
 
@@ -5749,6 +6067,7 @@ leaf_count=24 29 20 43
 internal_value=-1.09861 0.833206 -2.09861
 internal_weight=0 14.6667 24
 internal_count=116 44 72
+is_linear=0
 shrinkage=1
 
 
@@ -5767,6 +6086,7 @@ leaf_count=42 35 39
 internal_value=-1.09861 -0.720234
 internal_weight=0 24.6667
 internal_count=116 74
+is_linear=0
 shrinkage=1
 
 
@@ -5785,6 +6105,7 @@ leaf_count=20 39 20 37
 internal_value=-1.09861 -2.05965 -2.09861
 internal_weight=0 25.6667 19
 internal_count=116 77 57
+is_linear=0
 shrinkage=1
 
 
@@ -5803,6 +6124,7 @@ leaf_count=24 29 20 43
 internal_value=-1.09861 0.833206 -2.09861
 internal_weight=0 14.6667 24
 internal_count=116 44 72
+is_linear=0
 shrinkage=1
 
 
@@ -5821,6 +6143,7 @@ leaf_count=42 35 39
 internal_value=-1.09861 -0.720234
 internal_weight=0 24.6667
 internal_count=116 74
+is_linear=0
 shrinkage=1
 
 
@@ -5839,6 +6162,7 @@ leaf_count=20 39 20 37
 internal_value=-1.09861 -2.05965 -2.09861
 internal_weight=0 25.6667 19
 internal_count=116 77 57
+is_linear=0
 shrinkage=1
 
 
@@ -5857,6 +6181,7 @@ leaf_count=43 43 39
 internal_value=-1.09861 -2.09861
 internal_weight=0 27.3333
 internal_count=125 82
+is_linear=0
 shrinkage=1
 
 
@@ -5875,6 +6200,7 @@ leaf_count=43 20 21 21 20
 internal_value=-1.09861 -0.671783 0.608705 -1.95227
 internal_weight=0 27.3333 13.6667 13.6667
 internal_count=125 82 41 41
+is_linear=0
 shrinkage=1
 
 
@@ -5893,6 +6219,7 @@ leaf_count=63 21 21 20
 internal_value=-1.09861 -1.95576 0.755046
 internal_weight=0 28 13.6667
 internal_count=125 84 41
+is_linear=0
 shrinkage=1
 
 
@@ -5911,6 +6238,7 @@ leaf_count=43 43 39
 internal_value=-1.09861 -2.09861
 internal_weight=0 27.3333
 internal_count=125 82
+is_linear=0
 shrinkage=1
 
 
@@ -5929,6 +6257,7 @@ leaf_count=43 20 21 21 20
 internal_value=-1.09861 -0.671783 0.608705 -1.95227
 internal_weight=0 27.3333 13.6667 13.6667
 internal_count=125 82 41 41
+is_linear=0
 shrinkage=1
 
 
@@ -5947,6 +6276,7 @@ leaf_count=63 21 21 20
 internal_value=-1.09861 -1.95576 0.755046
 internal_weight=0 28 13.6667
 internal_count=125 84 41
+is_linear=0
 shrinkage=1
 
 
@@ -5965,6 +6295,7 @@ leaf_count=43 43 39
 internal_value=-1.09861 -2.09861
 internal_weight=0 27.3333
 internal_count=125 82
+is_linear=0
 shrinkage=1
 
 
@@ -5983,6 +6314,7 @@ leaf_count=43 20 21 21 20
 internal_value=-1.09861 -0.671783 0.608705 -1.95227
 internal_weight=0 27.3333 13.6667 13.6667
 internal_count=125 82 41 41
+is_linear=0
 shrinkage=1
 
 
@@ -6001,6 +6333,7 @@ leaf_count=63 21 21 20
 internal_value=-1.09861 -1.95576 0.755046
 internal_weight=0 28 13.6667
 internal_count=125 84 41
+is_linear=0
 shrinkage=1
 
 
@@ -6019,6 +6352,7 @@ leaf_count=30 43 26
 internal_value=-1.09861 -2.09861
 internal_weight=0 23
 internal_count=99 69
+is_linear=0
 shrinkage=1
 
 
@@ -6037,6 +6371,7 @@ leaf_count=38 28 33
 internal_value=-1.09861 -1.65599
 internal_weight=0 20.3333
 internal_count=99 61
+is_linear=0
 shrinkage=1
 
 
@@ -6055,6 +6390,7 @@ leaf_count=39 39 21
 internal_value=-1.09861 -2.04861
 internal_weight=0 20
 internal_count=99 60
+is_linear=0
 shrinkage=1
 
 
@@ -6073,6 +6409,7 @@ leaf_count=30 43 26
 internal_value=-1.09861 -2.09861
 internal_weight=0 23
 internal_count=99 69
+is_linear=0
 shrinkage=1
 
 
@@ -6091,6 +6428,7 @@ leaf_count=38 28 33
 internal_value=-1.09861 -1.65599
 internal_weight=0 20.3333
 internal_count=99 61
+is_linear=0
 shrinkage=1
 
 
@@ -6109,6 +6447,7 @@ leaf_count=39 39 21
 internal_value=-1.09861 -2.04861
 internal_weight=0 20
 internal_count=99 60
+is_linear=0
 shrinkage=1
 
 
@@ -6127,6 +6466,7 @@ leaf_count=30 43 26
 internal_value=-1.09861 -2.09861
 internal_weight=0 23
 internal_count=99 69
+is_linear=0
 shrinkage=1
 
 
@@ -6145,6 +6485,7 @@ leaf_count=38 28 33
 internal_value=-1.09861 -1.65599
 internal_weight=0 20.3333
 internal_count=99 61
+is_linear=0
 shrinkage=1
 
 
@@ -6163,6 +6504,7 @@ leaf_count=39 39 21
 internal_value=-1.09861 -2.04861
 internal_weight=0 20
 internal_count=99 60
+is_linear=0
 shrinkage=1
 
 
@@ -6181,6 +6523,7 @@ leaf_count=32 47 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 28
 internal_count=116 84
+is_linear=0
 shrinkage=1
 
 
@@ -6199,6 +6542,7 @@ leaf_count=30 40 24 22
 internal_value=-1.09861 -0.440718 0.640518
 internal_weight=0 25.3333 15.3333
 internal_count=116 76 46
+is_linear=0
 shrinkage=1
 
 
@@ -6217,6 +6561,7 @@ leaf_count=53 21 22 20
 internal_value=-1.09861 0.761853 -2.05752
 internal_weight=0 14.3333 24.3333
 internal_count=116 43 73
+is_linear=0
 shrinkage=1
 
 
@@ -6235,6 +6580,7 @@ leaf_count=32 47 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 28
 internal_count=116 84
+is_linear=0
 shrinkage=1
 
 
@@ -6253,6 +6599,7 @@ leaf_count=30 40 24 22
 internal_value=-1.09861 -0.440718 0.640518
 internal_weight=0 25.3333 15.3333
 internal_count=116 76 46
+is_linear=0
 shrinkage=1
 
 
@@ -6271,6 +6618,7 @@ leaf_count=53 21 22 20
 internal_value=-1.09861 0.761853 -2.05752
 internal_weight=0 14.3333 24.3333
 internal_count=116 43 73
+is_linear=0
 shrinkage=1
 
 
@@ -6289,6 +6637,7 @@ leaf_count=32 47 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 28
 internal_count=116 84
+is_linear=0
 shrinkage=1
 
 
@@ -6307,6 +6656,7 @@ leaf_count=30 40 24 22
 internal_value=-1.09861 -0.440718 0.640518
 internal_weight=0 25.3333 15.3333
 internal_count=116 76 46
+is_linear=0
 shrinkage=1
 
 
@@ -6325,6 +6675,7 @@ leaf_count=53 21 22 20
 internal_value=-1.09861 0.761853 -2.05752
 internal_weight=0 14.3333 24.3333
 internal_count=116 43 73
+is_linear=0
 shrinkage=1
 
 
@@ -6343,6 +6694,7 @@ leaf_count=35 35 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 26
 internal_count=113 78
+is_linear=0
 shrinkage=1
 
 
@@ -6361,6 +6713,7 @@ leaf_count=33 39 21 20
 internal_value=-1.09861 -0.598612 0.608705
 internal_weight=0 24.6667 13.6667
 internal_count=113 74 41
+is_linear=0
 shrinkage=1
 
 
@@ -6379,6 +6732,7 @@ leaf_count=52 39 22
 internal_value=-1.09861 -1.97699
 internal_weight=0 24.6667
 internal_count=113 74
+is_linear=0
 shrinkage=1
 
 
@@ -6397,6 +6751,7 @@ leaf_count=35 35 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 26
 internal_count=113 78
+is_linear=0
 shrinkage=1
 
 
@@ -6415,6 +6770,7 @@ leaf_count=33 39 21 20
 internal_value=-1.09861 -0.598612 0.608705
 internal_weight=0 24.6667 13.6667
 internal_count=113 74 41
+is_linear=0
 shrinkage=1
 
 
@@ -6433,6 +6789,7 @@ leaf_count=52 39 22
 internal_value=-1.09861 -1.97699
 internal_weight=0 24.6667
 internal_count=113 74
+is_linear=0
 shrinkage=1
 
 
@@ -6451,6 +6808,7 @@ leaf_count=35 35 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 26
 internal_count=113 78
+is_linear=0
 shrinkage=1
 
 
@@ -6469,6 +6827,7 @@ leaf_count=33 39 21 20
 internal_value=-1.09861 -0.598612 0.608705
 internal_weight=0 24.6667 13.6667
 internal_count=113 74 41
+is_linear=0
 shrinkage=1
 
 
@@ -6487,6 +6846,7 @@ leaf_count=52 39 22
 internal_value=-1.09861 -1.97699
 internal_weight=0 24.6667
 internal_count=113 74
+is_linear=0
 shrinkage=1
 
 
@@ -6505,6 +6865,7 @@ leaf_count=37 73
 internal_value=-1.09861
 internal_weight=0
 internal_count=110
+is_linear=0
 shrinkage=1
 
 
@@ -6523,6 +6884,7 @@ leaf_count=37 31 21 21
 internal_value=-1.09861 -0.82464 -1.95576
 internal_weight=0 24.3333 14
 internal_count=110 73 42
+is_linear=0
 shrinkage=1
 
 
@@ -6541,6 +6903,7 @@ leaf_count=48 21 20 21
 internal_value=-1.09861 -2.01038 0.758531
 internal_weight=0 22.6667 14
 internal_count=110 68 42
+is_linear=0
 shrinkage=1
 
 
@@ -6559,6 +6922,7 @@ leaf_count=37 73
 internal_value=-1.09861
 internal_weight=0
 internal_count=110
+is_linear=0
 shrinkage=1
 
 
@@ -6577,6 +6941,7 @@ leaf_count=37 31 21 21
 internal_value=-1.09861 -0.82464 -1.95576
 internal_weight=0 24.3333 14
 internal_count=110 73 42
+is_linear=0
 shrinkage=1
 
 
@@ -6595,6 +6960,7 @@ leaf_count=48 21 20 21
 internal_value=-1.09861 -2.01038 0.758531
 internal_weight=0 22.6667 14
 internal_count=110 68 42
+is_linear=0
 shrinkage=1
 
 
@@ -6613,6 +6979,7 @@ leaf_count=37 73
 internal_value=-1.09861
 internal_weight=0
 internal_count=110
+is_linear=0
 shrinkage=1
 
 
@@ -6631,6 +6998,7 @@ leaf_count=37 31 21 21
 internal_value=-1.09861 -0.82464 -1.95576
 internal_weight=0 24.3333 14
 internal_count=110 73 42
+is_linear=0
 shrinkage=1
 
 
@@ -6649,6 +7017,7 @@ leaf_count=48 21 20 21
 internal_value=-1.09861 -2.01038 0.758531
 internal_weight=0 22.6667 14
 internal_count=110 68 42
+is_linear=0
 shrinkage=1
 
 
@@ -6667,6 +7036,7 @@ leaf_count=35 74
 internal_value=-1.09861
 internal_weight=0
 internal_count=109
+is_linear=0
 shrinkage=1
 
 
@@ -6685,6 +7055,7 @@ leaf_count=35 29 20 25
 internal_value=-1.09861 -0.720234 -1.76528
 internal_weight=0 24.6667 15
 internal_count=109 74 45
+is_linear=0
 shrinkage=1
 
 
@@ -6703,6 +7074,7 @@ leaf_count=21 20 25 43
 internal_value=-1.09861 0.568054 -2.09861
 internal_weight=0 15 21.3333
 internal_count=109 45 64
+is_linear=0
 shrinkage=1
 
 
@@ -6721,6 +7093,7 @@ leaf_count=35 74
 internal_value=-1.09861
 internal_weight=0
 internal_count=109
+is_linear=0
 shrinkage=1
 
 
@@ -6739,6 +7112,7 @@ leaf_count=35 29 20 25
 internal_value=-1.09861 -0.720234 -1.76528
 internal_weight=0 24.6667 15
 internal_count=109 74 45
+is_linear=0
 shrinkage=1
 
 
@@ -6757,6 +7131,7 @@ leaf_count=21 20 25 43
 internal_value=-1.09861 0.568054 -2.09861
 internal_weight=0 15 21.3333
 internal_count=109 45 64
+is_linear=0
 shrinkage=1
 
 
@@ -6775,6 +7150,7 @@ leaf_count=35 74
 internal_value=-1.09861
 internal_weight=0
 internal_count=109
+is_linear=0
 shrinkage=1
 
 
@@ -6793,6 +7169,7 @@ leaf_count=35 29 20 25
 internal_value=-1.09861 -0.720234 -1.76528
 internal_weight=0 24.6667 15
 internal_count=109 74 45
+is_linear=0
 shrinkage=1
 
 
@@ -6811,6 +7188,7 @@ leaf_count=21 20 25 43
 internal_value=-1.09861 0.568054 -2.09861
 internal_weight=0 15 21.3333
 internal_count=109 45 64
+is_linear=0
 shrinkage=1
 
 
@@ -6829,6 +7207,7 @@ leaf_count=40 33 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=116 76
+is_linear=0
 shrinkage=1
 
 
@@ -6847,6 +7226,7 @@ leaf_count=38 20 38 20
 internal_value=-1.09861 -0.637074 0.676388
 internal_weight=0 26 13.3333
 internal_count=116 78 40
+is_linear=0
 shrinkage=1
 
 
@@ -6865,6 +7245,7 @@ leaf_count=58 38 20
 internal_value=-1.09861 -2.02169
 internal_weight=0 26
 internal_count=116 78
+is_linear=0
 shrinkage=1
 
 
@@ -6883,6 +7264,7 @@ leaf_count=40 33 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=116 76
+is_linear=0
 shrinkage=1
 
 
@@ -6901,6 +7283,7 @@ leaf_count=38 20 38 20
 internal_value=-1.09861 -0.637074 0.676388
 internal_weight=0 26 13.3333
 internal_count=116 78 40
+is_linear=0
 shrinkage=1
 
 
@@ -6919,6 +7302,7 @@ leaf_count=58 38 20
 internal_value=-1.09861 -2.02169
 internal_weight=0 26
 internal_count=116 78
+is_linear=0
 shrinkage=1
 
 
@@ -6937,6 +7321,7 @@ leaf_count=40 33 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=116 76
+is_linear=0
 shrinkage=1
 
 
@@ -6955,6 +7340,7 @@ leaf_count=38 20 38 20
 internal_value=-1.09861 -0.637074 0.676388
 internal_weight=0 26 13.3333
 internal_count=116 78 40
+is_linear=0
 shrinkage=1
 
 
@@ -6973,6 +7359,7 @@ leaf_count=58 38 20
 internal_value=-1.09861 -2.02169
 internal_weight=0 26
 internal_count=116 78
+is_linear=0
 shrinkage=1
 
 
@@ -6991,6 +7378,7 @@ leaf_count=37 43 25
 internal_value=-1.09861 -2.09861
 internal_weight=0 22.6667
 internal_count=105 68
+is_linear=0
 shrinkage=1
 
 
@@ -7009,6 +7397,7 @@ leaf_count=37 39 29
 internal_value=-1.09861 -0.825885
 internal_weight=0 22
 internal_count=105 66
+is_linear=0
 shrinkage=1
 
 
@@ -7027,6 +7416,7 @@ leaf_count=37 23 20 25
 internal_value=-1.09861 0.692085 -2.09861
 internal_weight=0 14.3333 20.6667
 internal_count=105 43 62
+is_linear=0
 shrinkage=1
 
 
@@ -7045,6 +7435,7 @@ leaf_count=37 43 25
 internal_value=-1.09861 -2.09861
 internal_weight=0 22.6667
 internal_count=105 68
+is_linear=0
 shrinkage=1
 
 
@@ -7063,6 +7454,7 @@ leaf_count=37 39 29
 internal_value=-1.09861 -0.825885
 internal_weight=0 22
 internal_count=105 66
+is_linear=0
 shrinkage=1
 
 
@@ -7081,6 +7473,7 @@ leaf_count=37 23 20 25
 internal_value=-1.09861 0.692085 -2.09861
 internal_weight=0 14.3333 20.6667
 internal_count=105 43 62
+is_linear=0
 shrinkage=1
 
 
@@ -7099,6 +7492,7 @@ leaf_count=37 43 25
 internal_value=-1.09861 -2.09861
 internal_weight=0 22.6667
 internal_count=105 68
+is_linear=0
 shrinkage=1
 
 
@@ -7117,6 +7511,7 @@ leaf_count=37 39 29
 internal_value=-1.09861 -0.825885
 internal_weight=0 22
 internal_count=105 66
+is_linear=0
 shrinkage=1
 
 
@@ -7135,6 +7530,7 @@ leaf_count=37 23 20 25
 internal_value=-1.09861 0.692085 -2.09861
 internal_weight=0 14.3333 20.6667
 internal_count=105 43 62
+is_linear=0
 shrinkage=1
 
 
@@ -7153,6 +7549,7 @@ leaf_count=41 37 38
 internal_value=-1.09861 -2.09861
 internal_weight=0 25
 internal_count=116 75
+is_linear=0
 shrinkage=1
 
 
@@ -7171,6 +7568,7 @@ leaf_count=39 21 36 20
 internal_value=-1.09861 -0.579132 0.608705
 internal_weight=0 25.6667 13.6667
 internal_count=116 77 41
+is_linear=0
 shrinkage=1
 
 
@@ -7189,6 +7587,7 @@ leaf_count=60 36 20
 internal_value=-1.09861 -1.98611
 internal_weight=0 26.6667
 internal_count=116 80
+is_linear=0
 shrinkage=1
 
 
@@ -7207,6 +7606,7 @@ leaf_count=41 37 38
 internal_value=-1.09861 -2.09861
 internal_weight=0 25
 internal_count=116 75
+is_linear=0
 shrinkage=1
 
 
@@ -7225,6 +7625,7 @@ leaf_count=39 21 36 20
 internal_value=-1.09861 -0.579132 0.608705
 internal_weight=0 25.6667 13.6667
 internal_count=116 77 41
+is_linear=0
 shrinkage=1
 
 
@@ -7243,6 +7644,7 @@ leaf_count=60 36 20
 internal_value=-1.09861 -1.98611
 internal_weight=0 26.6667
 internal_count=116 80
+is_linear=0
 shrinkage=1
 
 
@@ -7261,6 +7663,7 @@ leaf_count=41 37 38
 internal_value=-1.09861 -2.09861
 internal_weight=0 25
 internal_count=116 75
+is_linear=0
 shrinkage=1
 
 
@@ -7279,6 +7682,7 @@ leaf_count=39 21 36 20
 internal_value=-1.09861 -0.579132 0.608705
 internal_weight=0 25.6667 13.6667
 internal_count=116 77 41
+is_linear=0
 shrinkage=1
 
 
@@ -7297,6 +7701,7 @@ leaf_count=60 36 20
 internal_value=-1.09861 -1.98611
 internal_weight=0 26.6667
 internal_count=116 80
+is_linear=0
 shrinkage=1
 
 
@@ -7315,6 +7720,7 @@ leaf_count=39 37 34
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.6667
 internal_count=110 71
+is_linear=0
 shrinkage=1
 
 
@@ -7333,6 +7739,7 @@ leaf_count=39 38 33
 internal_value=-1.09861 -0.450725
 internal_weight=0 23.6667
 internal_count=110 71
+is_linear=0
 shrinkage=1
 
 
@@ -7351,6 +7758,7 @@ leaf_count=56 33 21
 internal_value=-1.09861 -2.05965
 internal_weight=0 25.6667
 internal_count=110 77
+is_linear=0
 shrinkage=1
 
 
@@ -7369,6 +7777,7 @@ leaf_count=39 37 34
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.6667
 internal_count=110 71
+is_linear=0
 shrinkage=1
 
 
@@ -7387,6 +7796,7 @@ leaf_count=39 38 33
 internal_value=-1.09861 -0.450725
 internal_weight=0 23.6667
 internal_count=110 71
+is_linear=0
 shrinkage=1
 
 
@@ -7405,6 +7815,7 @@ leaf_count=56 33 21
 internal_value=-1.09861 -2.05965
 internal_weight=0 25.6667
 internal_count=110 77
+is_linear=0
 shrinkage=1
 
 
@@ -7423,6 +7834,7 @@ leaf_count=39 37 34
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.6667
 internal_count=110 71
+is_linear=0
 shrinkage=1
 
 
@@ -7441,6 +7853,7 @@ leaf_count=39 38 33
 internal_value=-1.09861 -0.450725
 internal_weight=0 23.6667
 internal_count=110 71
+is_linear=0
 shrinkage=1
 
 
@@ -7459,6 +7872,7 @@ leaf_count=56 33 21
 internal_value=-1.09861 -2.05965
 internal_weight=0 25.6667
 internal_count=110 77
+is_linear=0
 shrinkage=1
 
 
@@ -7477,6 +7891,7 @@ leaf_count=40 37 41
 internal_value=-1.09861 -2.09861
 internal_weight=0 26
 internal_count=118 78
+is_linear=0
 shrinkage=1
 
 
@@ -7495,6 +7910,7 @@ leaf_count=37 22 39 20
 internal_value=-1.09861 -0.654168 0.544245
 internal_weight=0 27 14
 internal_count=118 81 42
+is_linear=0
 shrinkage=1
 
 
@@ -7513,6 +7929,7 @@ leaf_count=59 39 20
 internal_value=-1.09861 -1.98469
 internal_weight=0 26.3333
 internal_count=118 79
+is_linear=0
 shrinkage=1
 
 
@@ -7531,6 +7948,7 @@ leaf_count=40 37 41
 internal_value=-1.09861 -2.09861
 internal_weight=0 26
 internal_count=118 78
+is_linear=0
 shrinkage=1
 
 
@@ -7549,6 +7967,7 @@ leaf_count=37 22 39 20
 internal_value=-1.09861 -0.654168 0.544245
 internal_weight=0 27 14
 internal_count=118 81 42
+is_linear=0
 shrinkage=1
 
 
@@ -7567,6 +7986,7 @@ leaf_count=59 39 20
 internal_value=-1.09861 -1.98469
 internal_weight=0 26.3333
 internal_count=118 79
+is_linear=0
 shrinkage=1
 
 
@@ -7585,6 +8005,7 @@ leaf_count=40 37 41
 internal_value=-1.09861 -2.09861
 internal_weight=0 26
 internal_count=118 78
+is_linear=0
 shrinkage=1
 
 
@@ -7603,6 +8024,7 @@ leaf_count=37 22 39 20
 internal_value=-1.09861 -0.654168 0.544245
 internal_weight=0 27 14
 internal_count=118 81 42
+is_linear=0
 shrinkage=1
 
 
@@ -7621,6 +8043,7 @@ leaf_count=59 39 20
 internal_value=-1.09861 -1.98469
 internal_weight=0 26.3333
 internal_count=118 79
+is_linear=0
 shrinkage=1
 
 
@@ -7639,6 +8062,7 @@ leaf_count=24 37 20 45
 internal_value=-1.09861 0.833206 -2.09861
 internal_weight=0 14.6667 27.3333
 internal_count=126 44 82
+is_linear=0
 shrinkage=1
 
 
@@ -7657,6 +8081,7 @@ leaf_count=41 21 21 21 22
 internal_value=-1.09861 -0.722142 -1.95576 0.482783
 internal_weight=0 28.3333 14 14.3333
 internal_count=126 85 42 43
+is_linear=0
 shrinkage=1
 
 
@@ -7675,6 +8100,7 @@ leaf_count=62 21 22 21
 internal_value=-1.09861 -1.95576 0.758531
 internal_weight=0 28 14
 internal_count=126 84 42
+is_linear=0
 shrinkage=1
 
 
@@ -7693,6 +8119,7 @@ leaf_count=24 37 20 45
 internal_value=-1.09861 0.833206 -2.09861
 internal_weight=0 14.6667 27.3333
 internal_count=126 44 82
+is_linear=0
 shrinkage=1
 
 
@@ -7711,6 +8138,7 @@ leaf_count=41 21 21 21 22
 internal_value=-1.09861 -0.722142 -1.95576 0.482783
 internal_weight=0 28.3333 14 14.3333
 internal_count=126 85 42 43
+is_linear=0
 shrinkage=1
 
 
@@ -7729,6 +8157,7 @@ leaf_count=62 21 22 21
 internal_value=-1.09861 -1.95576 0.758531
 internal_weight=0 28 14
 internal_count=126 84 42
+is_linear=0
 shrinkage=1
 
 
@@ -7747,6 +8176,7 @@ leaf_count=24 37 20 45
 internal_value=-1.09861 0.833206 -2.09861
 internal_weight=0 14.6667 27.3333
 internal_count=126 44 82
+is_linear=0
 shrinkage=1
 
 
@@ -7765,6 +8195,7 @@ leaf_count=41 21 21 21 22
 internal_value=-1.09861 -0.722142 -1.95576 0.482783
 internal_weight=0 28.3333 14 14.3333
 internal_count=126 85 42 43
+is_linear=0
 shrinkage=1
 
 
@@ -7783,6 +8214,7 @@ leaf_count=62 21 22 21
 internal_value=-1.09861 -1.95576 0.758531
 internal_weight=0 28 14
 internal_count=126 84 42
+is_linear=0
 shrinkage=1
 
 
@@ -7801,6 +8233,7 @@ leaf_count=39 73
 internal_value=-1.09861
 internal_weight=0
 internal_count=112
+is_linear=0
 shrinkage=1
 
 
@@ -7819,6 +8252,7 @@ leaf_count=36 23 33 20
 internal_value=-1.09861 -0.598612 0.482783
 internal_weight=0 25.3333 14.3333
 internal_count=112 76 43
+is_linear=0
 shrinkage=1
 
 
@@ -7837,6 +8271,7 @@ leaf_count=54 37 21
 internal_value=-1.09861 -2.01861
 internal_weight=0 25
 internal_count=112 75
+is_linear=0
 shrinkage=1
 
 
@@ -7855,6 +8290,7 @@ leaf_count=39 73
 internal_value=-1.09861
 internal_weight=0
 internal_count=112
+is_linear=0
 shrinkage=1
 
 
@@ -7873,6 +8309,7 @@ leaf_count=36 23 33 20
 internal_value=-1.09861 -0.598612 0.482783
 internal_weight=0 25.3333 14.3333
 internal_count=112 76 43
+is_linear=0
 shrinkage=1
 
 
@@ -7891,6 +8328,7 @@ leaf_count=54 37 21
 internal_value=-1.09861 -2.01861
 internal_weight=0 25
 internal_count=112 75
+is_linear=0
 shrinkage=1
 
 
@@ -7909,6 +8347,7 @@ leaf_count=39 73
 internal_value=-1.09861
 internal_weight=0
 internal_count=112
+is_linear=0
 shrinkage=1
 
 
@@ -7927,6 +8366,7 @@ leaf_count=36 23 33 20
 internal_value=-1.09861 -0.598612 0.482783
 internal_weight=0 25.3333 14.3333
 internal_count=112 76 43
+is_linear=0
 shrinkage=1
 
 
@@ -7945,6 +8385,7 @@ leaf_count=54 37 21
 internal_value=-1.09861 -2.01861
 internal_weight=0 25
 internal_count=112 75
+is_linear=0
 shrinkage=1
 
 
@@ -7963,6 +8404,7 @@ leaf_count=20 27 21 43
 internal_value=-1.09861 0.828217 -2.09861
 internal_weight=0 13.6667 23.3333
 internal_count=111 41 70
+is_linear=0
 shrinkage=1
 
 
@@ -7981,6 +8423,7 @@ leaf_count=38 39 34
 internal_value=-1.09861 -0.61916
 internal_weight=0 24.3333
 internal_count=111 73
+is_linear=0
 shrinkage=1
 
 
@@ -7999,6 +8442,7 @@ leaf_count=73 38
 internal_value=-1.09861
 internal_weight=0
 internal_count=111
+is_linear=0
 shrinkage=1
 
 
@@ -8017,6 +8461,7 @@ leaf_count=20 27 21 43
 internal_value=-1.09861 0.828217 -2.09861
 internal_weight=0 13.6667 23.3333
 internal_count=111 41 70
+is_linear=0
 shrinkage=1
 
 
@@ -8035,6 +8480,7 @@ leaf_count=38 39 34
 internal_value=-1.09861 -0.61916
 internal_weight=0 24.3333
 internal_count=111 73
+is_linear=0
 shrinkage=1
 
 
@@ -8053,6 +8499,7 @@ leaf_count=73 38
 internal_value=-1.09861
 internal_weight=0
 internal_count=111
+is_linear=0
 shrinkage=1
 
 
@@ -8071,6 +8518,7 @@ leaf_count=20 27 21 43
 internal_value=-1.09861 0.828217 -2.09861
 internal_weight=0 13.6667 23.3333
 internal_count=111 41 70
+is_linear=0
 shrinkage=1
 
 
@@ -8089,6 +8537,7 @@ leaf_count=38 39 34
 internal_value=-1.09861 -0.61916
 internal_weight=0 24.3333
 internal_count=111 73
+is_linear=0
 shrinkage=1
 
 
@@ -8107,6 +8556,7 @@ leaf_count=73 38
 internal_value=-1.09861
 internal_weight=0
 internal_count=111
+is_linear=0
 shrinkage=1
 
 
@@ -8125,6 +8575,7 @@ leaf_count=35 28 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.6667
 internal_count=106 71
+is_linear=0
 shrinkage=1
 
 
@@ -8143,6 +8594,7 @@ leaf_count=35 36 35
 internal_value=-1.09861 -0.577486
 internal_weight=0 23.6667
 internal_count=106 71
+is_linear=0
 shrinkage=1
 
 
@@ -8161,6 +8613,7 @@ leaf_count=51 35 20
 internal_value=-1.09861 -2.01411
 internal_weight=0 23.6667
 internal_count=106 71
+is_linear=0
 shrinkage=1
 
 
@@ -8179,6 +8632,7 @@ leaf_count=35 28 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.6667
 internal_count=106 71
+is_linear=0
 shrinkage=1
 
 
@@ -8197,6 +8651,7 @@ leaf_count=35 36 35
 internal_value=-1.09861 -0.577486
 internal_weight=0 23.6667
 internal_count=106 71
+is_linear=0
 shrinkage=1
 
 
@@ -8215,6 +8670,7 @@ leaf_count=51 35 20
 internal_value=-1.09861 -2.01411
 internal_weight=0 23.6667
 internal_count=106 71
+is_linear=0
 shrinkage=1
 
 
@@ -8233,6 +8689,7 @@ leaf_count=35 28 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.6667
 internal_count=106 71
+is_linear=0
 shrinkage=1
 
 
@@ -8251,6 +8708,7 @@ leaf_count=35 36 35
 internal_value=-1.09861 -0.577486
 internal_weight=0 23.6667
 internal_count=106 71
+is_linear=0
 shrinkage=1
 
 
@@ -8269,6 +8727,7 @@ leaf_count=51 35 20
 internal_value=-1.09861 -2.01411
 internal_weight=0 23.6667
 internal_count=106 71
+is_linear=0
 shrinkage=1
 
 
@@ -8287,6 +8746,7 @@ leaf_count=20 43 20 29
 internal_value=-1.09861 0.826388 -2.09861
 internal_weight=0 13.3333 24
 internal_count=112 40 72
+is_linear=0
 shrinkage=1
 
 
@@ -8305,6 +8765,7 @@ leaf_count=38 40 34
 internal_value=-1.09861 -0.558072
 internal_weight=0 24.6667
 internal_count=112 74
+is_linear=0
 shrinkage=1
 
 
@@ -8323,6 +8784,7 @@ leaf_count=57 34 21
 internal_value=-1.09861 -1.98323
 internal_weight=0 26
 internal_count=112 78
+is_linear=0
 shrinkage=1
 
 
@@ -8341,6 +8803,7 @@ leaf_count=20 43 20 29
 internal_value=-1.09861 0.826388 -2.09861
 internal_weight=0 13.3333 24
 internal_count=112 40 72
+is_linear=0
 shrinkage=1
 
 
@@ -8359,6 +8822,7 @@ leaf_count=38 40 34
 internal_value=-1.09861 -0.558072
 internal_weight=0 24.6667
 internal_count=112 74
+is_linear=0
 shrinkage=1
 
 
@@ -8377,6 +8841,7 @@ leaf_count=57 34 21
 internal_value=-1.09861 -1.98323
 internal_weight=0 26
 internal_count=112 78
+is_linear=0
 shrinkage=1
 
 
@@ -8395,6 +8860,7 @@ leaf_count=20 43 20 29
 internal_value=-1.09861 0.826388 -2.09861
 internal_weight=0 13.3333 24
 internal_count=112 40 72
+is_linear=0
 shrinkage=1
 
 
@@ -8413,6 +8879,7 @@ leaf_count=38 40 34
 internal_value=-1.09861 -0.558072
 internal_weight=0 24.6667
 internal_count=112 74
+is_linear=0
 shrinkage=1
 
 
@@ -8431,6 +8898,7 @@ leaf_count=57 34 21
 internal_value=-1.09861 -1.98323
 internal_weight=0 26
 internal_count=112 78
+is_linear=0
 shrinkage=1
 
 
@@ -8449,6 +8917,7 @@ leaf_count=32 43 38
 internal_value=-1.09861 -2.09861
 internal_weight=0 27
 internal_count=113 81
+is_linear=0
 shrinkage=1
 
 
@@ -8467,6 +8936,7 @@ leaf_count=32 21 20 20 20
 internal_value=-1.09861 -0.556946 0.676388 -1.95227
 internal_weight=0 24 13.3333 13.6667
 internal_count=113 72 40 41
+is_linear=0
 shrinkage=1
 
 
@@ -8485,6 +8955,7 @@ leaf_count=52 21 20 20
 internal_value=-1.09861 -1.97361 0.755046
 internal_weight=0 24 13.6667
 internal_count=113 72 41
+is_linear=0
 shrinkage=1
 
 
@@ -8503,6 +8974,7 @@ leaf_count=32 43 38
 internal_value=-1.09861 -2.09861
 internal_weight=0 27
 internal_count=113 81
+is_linear=0
 shrinkage=1
 
 
@@ -8521,6 +8993,7 @@ leaf_count=32 21 20 20 20
 internal_value=-1.09861 -0.556946 0.676388 -1.95227
 internal_weight=0 24 13.3333 13.6667
 internal_count=113 72 40 41
+is_linear=0
 shrinkage=1
 
 
@@ -8539,6 +9012,7 @@ leaf_count=52 21 20 20
 internal_value=-1.09861 -1.97361 0.755046
 internal_weight=0 24 13.6667
 internal_count=113 72 41
+is_linear=0
 shrinkage=1
 
 
@@ -8557,6 +9031,7 @@ leaf_count=32 43 38
 internal_value=-1.09861 -2.09861
 internal_weight=0 27
 internal_count=113 81
+is_linear=0
 shrinkage=1
 
 
@@ -8575,6 +9050,7 @@ leaf_count=32 21 20 20 20
 internal_value=-1.09861 -0.556946 0.676388 -1.95227
 internal_weight=0 24 13.3333 13.6667
 internal_count=113 72 40 41
+is_linear=0
 shrinkage=1
 
 
@@ -8593,6 +9069,7 @@ leaf_count=52 21 20 20
 internal_value=-1.09861 -1.97361 0.755046
 internal_weight=0 24 13.6667
 internal_count=113 72 41
+is_linear=0
 shrinkage=1
 
 
@@ -8611,6 +9088,7 @@ leaf_count=38 37 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=110 72
+is_linear=0
 shrinkage=1
 
 
@@ -8629,6 +9107,7 @@ leaf_count=39 36 35
 internal_value=-1.09861 -1.71833
 internal_weight=0 23.6667
 internal_count=110 71
+is_linear=0
 shrinkage=1
 
 
@@ -8647,6 +9126,7 @@ leaf_count=52 38 20
 internal_value=-1.09861 -1.97361
 internal_weight=0 24
 internal_count=110 72
+is_linear=0
 shrinkage=1
 
 
@@ -8665,6 +9145,7 @@ leaf_count=38 37 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=110 72
+is_linear=0
 shrinkage=1
 
 
@@ -8683,6 +9164,7 @@ leaf_count=39 36 35
 internal_value=-1.09861 -1.71833
 internal_weight=0 23.6667
 internal_count=110 71
+is_linear=0
 shrinkage=1
 
 
@@ -8701,6 +9183,7 @@ leaf_count=52 38 20
 internal_value=-1.09861 -1.97361
 internal_weight=0 24
 internal_count=110 72
+is_linear=0
 shrinkage=1
 
 
@@ -8719,6 +9202,7 @@ leaf_count=38 37 35
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=110 72
+is_linear=0
 shrinkage=1
 
 
@@ -8737,6 +9221,7 @@ leaf_count=39 36 35
 internal_value=-1.09861 -1.71833
 internal_weight=0 23.6667
 internal_count=110 71
+is_linear=0
 shrinkage=1
 
 
@@ -8755,6 +9240,7 @@ leaf_count=52 38 20
 internal_value=-1.09861 -1.97361
 internal_weight=0 24
 internal_count=110 72
+is_linear=0
 shrinkage=1
 
 
@@ -8773,6 +9259,7 @@ leaf_count=36 43 34
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.6667
 internal_count=113 77
+is_linear=0
 shrinkage=1
 
 
@@ -8791,6 +9278,7 @@ leaf_count=36 38 39
 internal_value=-1.09861 -0.618093
 internal_weight=0 25.6667
 internal_count=113 77
+is_linear=0
 shrinkage=1
 
 
@@ -8809,6 +9297,7 @@ leaf_count=54 39 20
 internal_value=-1.09861 -2.01753
 internal_weight=0 24.6667
 internal_count=113 74
+is_linear=0
 shrinkage=1
 
 
@@ -8827,6 +9316,7 @@ leaf_count=36 43 34
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.6667
 internal_count=113 77
+is_linear=0
 shrinkage=1
 
 
@@ -8845,6 +9335,7 @@ leaf_count=36 38 39
 internal_value=-1.09861 -0.618093
 internal_weight=0 25.6667
 internal_count=113 77
+is_linear=0
 shrinkage=1
 
 
@@ -8863,6 +9354,7 @@ leaf_count=54 39 20
 internal_value=-1.09861 -2.01753
 internal_weight=0 24.6667
 internal_count=113 74
+is_linear=0
 shrinkage=1
 
 
@@ -8881,6 +9373,7 @@ leaf_count=36 43 34
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.6667
 internal_count=113 77
+is_linear=0
 shrinkage=1
 
 
@@ -8899,6 +9392,7 @@ leaf_count=36 38 39
 internal_value=-1.09861 -0.618093
 internal_weight=0 25.6667
 internal_count=113 77
+is_linear=0
 shrinkage=1
 
 
@@ -8917,6 +9411,7 @@ leaf_count=54 39 20
 internal_value=-1.09861 -2.01753
 internal_weight=0 24.6667
 internal_count=113 74
+is_linear=0
 shrinkage=1
 
 
@@ -8935,6 +9430,7 @@ leaf_count=38 35 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=110 72
+is_linear=0
 shrinkage=1
 
 
@@ -8953,6 +9449,7 @@ leaf_count=36 37 37
 internal_value=-1.09861 -0.679693
 internal_weight=0 24.6667
 internal_count=110 74
+is_linear=0
 shrinkage=1
 
 
@@ -8971,6 +9468,7 @@ leaf_count=48 21 20 21
 internal_value=-1.09861 0.608705 -2.05513
 internal_weight=0 13.6667 23
 internal_count=110 41 69
+is_linear=0
 shrinkage=1
 
 
@@ -8989,6 +9487,7 @@ leaf_count=38 35 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=110 72
+is_linear=0
 shrinkage=1
 
 
@@ -9007,6 +9506,7 @@ leaf_count=36 37 37
 internal_value=-1.09861 -0.679693
 internal_weight=0 24.6667
 internal_count=110 74
+is_linear=0
 shrinkage=1
 
 
@@ -9025,6 +9525,7 @@ leaf_count=48 21 20 21
 internal_value=-1.09861 0.608705 -2.05513
 internal_weight=0 13.6667 23
 internal_count=110 41 69
+is_linear=0
 shrinkage=1
 
 
@@ -9043,6 +9544,7 @@ leaf_count=38 35 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=110 72
+is_linear=0
 shrinkage=1
 
 
@@ -9061,6 +9563,7 @@ leaf_count=36 37 37
 internal_value=-1.09861 -0.679693
 internal_weight=0 24.6667
 internal_count=110 74
+is_linear=0
 shrinkage=1
 
 
@@ -9079,6 +9582,7 @@ leaf_count=48 21 20 21
 internal_value=-1.09861 0.608705 -2.05513
 internal_weight=0 13.6667 23
 internal_count=110 41 69
+is_linear=0
 shrinkage=1
 
 
@@ -9097,6 +9601,7 @@ leaf_count=37 39 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 27.3333
 internal_count=119 82
+is_linear=0
 shrinkage=1
 
 
@@ -9115,6 +9620,7 @@ leaf_count=35 38 25 21
 internal_value=-1.09861 -0.617131 0.510083
 internal_weight=0 27 15.3333
 internal_count=119 81 46
+is_linear=0
 shrinkage=1
 
 
@@ -9133,6 +9639,7 @@ leaf_count=55 21 21 22
 internal_value=-1.09861 -2.01966 0.761853
 internal_weight=0 25.3333 14.3333
 internal_count=119 76 43
+is_linear=0
 shrinkage=1
 
 
@@ -9151,6 +9658,7 @@ leaf_count=37 39 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 27.3333
 internal_count=119 82
+is_linear=0
 shrinkage=1
 
 
@@ -9169,6 +9677,7 @@ leaf_count=35 38 25 21
 internal_value=-1.09861 -0.617131 0.510083
 internal_weight=0 27 15.3333
 internal_count=119 81 46
+is_linear=0
 shrinkage=1
 
 
@@ -9187,6 +9696,7 @@ leaf_count=55 21 21 22
 internal_value=-1.09861 -2.01966 0.761853
 internal_weight=0 25.3333 14.3333
 internal_count=119 76 43
+is_linear=0
 shrinkage=1
 
 
@@ -9205,6 +9715,7 @@ leaf_count=37 39 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 27.3333
 internal_count=119 82
+is_linear=0
 shrinkage=1
 
 
@@ -9223,6 +9734,7 @@ leaf_count=35 38 25 21
 internal_value=-1.09861 -0.617131 0.510083
 internal_weight=0 27 15.3333
 internal_count=119 81 46
+is_linear=0
 shrinkage=1
 
 
@@ -9241,6 +9753,7 @@ leaf_count=55 21 21 22
 internal_value=-1.09861 -2.01966 0.761853
 internal_weight=0 25.3333 14.3333
 internal_count=119 76 43
+is_linear=0
 shrinkage=1
 
 
@@ -9259,6 +9772,7 @@ leaf_count=40 42 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 26.3333
 internal_count=119 79
+is_linear=0
 shrinkage=1
 
 
@@ -9277,6 +9791,7 @@ leaf_count=40 23 35 21
 internal_value=-1.09861 -0.465701 0.696842
 internal_weight=0 26.3333 14.6667
 internal_count=119 79 44
+is_linear=0
 shrinkage=1
 
 
@@ -9295,6 +9810,7 @@ leaf_count=63 35 21
 internal_value=-1.09861 -1.99147
 internal_weight=0 28
 internal_count=119 84
+is_linear=0
 shrinkage=1
 
 
@@ -9313,6 +9829,7 @@ leaf_count=40 42 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 26.3333
 internal_count=119 79
+is_linear=0
 shrinkage=1
 
 
@@ -9331,6 +9848,7 @@ leaf_count=40 23 35 21
 internal_value=-1.09861 -0.465701 0.696842
 internal_weight=0 26.3333 14.6667
 internal_count=119 79 44
+is_linear=0
 shrinkage=1
 
 
@@ -9349,6 +9867,7 @@ leaf_count=63 35 21
 internal_value=-1.09861 -1.99147
 internal_weight=0 28
 internal_count=119 84
+is_linear=0
 shrinkage=1
 
 
@@ -9367,6 +9886,7 @@ leaf_count=40 42 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 26.3333
 internal_count=119 79
+is_linear=0
 shrinkage=1
 
 
@@ -9385,6 +9905,7 @@ leaf_count=40 23 35 21
 internal_value=-1.09861 -0.465701 0.696842
 internal_weight=0 26.3333 14.6667
 internal_count=119 79 44
+is_linear=0
 shrinkage=1
 
 
@@ -9403,6 +9924,7 @@ leaf_count=63 35 21
 internal_value=-1.09861 -1.99147
 internal_weight=0 28
 internal_count=119 84
+is_linear=0
 shrinkage=1
 
 
@@ -9421,6 +9943,7 @@ leaf_count=40 37 33
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.3333
 internal_count=110 70
+is_linear=0
 shrinkage=1
 
 
@@ -9439,6 +9962,7 @@ leaf_count=40 20 28 22
 internal_value=-1.09861 -0.470041 0.615673
 internal_weight=0 23.3333 14
 internal_count=110 70 42
+is_linear=0
 shrinkage=1
 
 
@@ -9457,6 +9981,7 @@ leaf_count=60 28 22
 internal_value=-1.09861 -1.95227
 internal_weight=0 27.3333
 internal_count=110 82
+is_linear=0
 shrinkage=1
 
 
@@ -9475,6 +10000,7 @@ leaf_count=40 37 33
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.3333
 internal_count=110 70
+is_linear=0
 shrinkage=1
 
 
@@ -9493,6 +10019,7 @@ leaf_count=40 20 28 22
 internal_value=-1.09861 -0.470041 0.615673
 internal_weight=0 23.3333 14
 internal_count=110 70 42
+is_linear=0
 shrinkage=1
 
 
@@ -9511,6 +10038,7 @@ leaf_count=60 28 22
 internal_value=-1.09861 -1.95227
 internal_weight=0 27.3333
 internal_count=110 82
+is_linear=0
 shrinkage=1
 
 
@@ -9529,6 +10057,7 @@ leaf_count=40 37 33
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.3333
 internal_count=110 70
+is_linear=0
 shrinkage=1
 
 
@@ -9547,6 +10076,7 @@ leaf_count=40 20 28 22
 internal_value=-1.09861 -0.470041 0.615673
 internal_weight=0 23.3333 14
 internal_count=110 70 42
+is_linear=0
 shrinkage=1
 
 
@@ -9565,6 +10095,7 @@ leaf_count=60 28 22
 internal_value=-1.09861 -1.95227
 internal_weight=0 27.3333
 internal_count=110 82
+is_linear=0
 shrinkage=1
 
 
@@ -9583,6 +10114,7 @@ leaf_count=40 37 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 26.6667
 internal_count=120 80
+is_linear=0
 shrinkage=1
 
 
@@ -9601,6 +10133,7 @@ leaf_count=38 26 36 20
 internal_value=-1.09861 -0.562027 0.640518
 internal_weight=0 27.3333 15.3333
 internal_count=120 82 46
+is_linear=0
 shrinkage=1
 
 
@@ -9619,6 +10152,7 @@ leaf_count=37 20 22 41
 internal_value=-1.09861 0.687102 -2.09861
 internal_weight=0 14 26
 internal_count=120 42 78
+is_linear=0
 shrinkage=1
 
 
@@ -9637,6 +10171,7 @@ leaf_count=40 37 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 26.6667
 internal_count=120 80
+is_linear=0
 shrinkage=1
 
 
@@ -9655,6 +10190,7 @@ leaf_count=38 26 36 20
 internal_value=-1.09861 -0.562027 0.640518
 internal_weight=0 27.3333 15.3333
 internal_count=120 82 46
+is_linear=0
 shrinkage=1
 
 
@@ -9673,6 +10209,7 @@ leaf_count=37 20 22 41
 internal_value=-1.09861 0.687102 -2.09861
 internal_weight=0 14 26
 internal_count=120 42 78
+is_linear=0
 shrinkage=1
 
 
@@ -9691,6 +10228,7 @@ leaf_count=40 37 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 26.6667
 internal_count=120 80
+is_linear=0
 shrinkage=1
 
 
@@ -9709,6 +10247,7 @@ leaf_count=38 26 36 20
 internal_value=-1.09861 -0.562027 0.640518
 internal_weight=0 27.3333 15.3333
 internal_count=120 82 46
+is_linear=0
 shrinkage=1
 
 
@@ -9727,6 +10266,7 @@ leaf_count=37 20 22 41
 internal_value=-1.09861 0.687102 -2.09861
 internal_weight=0 14 26
 internal_count=120 42 78
+is_linear=0
 shrinkage=1
 
 
@@ -9745,6 +10285,7 @@ leaf_count=41 74
 internal_value=-1.09861
 internal_weight=0
 internal_count=115
+is_linear=0
 shrinkage=1
 
 
@@ -9763,6 +10304,7 @@ leaf_count=21 39 20 35
 internal_value=-1.09861 -0.269344 -1.69321
 internal_weight=0 13.6667 24.6667
 internal_count=115 41 74
+is_linear=0
 shrinkage=1
 
 
@@ -9781,6 +10323,7 @@ leaf_count=43 21 24 27
 internal_value=-1.09861 0.568054 -2.09861
 internal_weight=0 15 23.3333
 internal_count=115 45 70
+is_linear=0
 shrinkage=1
 
 
@@ -9799,6 +10342,7 @@ leaf_count=41 74
 internal_value=-1.09861
 internal_weight=0
 internal_count=115
+is_linear=0
 shrinkage=1
 
 
@@ -9817,6 +10361,7 @@ leaf_count=21 39 20 35
 internal_value=-1.09861 -0.269344 -1.69321
 internal_weight=0 13.6667 24.6667
 internal_count=115 41 74
+is_linear=0
 shrinkage=1
 
 
@@ -9835,6 +10380,7 @@ leaf_count=43 21 24 27
 internal_value=-1.09861 0.568054 -2.09861
 internal_weight=0 15 23.3333
 internal_count=115 45 70
+is_linear=0
 shrinkage=1
 
 
@@ -9853,6 +10399,7 @@ leaf_count=41 74
 internal_value=-1.09861
 internal_weight=0
 internal_count=115
+is_linear=0
 shrinkage=1
 
 
@@ -9871,6 +10418,7 @@ leaf_count=21 39 20 35
 internal_value=-1.09861 -0.269344 -1.69321
 internal_weight=0 13.6667 24.6667
 internal_count=115 41 74
+is_linear=0
 shrinkage=1
 
 
@@ -9889,6 +10437,7 @@ leaf_count=43 21 24 27
 internal_value=-1.09861 0.568054 -2.09861
 internal_weight=0 15 23.3333
 internal_count=115 45 70
+is_linear=0
 shrinkage=1
 
 
@@ -9907,6 +10456,7 @@ leaf_count=37 40 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.6667
 internal_count=114 77
+is_linear=0
 shrinkage=1
 
 
@@ -9925,6 +10475,7 @@ leaf_count=37 36 41
 internal_value=-1.09861 -0.657054
 internal_weight=0 25.6667
 internal_count=114 77
+is_linear=0
 shrinkage=1
 
 
@@ -9943,6 +10494,7 @@ leaf_count=43 41 30
 internal_value=-1.09861 -2.09861
 internal_weight=0 24.3333
 internal_count=114 73
+is_linear=0
 shrinkage=1
 
 
@@ -9961,6 +10513,7 @@ leaf_count=37 40 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.6667
 internal_count=114 77
+is_linear=0
 shrinkage=1
 
 
@@ -9979,6 +10532,7 @@ leaf_count=37 36 41
 internal_value=-1.09861 -0.657054
 internal_weight=0 25.6667
 internal_count=114 77
+is_linear=0
 shrinkage=1
 
 
@@ -9997,6 +10551,7 @@ leaf_count=43 41 30
 internal_value=-1.09861 -2.09861
 internal_weight=0 24.3333
 internal_count=114 73
+is_linear=0
 shrinkage=1
 
 
@@ -10015,6 +10570,7 @@ leaf_count=37 40 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.6667
 internal_count=114 77
+is_linear=0
 shrinkage=1
 
 
@@ -10033,6 +10589,7 @@ leaf_count=37 36 41
 internal_value=-1.09861 -0.657054
 internal_weight=0 25.6667
 internal_count=114 77
+is_linear=0
 shrinkage=1
 
 
@@ -10051,6 +10608,7 @@ leaf_count=43 41 30
 internal_value=-1.09861 -2.09861
 internal_weight=0 24.3333
 internal_count=114 73
+is_linear=0
 shrinkage=1
 
 
@@ -10069,6 +10627,7 @@ leaf_count=37 74
 internal_value=-1.09861
 internal_weight=0
 internal_count=111
+is_linear=0
 shrinkage=1
 
 
@@ -10087,6 +10646,7 @@ leaf_count=37 39 35
 internal_value=-1.09861 -0.679693
 internal_weight=0 24.6667
 internal_count=111 74
+is_linear=0
 shrinkage=1
 
 
@@ -10105,6 +10665,7 @@ leaf_count=55 35 21
 internal_value=-1.09861 -1.94072
 internal_weight=0 25.3333
 internal_count=111 76
+is_linear=0
 shrinkage=1
 
 
@@ -10123,6 +10684,7 @@ leaf_count=37 74
 internal_value=-1.09861
 internal_weight=0
 internal_count=111
+is_linear=0
 shrinkage=1
 
 
@@ -10141,6 +10703,7 @@ leaf_count=37 39 35
 internal_value=-1.09861 -0.679693
 internal_weight=0 24.6667
 internal_count=111 74
+is_linear=0
 shrinkage=1
 
 
@@ -10159,6 +10722,7 @@ leaf_count=55 35 21
 internal_value=-1.09861 -1.94072
 internal_weight=0 25.3333
 internal_count=111 76
+is_linear=0
 shrinkage=1
 
 
@@ -10177,6 +10741,7 @@ leaf_count=37 74
 internal_value=-1.09861
 internal_weight=0
 internal_count=111
+is_linear=0
 shrinkage=1
 
 
@@ -10195,6 +10760,7 @@ leaf_count=37 39 35
 internal_value=-1.09861 -0.679693
 internal_weight=0 24.6667
 internal_count=111 74
+is_linear=0
 shrinkage=1
 
 
@@ -10213,6 +10779,7 @@ leaf_count=55 35 21
 internal_value=-1.09861 -1.94072
 internal_weight=0 25.3333
 internal_count=111 76
+is_linear=0
 shrinkage=1
 
 
@@ -10231,6 +10798,7 @@ leaf_count=34 39 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=110 76
+is_linear=0
 shrinkage=1
 
 
@@ -10249,6 +10817,7 @@ leaf_count=32 22 36 20
 internal_value=-1.09861 -0.483228 0.758531
 internal_weight=0 26 14
 internal_count=110 78 42
+is_linear=0
 shrinkage=1
 
 
@@ -10267,6 +10836,7 @@ leaf_count=20 36 54
 internal_value=-1.09861 -2.05807
 internal_weight=0 24.6667
 internal_count=110 74
+is_linear=0
 shrinkage=1
 
 
@@ -10285,6 +10855,7 @@ leaf_count=34 39 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=110 76
+is_linear=0
 shrinkage=1
 
 
@@ -10303,6 +10874,7 @@ leaf_count=32 22 36 20
 internal_value=-1.09861 -0.483228 0.758531
 internal_weight=0 26 14
 internal_count=110 78 42
+is_linear=0
 shrinkage=1
 
 
@@ -10321,6 +10893,7 @@ leaf_count=20 36 54
 internal_value=-1.09861 -2.05807
 internal_weight=0 24.6667
 internal_count=110 74
+is_linear=0
 shrinkage=1
 
 
@@ -10339,6 +10912,7 @@ leaf_count=34 39 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 25.3333
 internal_count=110 76
+is_linear=0
 shrinkage=1
 
 
@@ -10357,6 +10931,7 @@ leaf_count=32 22 36 20
 internal_value=-1.09861 -0.483228 0.758531
 internal_weight=0 26 14
 internal_count=110 78 42
+is_linear=0
 shrinkage=1
 
 
@@ -10375,6 +10950,7 @@ leaf_count=20 36 54
 internal_value=-1.09861 -2.05807
 internal_weight=0 24.6667
 internal_count=110 74
+is_linear=0
 shrinkage=1
 
 
@@ -10393,6 +10969,7 @@ leaf_count=42 37 34
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.6667
 internal_count=113 71
+is_linear=0
 shrinkage=1
 
 
@@ -10411,6 +10988,7 @@ leaf_count=42 20 31 20
 internal_value=-1.09861 -0.450725 0.676388
 internal_weight=0 23.6667 13.3333
 internal_count=113 71 40
+is_linear=0
 shrinkage=1
 
 
@@ -10429,6 +11007,7 @@ leaf_count=62 31 20
 internal_value=-1.09861 -1.98886
 internal_weight=0 27.3333
 internal_count=113 82
+is_linear=0
 shrinkage=1
 
 
@@ -10447,6 +11026,7 @@ leaf_count=42 37 34
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.6667
 internal_count=113 71
+is_linear=0
 shrinkage=1
 
 
@@ -10465,6 +11045,7 @@ leaf_count=42 20 31 20
 internal_value=-1.09861 -0.450725 0.676388
 internal_weight=0 23.6667 13.3333
 internal_count=113 71 40
+is_linear=0
 shrinkage=1
 
 
@@ -10483,6 +11064,7 @@ leaf_count=62 31 20
 internal_value=-1.09861 -1.98886
 internal_weight=0 27.3333
 internal_count=113 82
+is_linear=0
 shrinkage=1
 
 
@@ -10501,6 +11083,7 @@ leaf_count=42 37 34
 internal_value=-1.09861 -2.09861
 internal_weight=0 23.6667
 internal_count=113 71
+is_linear=0
 shrinkage=1
 
 
@@ -10519,6 +11102,7 @@ leaf_count=42 20 31 20
 internal_value=-1.09861 -0.450725 0.676388
 internal_weight=0 23.6667 13.3333
 internal_count=113 71 40
+is_linear=0
 shrinkage=1
 
 
@@ -10537,6 +11121,7 @@ leaf_count=62 31 20
 internal_value=-1.09861 -1.98886
 internal_weight=0 27.3333
 internal_count=113 82
+is_linear=0
 shrinkage=1
 
 
@@ -10555,6 +11140,7 @@ leaf_count=38 37 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 26.6667
 internal_count=118 80
+is_linear=0
 shrinkage=1
 
 
@@ -10573,6 +11159,7 @@ leaf_count=38 22 37 21
 internal_value=-1.09861 -0.598612 0.622318
 internal_weight=0 26.6667 14.3333
 internal_count=118 80 43
+is_linear=0
 shrinkage=1
 
 
@@ -10591,6 +11178,7 @@ leaf_count=21 20 23 54
 internal_value=-1.09861 0.622318 -2.05861
 internal_weight=0 14.3333 25
 internal_count=118 43 75
+is_linear=0
 shrinkage=1
 
 
@@ -10609,6 +11197,7 @@ leaf_count=38 37 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 26.6667
 internal_count=118 80
+is_linear=0
 shrinkage=1
 
 
@@ -10627,6 +11216,7 @@ leaf_count=38 22 37 21
 internal_value=-1.09861 -0.598612 0.622318
 internal_weight=0 26.6667 14.3333
 internal_count=118 80 43
+is_linear=0
 shrinkage=1
 
 
@@ -10645,6 +11235,7 @@ leaf_count=21 20 23 54
 internal_value=-1.09861 0.622318 -2.05861
 internal_weight=0 14.3333 25
 internal_count=118 43 75
+is_linear=0
 shrinkage=1
 
 
@@ -10663,6 +11254,7 @@ leaf_count=38 37 43
 internal_value=-1.09861 -2.09861
 internal_weight=0 26.6667
 internal_count=118 80
+is_linear=0
 shrinkage=1
 
 
@@ -10681,6 +11273,7 @@ leaf_count=38 22 37 21
 internal_value=-1.09861 -0.598612 0.622318
 internal_weight=0 26.6667 14.3333
 internal_count=118 80 43
+is_linear=0
 shrinkage=1
 
 
@@ -10699,6 +11292,7 @@ leaf_count=21 20 23 54
 internal_value=-1.09861 0.622318 -2.05861
 internal_weight=0 14.3333 25
 internal_count=118 43 75
+is_linear=0
 shrinkage=1
 
 
@@ -10717,6 +11311,7 @@ leaf_count=38 35 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=110 72
+is_linear=0
 shrinkage=1
 
 
@@ -10735,6 +11330,7 @@ leaf_count=35 36 39
 internal_value=-1.09861 -0.818612
 internal_weight=0 25
 internal_count=110 75
+is_linear=0
 shrinkage=1
 
 
@@ -10753,6 +11349,7 @@ leaf_count=21 21 22 46
 internal_value=-1.09861 0.692085 -2.05384
 internal_weight=0 14.3333 22.3333
 internal_count=110 43 67
+is_linear=0
 shrinkage=1
 
 
@@ -10771,6 +11368,7 @@ leaf_count=38 35 37
 internal_value=-1.09861 -2.09861
 internal_weight=0 24
 internal_count=110 72
+is_linear=0
 shrinkage=1
 
 
@@ -10789,6 +11387,7 @@ leaf_count=35 36 39
 internal_value=-1.09861 -0.818612
 internal_weight=0 25
 internal_count=110 75
+is_linear=0
 shrinkage=1
 
 
@@ -10807,6 +11406,7 @@ leaf_count=21 21 22 46
 internal_value=-1.09861 0.692085 -2.05384
 internal_weight=0 14.3333 22.3333
 internal_count=110 43 67
+is_linear=0
 shrinkage=1
 
 
@@ -10824,6 +11424,7 @@ parameters:
 [metric: multi_logloss]
 [tree_learner: serial]
 [device_type: cpu]
+[linear_tree: 0]
 [data: ]
 [valid: ]
 [num_iterations: 200]
@@ -10852,6 +11453,7 @@ parameters:
 [max_delta_step: 0]
 [lambda_l1: 0]
 [lambda_l2: 0]
+[linear_lambda: 0]
 [min_gain_to_split: 0]
 [drop_rate: 0.1]
 [max_drop: 50]

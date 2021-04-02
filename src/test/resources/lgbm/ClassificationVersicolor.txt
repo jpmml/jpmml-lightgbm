@@ -7,7 +7,7 @@ max_feature_idx=4
 objective=binary sigmoid:1
 feature_names=Sepal.Length Sepal.Width Dummy Petal.Length Petal.Width
 feature_infos=[4.2999999999999998:7.9000000000000004] [2:4.4000000000000004] none [1:6.9000000000000004] [0.10000000000000001:2.5]
-tree_sizes=716 726 729 717 732 716 728 732 716 732 732
+tree_sizes=728 738 741 729 744 728 740 744 728 744 744
 
 Tree=0
 num_leaves=6
@@ -24,6 +24,7 @@ leaf_count=27 31 20 23 28 21
 internal_value=-0.693147 -0.622559 -0.443147 -0.824397 -0.843147
 internal_weight=0 22.6667 12 10.6667 10.6667
 internal_count=150 102 54 48 48
+is_linear=0
 shrinkage=1
 
 
@@ -42,6 +43,7 @@ leaf_count=24 31 20 23 28 24
 internal_value=0 0.0628778 0.211546 -0.124205 -0.144097
 internal_weight=0 22.97 12.799 10.171 10.1544
 internal_count=150 102 54 48 48
+is_linear=0
 shrinkage=0.1
 
 
@@ -60,6 +62,7 @@ leaf_count=24 24 21 30 27 24
 internal_value=0 0.0563035 -0.106638 0.195107 -0.138201
 internal_weight=0 22.9306 10.5481 12.3825 9.55938
 internal_count=150 102 51 51 48
+is_linear=0
 shrinkage=0.1
 
 
@@ -78,6 +81,7 @@ leaf_count=24 31 20 28 23 24
 internal_value=0 0.0516205 -0.114575 0.166804 -0.134177
 internal_weight=0 22.6476 9.27088 13.3767 8.98666
 internal_count=150 102 48 54 48
+is_linear=0
 shrinkage=0.1
 
 
@@ -96,6 +100,7 @@ leaf_count=24 20 21 36 25 24
 internal_value=0 0.0474771 0.149374 -0.114321 -0.13009
 internal_weight=0 22.1325 13.5801 8.5524 8.38804
 internal_count=150 102 56 46 48
+is_linear=0
 shrinkage=0.1
 
 
@@ -114,6 +119,7 @@ leaf_count=24 31 20 28 23 24
 internal_value=0 0.0442096 -0.107306 0.140667 -0.127317
 internal_weight=0 21.562 8.38725 13.1748 7.82244
 internal_count=150 102 48 54 48
+is_linear=0
 shrinkage=0.1
 
 
@@ -132,6 +138,7 @@ leaf_count=20 27 21 30 21 31
 internal_value=0 0.0443746 -0.0925346 0.149698 -0.117665
 internal_weight=0 20.1252 8.75049 11.3747 7.95701
 internal_count=150 99 51 48 51
+is_linear=0
 shrinkage=0.1
 
 
@@ -150,6 +157,7 @@ leaf_count=24 31 19 29 23 24
 internal_value=0 0.0388537 -0.100909 0.122842 -0.121775
 internal_weight=0 20.0354 7.52058 12.5148 6.73651
 internal_count=150 102 48 54 48
+is_linear=0
 shrinkage=0.1
 
 
@@ -168,6 +176,7 @@ leaf_count=24 37 21 19 25 24
 internal_value=0 0.0369626 0.114435 -0.102458 -0.120272
 internal_weight=0 19.1964 12.3396 6.8568 6.24145
 internal_count=150 102 56 46 48
+is_linear=0
 shrinkage=0.1
 
 
@@ -186,6 +195,7 @@ leaf_count=20 28 19 23 29 31
 internal_value=0 0.0379495 0.119368 -0.0952502 -0.110944
 internal_weight=0 17.744 11.0126 6.73148 6.42869
 internal_count=150 99 51 48 51
+is_linear=0
 shrinkage=0.1
 
 
@@ -204,6 +214,7 @@ leaf_count=24 37 17 23 25 24
 internal_value=0 0.0331558 0.0970571 -0.109636 -0.116496
 internal_weight=0 17.5398 12.1172 5.42262 5.31443
 internal_count=150 102 60 42 48
+is_linear=0
 shrinkage=0.1
 
 
@@ -221,6 +232,7 @@ parameters:
 [metric: binary_logloss]
 [tree_learner: serial]
 [device_type: cpu]
+[linear_tree: 0]
 [data: ]
 [valid: ]
 [num_iterations: 11]
@@ -249,6 +261,7 @@ parameters:
 [max_delta_step: 0]
 [lambda_l1: 0]
 [lambda_l2: 0]
+[linear_lambda: 0]
 [min_gain_to_split: 0]
 [drop_rate: 0.1]
 [max_drop: 50]
