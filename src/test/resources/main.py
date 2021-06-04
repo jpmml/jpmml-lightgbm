@@ -55,9 +55,12 @@ build_iris("IrisNA", num_iteration = 7)
 #
 
 def build_audit(name, objective = "binary", boosting_type = "gbdt", num_iteration = 0, **kwargs):
-	df = load_csv(name + ".csv", ["Employment", "Education", "Marital", "Occupation", "Gender"])
-	X = df[["Age", "Employment", "Education", "Marital", "Occupation", "Income", "Gender", "Hours"]]
+	df = load_csv(name + ".csv", ["Employment", "Education", "Marital", "Occupation", "Gender", "Deductions"])
+	X = df[["Age", "Employment", "Education", "Marital", "Occupation", "Income", "Gender", "Deductions", "Hours"]]
 	y = df["Adjusted"]
+
+	if name.endswith("NA"):
+		X = X.drop("Deductions", 1)
 
 	lgbm = LGBMClassifier(objective = objective, boosting_type = boosting_type, n_estimators = 31, **kwargs)
 	lgbm.fit(X, y)
@@ -83,8 +86,8 @@ build_audit("AuditNA")
 build_audit("AuditNA", num_iteration = 17)
 
 def build_audit_invalid():
-	df = load_csv("AuditInvalid.csv", ["Employment", "Education", "Marital", "Occupation", "Gender"])
-	X = df[["Age", "Employment", "Education", "Marital", "Occupation", "Income", "Gender", "Hours"]]
+	df = load_csv("AuditInvalid.csv", ["Employment", "Education", "Marital", "Occupation", "Gender", "Deductions"])
+	X = df[["Age", "Employment", "Education", "Marital", "Occupation", "Income", "Gender", "Deductions", "Hours"]]
 	booster = lightgbm.Booster(model_file = "lgbm/ClassificationAudit.txt")
 
 	result = booster.predict(X)

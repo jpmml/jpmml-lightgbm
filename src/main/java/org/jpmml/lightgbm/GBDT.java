@@ -229,6 +229,11 @@ public class GBDT {
 					if(hasPandasCategories){
 						List<?> categories = this.pandas_categorical.get(pandasCategoryIndex);
 
+						// XXX
+						if(categories.equals(Arrays.asList("false", "true"))){
+							categories = Arrays.asList(Boolean.FALSE, Boolean.TRUE);
+						}
+
 						DataType dataType = TypeUtil.getDataType(categories);
 						switch(dataType){
 							case INTEGER:

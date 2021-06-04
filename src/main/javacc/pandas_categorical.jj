@@ -49,7 +49,11 @@ TOKEN:
 
 TOKEN:
 {
+	< FALSE: "false" >
+	|
 	< NULL: "null" >
+	|
+	< TRUE: "true" >
 }
 
 TOKEN:
@@ -118,6 +122,10 @@ public String category():
 		token = <INT>
 		|
 		token = <FLOAT>
+		|
+		token = <FALSE>
+		|
+		token = <TRUE>
 		|
 		token = <STRING>
 	)
