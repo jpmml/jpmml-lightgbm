@@ -69,7 +69,7 @@ public class GBDT {
 
 	private Map<String, String> feature_importances = Collections.emptyMap();
 
-	private List<List<String>> pandas_categorical = Collections.emptyList();
+	private List<List<Object>> pandas_categorical = Collections.emptyList();
 
 
 	public void load(List<Section> sections){
@@ -229,21 +229,7 @@ public class GBDT {
 					if(hasPandasCategories){
 						List<?> categories = this.pandas_categorical.get(pandasCategoryIndex);
 
-						// XXX
-						if(categories.equals(Arrays.asList("false", "true"))){
-							categories = Arrays.asList(Boolean.FALSE, Boolean.TRUE);
-						}
-
 						DataType dataType = TypeUtil.getDataType(categories);
-						switch(dataType){
-							case INTEGER:
-								categories = ((List<String>)categories).stream()
-									.map(LightGBMUtil.CATEGORY_PARSER)
-									.collect(Collectors.toList());
-								break;
-							default:
-								break;
-						}
 
 						DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, dataType, categories);
 
@@ -590,7 +576,7 @@ public class GBDT {
 		return result;
 	}
 
-	private List<List<String>> loadPandasCategorical(Section section){
+	private List<List<Object>> loadPandasCategorical(Section section){
 		String id = section.id();
 
 		try {

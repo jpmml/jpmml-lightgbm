@@ -79,10 +79,10 @@ TOKEN:
 	< #EXPONENT: ["e", "E"] (<SIGN>)? (<DIGIT>)+ >
 }
 
-public List<List<String>> parsePandasCategorical():
+public List<List<Object>> parsePandasCategorical():
 {
-	List<List<String>> result = new ArrayList<List<String>>();
-	List<String> categories = null;
+	List<List<Object>> result = new ArrayList<>();
+	List<Object> categories = null;
 }
 {
 	(
@@ -100,10 +100,10 @@ public List<List<String>> parsePandasCategorical():
 	}
 }
 
-public List<String> categories():
+public List<Object> categories():
 {
-	List<String> result = new ArrayList<String>();
-	String category = null;
+	List<Object> result = new ArrayList<>();
+	Object category = null;
 }
 {
 	<LBRACKET> category = category() { result.add(category); } (<COMMA> category = category() { result.add(category); })* <RBRACKET>
@@ -113,7 +113,7 @@ public List<String> categories():
 	}
 }
 
-public String category():
+public Object category():
 {
 	Token token;
 }
@@ -131,12 +131,21 @@ public String category():
 	)
 
 	{
+		int kind = token.kind;
 		String image = token.image;
 
-		if(token.kind == STRING){
-			image = LightGBMUtil.unescape(image.substring(1, image.length() - 1));
+		switch(kind){
+			case INT:
+				return new Integer(image);
+			case FLOAT:
+				return new Double(image);
+			case FALSE:
+			case TRUE:
+				return new Boolean(image);
+			case STRING:
+				return LightGBMUtil.unescape(image.substring(1, image.length() - 1));
+			default:
+				throw new IllegalStateException();
 		}
-
-		return image;
 	}
 }

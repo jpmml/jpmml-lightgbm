@@ -30,17 +30,17 @@ public class PandasCategoricalParserTest {
 
 	@Test
 	public void parse() throws Exception {
-		List<List<String>> pandasCategories = parsePandasCategorical("null");
+		List<List<Object>> pandasCategories = parsePandasCategorical("null");
 
 		assertEquals(Collections.emptyList(), pandasCategories);
 
-		pandasCategories = parsePandasCategorical("[[\"null\", \"A\", \"B, B\", \"C, [C], C\"], [-2, -1, 0, 1, 2], [-2.0, -1.0, 0.0, 1.0, 2.0]]");
+		pandasCategories = parsePandasCategorical("[[\"null\", \"A\", \"B, B\", \"C, [C], C\"], [-2, -1, 0, 1, 2], [-2.0, -1.0, 0.0, 1.0, 2.0], [false, true]]");
 
-		assertEquals(Arrays.asList(Arrays.asList("null", "A", "B, B", "C, [C], C"), Arrays.asList("-2", "-1", "0", "1", "2"), Arrays.asList("-2.0", "-1.0", "0.0", "1.0", "2.0")), pandasCategories);
+		assertEquals(Arrays.asList(Arrays.asList("null", "A", "B, B", "C, [C], C"), Arrays.asList(-2, -1, 0, 1, 2), Arrays.asList(-2d, -1d, 0d, 1d, 2d), Arrays.asList(Boolean.FALSE, Boolean.TRUE)), pandasCategories);
 	}
 
 	static
-	private List<List<String>> parsePandasCategorical(String value) throws ParseException {
+	private List<List<Object>> parsePandasCategorical(String value) throws ParseException {
 		PandasCategoricalParser parser = new PandasCategoricalParser("pandas_categorical:" + value);
 
 		return parser.parsePandasCategorical();

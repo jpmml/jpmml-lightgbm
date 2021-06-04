@@ -25,7 +25,6 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -33,7 +32,6 @@ import java.util.stream.Stream;
 
 import com.google.common.io.CharStreams;
 import org.dmg.pmml.Interval;
-import org.jpmml.converter.ValueUtil;
 
 public class LightGBMUtil {
 
@@ -226,7 +224,7 @@ public class LightGBMUtil {
 		String[] values = string.split(":");
 
 		return Stream.of(values)
-			.map(LightGBMUtil.CATEGORY_PARSER)
+			.map(Integer::valueOf)
 			.collect(Collectors.toList());
 	}
 
@@ -252,25 +250,4 @@ public class LightGBMUtil {
 	}
 
 	private static final Pattern PATTERN_UNICODE_ESCAPE = Pattern.compile("\\\\u([0-9A-Fa-f]{4})");
-
-	static final Function<String, Integer> CATEGORY_PARSER = new Function<String, Integer>(){
-
-		@Override
-		public Integer apply(String string){
-
-			try {
-				return Integer.valueOf(string);
-			} catch(NumberFormatException nfe){
-				return ValueUtil.asInteger(Double.valueOf(string));
-			}
-		}
-	};
-
-	static final Function<Integer, String> CATEGORY_FORMATTER = new Function<Integer, String>(){
-
-		@Override
-		public String apply(Integer integer){
-			return integer.toString();
-		}
-	};
 }
