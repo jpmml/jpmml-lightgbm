@@ -228,7 +228,14 @@ public class Tree {
 				rightCategoryManager = categoryManager.fork(name, rightValues);
 
 				leftPredicate = predicateManager.createPredicate(categoricalFeature, leftValues);
-				rightPredicate = predicateManager.createPredicate(categoricalFeature, rightValues);
+
+				if(rightValues.size() > 0){
+					rightPredicate = predicateManager.createPredicate(categoricalFeature, rightValues);
+				} else
+
+				{
+					rightPredicate = True.INSTANCE;
+				}
 
 				defaultLeft = false;
 			} else

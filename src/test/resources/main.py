@@ -59,9 +59,6 @@ def build_audit(name, objective = "binary", boosting_type = "gbdt", num_iteratio
 	X = df[["Age", "Employment", "Education", "Marital", "Occupation", "Income", "Gender", "Deductions", "Hours"]]
 	y = df["Adjusted"]
 
-	if name.endswith("NA"):
-		X = X.drop("Deductions", 1)
-
 	lgbm = LGBMClassifier(objective = objective, boosting_type = boosting_type, n_estimators = 31, **kwargs)
 	lgbm.fit(X, y)
 

@@ -37,6 +37,7 @@ import org.dmg.pmml.PMML;
 import org.dmg.pmml.Visitor;
 import org.dmg.pmml.mining.MiningModel;
 import org.jpmml.converter.BinaryFeature;
+import org.jpmml.converter.BooleanFeature;
 import org.jpmml.converter.CategoricalFeature;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
@@ -233,7 +234,13 @@ public class GBDT {
 
 						DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, dataType, categories);
 
-						feature = new CategoricalFeature(encoder, dataField);
+						if((DataType.BOOLEAN).equals(dataType) && (BooleanFeature.VALUES).equals(categories)){
+							feature = new BooleanFeature(encoder, dataField);
+						} else
+
+						{
+							feature = new CategoricalFeature(encoder, dataField);
+						}
 
 						pandasCategoryIndex++;
 					} else
