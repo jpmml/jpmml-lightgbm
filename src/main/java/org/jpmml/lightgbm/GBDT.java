@@ -228,13 +228,13 @@ public class GBDT {
 					Feature feature;
 
 					if(hasPandasCategories){
-						List<?> categories = this.pandas_categorical.get(pandasCategoryIndex);
+						List<?> values = this.pandas_categorical.get(pandasCategoryIndex);
 
-						DataType dataType = TypeUtil.getDataType(categories);
+						DataType dataType = TypeUtil.getDataType(values);
 
-						DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, dataType, categories);
+						DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, dataType, values);
 
-						if((DataType.BOOLEAN).equals(dataType) && (BooleanFeature.VALUES).equals(categories)){
+						if((DataType.BOOLEAN).equals(dataType) && (BooleanFeature.VALUES).equals(values)){
 							feature = new BooleanFeature(encoder, dataField);
 						} else
 
@@ -246,12 +246,12 @@ public class GBDT {
 					} else
 
 					{
-						List<Integer> categories = LightGBMUtil.parseValues(featureInfo).stream()
+						List<Integer> values = LightGBMUtil.parseValues(featureInfo).stream()
 							.filter(value -> value != GBDT.CATEGORY_MISSING)
 							.sorted()
 							.collect(Collectors.toList());
 
-						DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER, categories);
+						DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER, values);
 
 						feature = new DirectCategoricalFeature(encoder, dataField);
 					}
