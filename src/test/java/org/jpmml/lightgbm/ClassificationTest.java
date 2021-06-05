@@ -82,7 +82,7 @@ public class ClassificationTest extends LightGBMTest {
 
 	@Test
 	public void evaluateRFAudit() throws Exception {
-		evaluate("RFClassification", "Audit");
+		evaluate("RFClassification", "Audit", new RealNumberEquivalence(4));
 	}
 
 	@Test
