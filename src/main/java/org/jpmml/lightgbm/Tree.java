@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import org.dmg.pmml.DataType;
 import org.dmg.pmml.FieldName;
 import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.Predicate;
@@ -247,7 +248,18 @@ public class Tree {
 					throw new IllegalArgumentException("Expected a false (off) categorical split mask for continuous feature " + continuousFeature.getName() + ", got true (on)");
 				}
 
-				Double value = threshold_;
+				Number value = threshold_;
+
+				DataType dataType = continuousFeature.getDataType();
+				switch(dataType){
+					case INTEGER:
+						if(value.doubleValue() == Tree.THRESHOLD_ZERO){
+							value = 0;
+						}
+						break;
+					default:
+						break;
+				}
 
 				leftPredicate = predicateManager.createSimplePredicate(continuousFeature, SimplePredicate.Operator.LESS_OR_EQUAL, value);
 				rightPredicate = predicateManager.createSimplePredicate(continuousFeature, SimplePredicate.Operator.GREATER_THAN, value);
@@ -406,4 +418,6 @@ public class Tree {
 
 	private static final int MASK_CATEGORICAL = 1;
 	private static final int MASK_DEFAULT_LEFT = 2;
+
+	private static final double THRESHOLD_ZERO = 1.0000000180025095E-35;
 }
