@@ -522,6 +522,9 @@ public class GBDT {
 			// BinaryLogloss
 			case "binary":
 				return new BinomialLogisticRegression(average_output, config.getDouble("sigmoid"));
+			// CrossEntropy
+			case "cross_entropy":
+				return new BinomialLogisticRegression(average_output, 1d);
 			// MulticlassSoftmax
 			case "multiclass":
 				return new MultinomialLogisticRegression(average_output, config.getInt("num_class"));

@@ -4,7 +4,7 @@ num_class=1
 num_tree_per_iteration=1
 label_index=0
 max_feature_idx=8
-objective=binary sigmoid:1
+objective=cross_entropy
 feature_names=Age Employment Education Marital Occupation Income Gender Deductions Hours
 feature_infos=[17:82] -1:4:0:2:5:3:1 -1:4:2:1:5:8:10:0:9:14:15:7:3:13:11:12:6 -1:2:0:1:4:5:3 -1:2:6:1:8:9:10:5:12:0:3:11:7:4 [609.72000000000003:421075.29999999999] -1:1:0 -1:0:1 [1:99]
 tree_sizes=3225 3292 3268 3295 3312 3293 3291 3297 3294 3293 3308 3298 3306 3266 3286 3330 3240 3293 3282 3311 3310 3310 3291 3243 3296 3281 3306 3299 3326 3278 3303
@@ -675,8 +675,8 @@ Employment=8
 
 parameters:
 [boosting: gbdt]
-[objective: binary]
-[metric: binary_logloss]
+[objective: cross_entropy]
+[metric: cross_entropy]
 [tree_learner: serial]
 [device_type: cpu]
 [linear_tree: 0]
