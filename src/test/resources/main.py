@@ -79,8 +79,8 @@ def build_audit(name, objective = "binary", boosting_type = "gbdt", num_iteratio
 build_audit("Audit")
 build_audit("Audit", num_iteration = 17)
 build_audit("Audit", boosting_type = "rf", bagging_freq = 10, bagging_fraction = 0.75)
-build_audit("AuditNA")
-build_audit("AuditNA", num_iteration = 17)
+build_audit("AuditNA", objective = "cross_entropy")
+build_audit("AuditNA", objective = "cross_entropy", num_iteration = 17)
 
 def build_audit_invalid():
 	df = load_csv("AuditInvalid.csv", ["Employment", "Education", "Marital", "Occupation", "Gender"])
