@@ -273,8 +273,9 @@ public class GBDT {
 					DataField dataField = encoder.createDataField(activeField, OpType.CONTINUOUS, DataType.DOUBLE);
 
 					Interval interval = LightGBMUtil.parseInterval(featureInfo);
-
-					dataField.addIntervals(interval);
+					if(interval != null){
+						dataField.addIntervals(interval);
+					}
 
 					features.add(new ContinuousFeature(encoder, dataField));
 				}

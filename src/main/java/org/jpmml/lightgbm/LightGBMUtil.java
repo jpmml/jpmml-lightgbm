@@ -209,8 +209,19 @@ public class LightGBMUtil {
 			throw new IllegalArgumentException(margins);
 		}
 
-		Double leftMargin = Double.valueOf(values[0]);
-		Double rightMargin = Double.valueOf(values[1]);
+		Double leftMargin = null;
+		if(!(values[0]).equalsIgnoreCase("-inf")){
+			leftMargin = Double.valueOf(values[0]);
+		}
+
+		Double rightMargin = null;
+		if(!(values[1]).equalsIgnoreCase("inf")){
+			rightMargin = Double.valueOf(values[1]);
+		} // End if
+
+		if(leftMargin == null && rightMargin == null){
+			return null;
+		}
 
 		Interval interval = new Interval(closure)
 			.setLeftMargin(leftMargin)

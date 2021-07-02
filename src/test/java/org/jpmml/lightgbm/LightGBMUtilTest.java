@@ -18,11 +18,30 @@
  */
 package org.jpmml.lightgbm;
 
+import org.dmg.pmml.Interval;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class LightGBMUtilTest {
+
+	@Test
+	public void parseInterval(){
+		Interval interval = LightGBMUtil.parseInterval("[-inf:0]");
+
+		assertEquals(null, interval.getLeftMargin());
+		assertEquals(0d, interval.getRightMargin());
+
+		interval = LightGBMUtil.parseInterval("[0:inf]");
+
+		assertEquals(0d, interval.getLeftMargin());
+		assertEquals(null, interval.getRightMargin());
+
+		interval = LightGBMUtil.parseInterval("[-inf:inf]");
+
+		assertNull(interval);
+	}
 
 	@Test
 	public void unescape(){
