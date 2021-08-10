@@ -41,7 +41,6 @@ import org.jpmml.converter.BooleanFeature;
 import org.jpmml.converter.CategoricalFeature;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
-import org.jpmml.converter.ImportanceDecorator;
 import org.jpmml.converter.InvalidValueDecorator;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.ModelEncoder;
@@ -218,6 +217,8 @@ public class GBDT {
 
 			FieldName activeField = FieldName.create(featureNames[i]);
 
+			Feature feature;
+
 			if(categorical){
 
 				if(binary){
@@ -225,8 +226,6 @@ public class GBDT {
 				} else
 
 				{
-					Feature feature;
-
 					if(hasPandasCategories){
 						List<?> values = this.pandas_categorical.get(pandasCategoryIndex);
 
@@ -255,8 +254,6 @@ public class GBDT {
 
 						feature = new DirectCategoricalFeature(encoder, dataField);
 					}
-
-					features.add(feature);
 				}
 
 				encoder.addDecorator(activeField, new InvalidValueDecorator(InvalidValueTreatmentMethod.AS_MISSING, null));
@@ -266,7 +263,7 @@ public class GBDT {
 				if(binary){
 					DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER, Arrays.asList(0, 1));
 
-					features.add(new BinaryFeature(encoder, dataField, 1));
+					feature = new BinaryFeature(encoder, dataField, 1);
 				} else
 
 				{
@@ -277,15 +274,17 @@ public class GBDT {
 						dataField.addIntervals(interval);
 					}
 
-					features.add(new ContinuousFeature(encoder, dataField));
+					feature = new ContinuousFeature(encoder, dataField);
 				}
 
 				encoder.addDecorator(activeField, new InvalidValueDecorator(InvalidValueTreatmentMethod.AS_IS, null));
 			}
 
+			features.add(feature);
+
 			Double importance = getFeatureImportance(featureName);
 			if(importance != null){
-				encoder.addDecorator(activeField, new ImportanceDecorator(importance));
+				encoder.addFeatureImportance(feature, importance);
 			}
 		}
 
@@ -382,6 +381,8 @@ public class GBDT {
 		Schema schema = encodeSchema(targetField, targetCategories, encoder);
 
 		MiningModel miningModel = encodeMiningModel(options, schema);
+
+		encoder.transferFeatureImportances(miningModel);
 
 		PMML pmml = encoder.encodePMML(miningModel);
 

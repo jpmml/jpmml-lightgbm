@@ -27,9 +27,19 @@ import java.util.function.Predicate;
 
 import com.google.common.base.Equivalence;
 import org.dmg.pmml.FieldName;
+import org.dmg.pmml.MiningField;
+import org.dmg.pmml.MiningSchema;
 import org.dmg.pmml.PMML;
+import org.dmg.pmml.PMMLObject;
+import org.dmg.pmml.Visitor;
+import org.dmg.pmml.VisitorAction;
+import org.dmg.pmml.mining.MiningModel;
 import org.jpmml.evaluator.ResultField;
 import org.jpmml.evaluator.testing.IntegrationTestBatch;
+import org.jpmml.model.visitors.AbstractVisitor;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 abstract
 public class LightGBMTestBatch extends IntegrationTestBatch {
@@ -99,6 +109,45 @@ public class LightGBMTestBatch extends IntegrationTestBatch {
 	@Override
 	public List<Map<FieldName, String>> getOutput() throws IOException {
 		return loadRecords(getOutputCsvPath());
+	}
+
+	@Override
+	protected void validatePMML(PMML pmml) throws Exception {
+		super.validatePMML(pmml);
+
+		Visitor visitor = new AbstractVisitor(){
+
+			@Override
+			public VisitorAction visit(MiningModel miningModel){
+				PMMLObject parent = getParent();
+
+				if(parent instanceof PMML){
+					MiningSchema miningSchema = miningModel.getMiningSchema();
+
+					if(miningSchema.hasMiningFields()){
+						List<MiningField> miningFields = miningSchema.getMiningFields();
+
+						for(MiningField miningField : miningFields){
+							MiningField.UsageType usageType = miningField.getUsageType();
+
+							switch(usageType){
+								case TARGET:
+									assertNull(miningField.getImportance());
+									break;
+								case ACTIVE:
+									assertNotNull(miningField.getImportance());
+									break;
+								default:
+									break;
+							}
+						}
+					}
+				}
+
+				return super.visit(miningModel);
+			}
+		};
+		visitor.applyTo(pmml);
 	}
 
 	protected String[] parseDataset(){
