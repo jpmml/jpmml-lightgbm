@@ -127,8 +127,6 @@ public class PandasDummiesTest extends IntegrationTest {
 
 				MiningModel miningModel = gbdt.encodeMiningModel(Collections.emptyMap(), lgbmSchema);
 
-				encoder.transferFeatureImportances(miningModel);
-
 				return encoder.encodePMML(miningModel);
 			}
 

@@ -220,6 +220,7 @@ public class GBDT {
 			Feature feature;
 
 			if(categorical){
+				DataField dataField;
 
 				if(binary){
 					throw new IllegalArgumentException();
@@ -231,7 +232,7 @@ public class GBDT {
 
 						DataType dataType = TypeUtil.getDataType(values);
 
-						DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, dataType, values);
+						dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, dataType, values);
 
 						if((DataType.BOOLEAN).equals(dataType) && (BooleanFeature.VALUES).equals(values)){
 							feature = new BooleanFeature(encoder, dataField);
@@ -250,24 +251,26 @@ public class GBDT {
 							.sorted()
 							.collect(Collectors.toList());
 
-						DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER, values);
+						dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER, values);
 
 						feature = new DirectCategoricalFeature(encoder, dataField);
 					}
 				}
 
-				encoder.addDecorator(activeField, new InvalidValueDecorator(InvalidValueTreatmentMethod.AS_MISSING, null));
+				encoder.addDecorator(dataField, new InvalidValueDecorator(InvalidValueTreatmentMethod.AS_MISSING, null));
 			} else
 
 			{
+				DataField dataField;
+
 				if(binary){
-					DataField dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER, Arrays.asList(0, 1));
+					dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER, Arrays.asList(0, 1));
 
 					feature = new BinaryFeature(encoder, dataField, 1);
 				} else
 
 				{
-					DataField dataField = encoder.createDataField(activeField, OpType.CONTINUOUS, DataType.DOUBLE);
+					dataField = encoder.createDataField(activeField, OpType.CONTINUOUS, DataType.DOUBLE);
 
 					Interval interval = LightGBMUtil.parseInterval(featureInfo);
 					if(interval != null){
@@ -277,7 +280,7 @@ public class GBDT {
 					feature = new ContinuousFeature(encoder, dataField);
 				}
 
-				encoder.addDecorator(activeField, new InvalidValueDecorator(InvalidValueTreatmentMethod.AS_IS, null));
+				encoder.addDecorator(dataField, new InvalidValueDecorator(InvalidValueTreatmentMethod.AS_IS, null));
 			}
 
 			features.add(feature);
@@ -381,8 +384,6 @@ public class GBDT {
 		Schema schema = encodeSchema(targetField, targetCategories, encoder);
 
 		MiningModel miningModel = encodeMiningModel(options, schema);
-
-		encoder.transferFeatureImportances(miningModel);
 
 		PMML pmml = encoder.encodePMML(miningModel);
 
