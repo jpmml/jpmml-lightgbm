@@ -420,6 +420,10 @@ public class GBDT {
 		return this.feature_infos_;
 	}
 
+	public ObjectiveFunction getObjectiveFunction(){
+		return this.object_function_;
+	}
+
 	private Boolean isBinary(int feature){
 		String featureInfo = this.feature_infos_[feature];
 
