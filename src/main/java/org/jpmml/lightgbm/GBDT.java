@@ -491,7 +491,7 @@ public class GBDT {
 
 		boolean average_output = section.containsKey("average_output");
 
-		String objective = tokens[0];
+		String name = tokens[0];
 
 		Section config = new Section();
 
@@ -502,9 +502,8 @@ public class GBDT {
 			}
 		}
 
-		objective = parseObjectiveAlias(objective.toLowerCase());
-
-		switch(objective){
+		String standardizedName = standardizeObjectiveFunctionName(name.toLowerCase());
+		switch(standardizedName){
 			// RegressionL2loss
 			case "regression":
 			// RegressionL1loss
@@ -515,35 +514,35 @@ public class GBDT {
 			case "fair":
 			// RegressionQuantileloss
 			case "quantile":
-				return new Regression(average_output);
+				return new Regression(name, average_output);
 			// RegressionPoissonLoss
 			case "poisson":
 			// RegressionGammaLoss
 			case "gamma":
 			// RegressionTweedieLoss
 			case "tweedie":
-				return new PoissonRegression(average_output);
+				return new PoissonRegression(name, average_output);
 			// LambdarankNDCG
 			case "lambdarank":
-				return new Lambdarank(average_output);
+				return new Lambdarank(name, average_output);
 			// BinaryLogloss
 			case "binary":
-				return new BinomialLogisticRegression(average_output, config.getDouble("sigmoid"));
+				return new BinomialLogisticRegression(name, average_output, config.getDouble("sigmoid"));
 			// CrossEntropy
 			case "cross_entropy":
-				return new BinomialLogisticRegression(average_output, 1d);
+				return new BinomialLogisticRegression(name, average_output, 1d);
 			// MulticlassSoftmax
 			case "multiclass":
-				return new MultinomialLogisticRegression(average_output, config.getInt("num_class"));
+				return new MultinomialLogisticRegression(name, average_output, config.getInt("num_class"));
 			default:
-				throw new IllegalArgumentException(objective);
+				throw new IllegalArgumentException(standardizedName);
 		}
 	}
 
 	static
-	private String parseObjectiveAlias(String objective){
+	private String standardizeObjectiveFunctionName(String name){
 
-		switch(objective){
+		switch(name){
 			case "regression":
 			case "regression_l2":
 			case "mean_squared_error":
@@ -581,7 +580,7 @@ public class GBDT {
 			case "na":
 				return "custom";
 			default:
-				return objective;
+				return name;
 		}
 	}
 

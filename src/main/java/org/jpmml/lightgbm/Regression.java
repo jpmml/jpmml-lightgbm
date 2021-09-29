@@ -32,8 +32,8 @@ import org.jpmml.converter.Schema;
 
 public class Regression extends ObjectiveFunction {
 
-	public Regression(boolean average_output){
-		super(average_output);
+	public Regression(String name, boolean average_output){
+		super(name, average_output);
 	}
 
 	@Override

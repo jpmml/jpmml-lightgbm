@@ -37,10 +37,13 @@ import org.jpmml.converter.mining.MiningModelUtil;
 abstract
 public class ObjectiveFunction {
 
+	private String name_;
+
 	private boolean average_output_;
 
 
-	public ObjectiveFunction(boolean average_output){
+	public ObjectiveFunction(String name, boolean average_output){
+		this.name_ = name;
 		this.average_output_ = average_output;
 	}
 
@@ -78,6 +81,10 @@ public class ObjectiveFunction {
 			.setSegmentation(MiningModelUtil.createSegmentation(this.average_output_ ? Segmentation.MultipleModelMethod.AVERAGE : Segmentation.MultipleModelMethod.SUM, treeModels));
 
 		return miningModel;
+	}
+
+	public String getName(){
+		return this.name_;
 	}
 
 	public boolean getAverageOutput(){

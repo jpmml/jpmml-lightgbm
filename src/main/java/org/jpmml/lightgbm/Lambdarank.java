@@ -20,7 +20,7 @@ package org.jpmml.lightgbm;
 
 public class Lambdarank extends Regression {
 
-	public Lambdarank(boolean average_output){
-		super(average_output);
+	public Lambdarank(String name, boolean average_output){
+		super(name, average_output);
 	}
 }

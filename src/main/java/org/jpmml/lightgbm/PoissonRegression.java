@@ -31,8 +31,8 @@ import org.jpmml.converter.mining.MiningModelUtil;
 
 public class PoissonRegression extends Regression {
 
-	public PoissonRegression(boolean average_output){
-		super(average_output);
+	public PoissonRegression(String name, boolean average_output){
+		super(name, average_output);
 	}
 
 	@Override
