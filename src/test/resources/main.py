@@ -18,6 +18,16 @@ def store_csv(df, name):
 def store_lgbm(lgbm, name):
 	lgbm.booster_.save_model("lgbm/" + name)
 
+def format_func(func, boosting_type = None):
+	if boosting_type != "gbdt":
+		return boosting_type.upper() + func
+	return func
+
+def format_name(func, name, num_iteration = 0):
+	if num_iteration > 0:
+		return func + name + "@" + str(num_iteration)
+	return func + name
+
 #
 # Multi-class classification
 #
@@ -30,19 +40,14 @@ def build_iris(name, objective = "multiclass", boosting_type = "gbdt", num_itera
 	lgbm = LGBMClassifier(objective = objective, boosting_type = boosting_type, n_estimators = (11 if name.endswith("NA") else 200), **kwargs)
 	lgbm.fit(X, y)
 
-	func = "Classification"
-
-	if boosting_type != "gbdt":
-		func = (boosting_type.upper() + func)
+	func = format_func("Classification", boosting_type)
 
 	if num_iteration == 0:
-		store_lgbm(lgbm, func + name + ".txt")
-	else:
-		name = (name + "@" + str(num_iteration))
+		store_lgbm(lgbm, format_name(func, name) + ".txt")
 
 	species = DataFrame(lgbm.predict(X, num_iteration = num_iteration), columns = ["_target"]).replace("setosa", "0").replace("versicolor", "1").replace("virginica", "2")
 	species_proba = DataFrame(lgbm.predict_proba(X, num_iteration = num_iteration), columns = ["probability(0)", "probability(1)", "probability(2)"])
-	store_csv(pandas.concat((species, species_proba), axis = 1), func + name + ".csv")
+	store_csv(pandas.concat((species, species_proba), axis = 1), format_name(func, name, num_iteration) + ".csv")
 
 build_iris("Iris")
 build_iris("Iris", num_iteration = 7)
@@ -62,19 +67,14 @@ def build_audit(name, objective = "binary", boosting_type = "gbdt", num_iteratio
 	lgbm = LGBMClassifier(objective = objective, boosting_type = boosting_type, n_estimators = 31, **kwargs)
 	lgbm.fit(X, y)
 
-	func = "Classification"
-
-	if boosting_type != "gbdt":
-		func = (boosting_type.upper() + func)
+	func = format_func("Classification", boosting_type)
 
 	if num_iteration == 0:
-		store_lgbm(lgbm, func + name + ".txt")
-	else:
-		name = (name + "@" + str(num_iteration))
+		store_lgbm(lgbm, format_name(func, name) + ".txt")
 
 	adjusted = DataFrame(lgbm.predict(X, num_iteration = num_iteration), columns = ["_target"])
 	adjusted_proba = DataFrame(lgbm.predict_proba(X, num_iteration = num_iteration), columns = ["probability(0)", "probability(1)"])
-	store_csv(pandas.concat((adjusted, adjusted_proba), axis = 1), func + name + ".csv")
+	store_csv(pandas.concat((adjusted, adjusted_proba), axis = 1), format_name(func, name, num_iteration) + ".csv")
 
 build_audit("Audit")
 build_audit("Audit", num_iteration = 17)
@@ -85,6 +85,8 @@ build_audit("AuditNA", objective = "cross_entropy", num_iteration = 17)
 def build_audit_invalid():
 	df = load_csv("AuditInvalid.csv", ["Employment", "Education", "Marital", "Occupation", "Gender", "Deductions"])
 	X = df[["Age", "Employment", "Education", "Marital", "Occupation", "Income", "Gender", "Deductions", "Hours"]]
+	y = df["Adjusted"]
+
 	booster = lightgbm.Booster(model_file = "lgbm/ClassificationAudit.txt")
 
 	result = booster.predict(X)
@@ -125,13 +127,11 @@ def build_versicolor(name, objective = "binary", num_iteration = 0):
 	lgbm.fit(X, y)
 
 	if num_iteration == 0:
-		store_lgbm(lgbm, "Classification" + name + ".txt")
-	else:
-		name = (name + "@" + str(num_iteration))
+		store_lgbm(lgbm, format_name("Classification", name) + ".txt")
 
 	versicolor = DataFrame(lgbm.predict(X, num_iteration = num_iteration), columns = ["_target"])
 	versicolor_proba = DataFrame(lgbm.predict_proba(X, num_iteration = num_iteration), columns = ["probability(0)", "probability(1)"])
-	store_csv(pandas.concat((versicolor, versicolor_proba), axis = 1), "Classification" + name + ".csv")
+	store_csv(pandas.concat((versicolor, versicolor_proba), axis = 1), format_name("Classification", name, num_iteration) + ".csv")
 
 build_versicolor("Versicolor")
 build_versicolor("Versicolor", num_iteration = 9)
@@ -148,18 +148,13 @@ def build_auto(name, objective = "regression", boosting_type = "gbdt", num_itera
 	lgbm = LGBMRegressor(objective = objective, boosting_type = boosting_type, n_estimators = 31, **kwargs)
 	lgbm.fit(X, y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"])
 
-	func = "Regression"
-
-	if boosting_type != "gbdt":
-		func = (boosting_type.upper() + func)
+	func = format_func("Regression", boosting_type)
 
 	if num_iteration == 0:
-		store_lgbm(lgbm, func + name + ".txt")
-	else:
-		name = (name + "@" + str(num_iteration))
+		store_lgbm(lgbm, format_name(func, name) + ".txt")
 
 	mpg = DataFrame(lgbm.predict(X, num_iteration = num_iteration), columns = ["_target"])
-	store_csv(mpg, func + name + ".csv")
+	store_csv(mpg, format_name(func, name, num_iteration) + ".csv")
 
 build_auto("Auto")
 build_auto("Auto", num_iteration = 17)
@@ -194,12 +189,10 @@ def build_housing(name, objective = "regression", num_iteration = 0):
 	lgbm.fit(X, y)
 
 	if num_iteration == 0:
-		store_lgbm(lgbm, "Regression" + name + ".txt")
-	else:
-		name = (name + "@" + str(num_iteration))
+		store_lgbm(lgbm, format_name("Regression", name) + ".txt")
 
 	medv = DataFrame(lgbm.predict(X, num_iteration = num_iteration), columns = ["_target"])
-	store_csv(medv, "Regression" + name + ".csv")
+	store_csv(medv, format_name("Regression", name, num_iteration) + ".csv")
 
 build_housing("Housing", objective = "mean_squared_error")
 build_housing("Housing", objective = "mean_squared_error", num_iteration = 31)
@@ -219,12 +212,10 @@ def build_visit(name, objective = "poisson", num_iteration = 0):
 	lgbm.fit(X, y, feature_name = ["age", "outwork", "female", "married", "kids", "hhninc", "educ", "self"])
 
 	if num_iteration == 0:
-		store_lgbm(lgbm, "Regression" + name + ".txt")
-	else:
-		name = (name + "@" + str(num_iteration))
+		store_lgbm(lgbm, format_name("Regression", name) + ".txt")
 
 	docvis = DataFrame(lgbm.predict(X, num_iteration = num_iteration), columns = ["_target"])
-	store_csv(docvis, "Regression" + name + ".csv")
+	store_csv(docvis, format_name("Regression", name, num_iteration) + ".csv")
 
 build_visit("Visit")
 build_visit("Visit", num_iteration = 31)
