@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with JPMML-LightGBM.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jpmml.lightgbm;
+package org.jpmml.lightgbm.testing;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,6 +45,9 @@ import org.jpmml.evaluator.testing.ArchiveBatch;
 import org.jpmml.evaluator.testing.IntegrationTest;
 import org.jpmml.evaluator.testing.IntegrationTestBatch;
 import org.jpmml.evaluator.testing.RealNumberEquivalence;
+import org.jpmml.lightgbm.GBDT;
+import org.jpmml.lightgbm.LightGBMEncoder;
+import org.jpmml.lightgbm.LightGBMUtil;
 import org.junit.Test;
 
 public class PandasDummiesTest extends IntegrationTest {

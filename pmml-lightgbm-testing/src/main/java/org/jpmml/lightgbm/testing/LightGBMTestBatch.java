@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with JPMML-LightGBM.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jpmml.lightgbm;
+package org.jpmml.lightgbm.testing;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +35,9 @@ import org.dmg.pmml.VisitorAction;
 import org.dmg.pmml.mining.MiningModel;
 import org.jpmml.evaluator.ResultField;
 import org.jpmml.evaluator.testing.IntegrationTestBatch;
+import org.jpmml.lightgbm.GBDT;
+import org.jpmml.lightgbm.HasLightGBMOptions;
+import org.jpmml.lightgbm.LightGBMUtil;
 import org.jpmml.model.visitors.AbstractVisitor;
 
 import static org.junit.Assert.assertNotNull;

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with JPMML-LightGBM.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jpmml.lightgbm;
+package org.jpmml.lightgbm.testing;
 
 import java.util.function.Predicate;
 
@@ -28,6 +28,8 @@ import org.dmg.pmml.Visitor;
 import org.dmg.pmml.VisitorAction;
 import org.jpmml.evaluator.ResultField;
 import org.jpmml.evaluator.testing.ArchiveBatch;
+import org.jpmml.lightgbm.testing.LightGBMTest;
+import org.jpmml.lightgbm.testing.LightGBMTestBatch;
 import org.jpmml.model.visitors.AbstractVisitor;
 import org.junit.Test;
 

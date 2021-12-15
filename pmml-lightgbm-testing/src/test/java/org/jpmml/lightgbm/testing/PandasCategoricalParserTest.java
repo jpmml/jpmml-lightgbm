@@ -16,12 +16,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with JPMML-LightGBM.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jpmml.lightgbm;
+package org.jpmml.lightgbm.testing;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.jpmml.lightgbm.PandasCategoricalParser;
+import org.jpmml.lightgbm.ParseException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

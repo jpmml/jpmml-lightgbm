@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with JPMML-LightGBM.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jpmml.lightgbm;
+package org.jpmml.lightgbm.testing;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +27,8 @@ import com.google.common.base.Equivalence;
 import org.jpmml.evaluator.ResultField;
 import org.jpmml.evaluator.testing.ArchiveBatch;
 import org.jpmml.evaluator.testing.RealNumberEquivalence;
+import org.jpmml.lightgbm.testing.LightGBMTest;
+import org.jpmml.lightgbm.testing.LightGBMTestBatch;
 import org.junit.Test;
 
 public class ClassificationTest extends LightGBMTest {
