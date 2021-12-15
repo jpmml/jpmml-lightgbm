@@ -30,7 +30,6 @@ import java.util.function.Predicate;
 import com.google.common.base.Equivalence;
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
-import org.dmg.pmml.FieldName;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.PMML;
 import org.dmg.pmml.mining.MiningModel;
@@ -87,7 +86,7 @@ public class PandasDummiesTest extends IntegrationTest {
 
 				{
 					// XXX
-					DataField dataField = encoder.createDataField(FieldName.create("_target"), OpType.CATEGORICAL, DataType.STRING, Arrays.asList("0", "1"));
+					DataField dataField = encoder.createDataField("_target", OpType.CATEGORICAL, DataType.STRING, Arrays.asList("0", "1"));
 
 					label = new CategoricalLabel(dataField);
 				}
@@ -99,15 +98,13 @@ public class PandasDummiesTest extends IntegrationTest {
 					int index = featureName.indexOf('_');
 
 					if(index < 0){
-						FieldName name = FieldName.create(featureName);
-
-						DataField dataField = encoder.createDataField(name, OpType.CONTINUOUS, DataType.DOUBLE);
+						DataField dataField = encoder.createDataField(featureName, OpType.CONTINUOUS, DataType.DOUBLE);
 
 						features.add(new ContinuousFeature(encoder, dataField));
 					} else
 
 					{
-						FieldName name = FieldName.create(featureName.substring(0, index));
+						String name = featureName.substring(0, index);
 						String value = featureName.substring(index + 1);
 
 						DataField dataField = encoder.getDataField(name);
@@ -131,7 +128,7 @@ public class PandasDummiesTest extends IntegrationTest {
 			}
 
 			@Override
-			public List<Map<FieldName, String>> getInput() throws IOException {
+			public List<Map<String, String>> getInput() throws IOException {
 				String dataset = getDataset();
 
 				dataset = dataset.replace("Bin", "");

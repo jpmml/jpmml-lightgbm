@@ -21,7 +21,6 @@ package org.jpmml.lightgbm;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.dmg.pmml.FieldName;
 import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.mining.MiningModel;
 import org.dmg.pmml.mining.Segmentation;
@@ -48,7 +47,7 @@ public class ObjectiveFunction {
 	}
 
 	abstract
-	public Label encodeLabel(FieldName targetField, List<?> targetCategories, PMMLEncoder encoder);
+	public Label encodeLabel(String targetField, List<?> targetCategories, PMMLEncoder encoder);
 
 	abstract
 	public MiningModel encodeMiningModel(List<Tree> trees, Integer numIteration, Schema schema);

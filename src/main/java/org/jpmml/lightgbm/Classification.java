@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
-import org.dmg.pmml.FieldName;
 import org.dmg.pmml.OpType;
 import org.jpmml.converter.CategoricalLabel;
 import org.jpmml.converter.Label;
@@ -42,7 +41,7 @@ public class Classification extends ObjectiveFunction {
 	}
 
 	@Override
-	public Label encodeLabel(FieldName targetField, List<?> targetCategories, PMMLEncoder encoder){
+	public Label encodeLabel(String targetField, List<?> targetCategories, PMMLEncoder encoder){
 		DataField dataField;
 
 		if(targetCategories == null){

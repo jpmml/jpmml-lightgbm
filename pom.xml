@@ -44,6 +44,12 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.jpmml</groupId>
+			<artifactId>pmml-converter</artifactId>
+			<version>1.5.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.beust</groupId>
 			<artifactId>jcommander</artifactId>
 			<version>1.72</version>
@@ -51,21 +57,15 @@
 
 		<dependency>
 			<groupId>org.jpmml</groupId>
-			<artifactId>jpmml-converter</artifactId>
-			<version>1.4.10</version>
+			<artifactId>pmml-converter-testing</artifactId>
+			<version>1.5.0</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.13.2</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jpmml</groupId>
-			<artifactId>pmml-evaluator-testing</artifactId>
-			<version>1.5.16</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

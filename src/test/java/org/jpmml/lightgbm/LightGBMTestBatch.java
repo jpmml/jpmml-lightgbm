@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 import com.google.common.base.Equivalence;
-import org.dmg.pmml.FieldName;
 import org.dmg.pmml.MiningField;
 import org.dmg.pmml.MiningSchema;
 import org.dmg.pmml.PMML;
@@ -98,7 +97,7 @@ public class LightGBMTestBatch extends IntegrationTestBatch {
 	}
 
 	@Override
-	public List<Map<FieldName, String>> getInput() throws IOException {
+	public List<Map<String, String>> getInput() throws IOException {
 		return loadRecords(getInputCsvPath());
 	}
 
@@ -107,7 +106,7 @@ public class LightGBMTestBatch extends IntegrationTestBatch {
 	}
 
 	@Override
-	public List<Map<FieldName, String>> getOutput() throws IOException {
+	public List<Map<String, String>> getOutput() throws IOException {
 		return loadRecords(getOutputCsvPath());
 	}
 

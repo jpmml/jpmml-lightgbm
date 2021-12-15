@@ -24,7 +24,6 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.dmg.pmml.DataType;
-import org.dmg.pmml.FieldName;
 import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.Predicate;
 import org.dmg.pmml.SimplePredicate;
@@ -159,7 +158,7 @@ public class Tree {
 					throw new IllegalArgumentException("Expected a true (on) categorical split mask for binary categorical feature " + binaryCategoricalFeature.getName() + ", got false (off)");
 				}
 
-				FieldName name = binaryCategoricalFeature.getName();
+				String name = binaryCategoricalFeature.getName();
 
 				List<?> values = binaryCategoricalFeature.getValues();
 
@@ -202,7 +201,7 @@ public class Tree {
 					throw new IllegalArgumentException("Expected a true (on) categorical split mask for categorical feature " + categoricalFeature.getName() + ", got false (off)");
 				}
 
-				FieldName name = categoricalFeature.getName();
+				String name = categoricalFeature.getName();
 
 				boolean indexAsValue = (categoricalFeature instanceof DirectCategoricalFeature);
 

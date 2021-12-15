@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
-import org.dmg.pmml.FieldName;
 import org.dmg.pmml.Interval;
 import org.dmg.pmml.InvalidValueTreatmentMethod;
 import org.dmg.pmml.OpType;
@@ -167,12 +166,12 @@ public class GBDT {
 		}
 	}
 
-	public Schema encodeSchema(FieldName targetField, List<String> targetCategories, LightGBMEncoder encoder){
+	public Schema encodeSchema(String targetField, List<String> targetCategories, LightGBMEncoder encoder){
 		Label label;
 
 		{
 			if(targetField == null){
-				targetField = FieldName.create("_target");
+				targetField = "_target";
 			}
 
 			label = this.object_function_.encodeLabel(targetField, targetCategories, encoder);
@@ -215,7 +214,7 @@ public class GBDT {
 				categorical = LightGBMUtil.isValues(featureInfo);
 			}
 
-			FieldName activeField = FieldName.create(featureNames[i]);
+			String activeField = featureNames[i];
 
 			Feature feature;
 
@@ -376,7 +375,7 @@ public class GBDT {
 		return schema.toTransformedSchema(function);
 	}
 
-	public PMML encodePMML(Map<String, ?> options, FieldName targetField, List<String> targetCategories){
+	public PMML encodePMML(Map<String, ?> options, String targetField, List<String> targetCategories){
 		LightGBMEncoder encoder = new LightGBMEncoder();
 
 		Boolean nanAsMissing = (Boolean)options.get(HasLightGBMOptions.OPTION_NAN_AS_MISSING);
