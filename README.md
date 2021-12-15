@@ -15,7 +15,7 @@ Enter the project root directory and build using [Apache Maven](https://maven.ap
 mvn clean install
 ```
 
-The build produces an executable uber-JAR file `target/jpmml-lightgbm-executable-1.4-SNAPSHOT.jar`.
+The build produces a library JAR file `pmml-lightgbm/target/pmml-lightgbm-1.4-SNAPSHOT.jar`, and an executable uber-JAR file `pmml-lightgbm-example/target/pmml-lightgbm-example-executable-1.4-SNAPSHOT.jar`.
 
 # Usage #
 
