@@ -34,6 +34,7 @@
 
 	<modules>
 		<module>pmml-lightgbm</module>
+		<module>pmml-lightgbm-example</module>
 		<module>pmml-lightgbm-testing</module>
 	</modules>
 
@@ -53,6 +54,11 @@
 			<dependency>
 				<groupId>org.jpmml</groupId>
 				<artifactId>pmml-lightgbm</artifactId>
+				<version>1.4-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jpmml</groupId>
+				<artifactId>pmml-lightgbm-example</artifactId>
 				<version>1.4-SNAPSHOT</version>
 			</dependency>
 			<dependency>

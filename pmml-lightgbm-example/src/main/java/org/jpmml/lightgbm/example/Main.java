@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with JPMML-LightGBM.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jpmml.lightgbm;
+package org.jpmml.lightgbm.example;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,6 +31,9 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import org.dmg.pmml.PMML;
+import org.jpmml.lightgbm.GBDT;
+import org.jpmml.lightgbm.HasLightGBMOptions;
+import org.jpmml.lightgbm.LightGBMUtil;
 import org.jpmml.model.metro.MetroJAXBUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

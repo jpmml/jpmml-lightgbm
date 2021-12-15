@@ -46,12 +46,12 @@ lgbm.booster_.save_model("lightgbm.txt")
 
 Converting the text file `lightgbm.txt` to a PMML file `lightgbm.pmml`:
 ```
-java -jar target/jpmml-lightgbm-executable-1.4-SNAPSHOT.jar --lgbm-input lightgbm.txt --pmml-output lightgbm.pmml
+java -jar pmml-lightgbm-example/target/pmml-lightgbm-example-executable-1.4-SNAPSHOT.jar --lgbm-input lightgbm.txt --pmml-output lightgbm.pmml
 ```
 
 Getting help:
 ```
-java -jar target/jpmml-lightgbm-executable-1.4-SNAPSHOT.jar --help
+java -jar pmml-lightgbm-example/target/pmml-lightgbm-example-executable-1.4-SNAPSHOT.jar  --help
 ```
 
 # Documentation #

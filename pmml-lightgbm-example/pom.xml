@@ -9,11 +9,11 @@
 	</parent>
 
 	<groupId>org.jpmml</groupId>
-	<artifactId>pmml-lightgbm</artifactId>
+	<artifactId>pmml-lightgbm-example</artifactId>
 	<packaging>jar</packaging>
 
-	<name>JPMML LightGBM converter</name>
-	<description>JPMML LightGBM to class model converter</description>
+	<name>JPMML LightGBM converter example applications</name>
+	<description>JPMML LightGBM to class model converter example command-line applications</description>
 
 	<licenses>
 		<license>
@@ -26,12 +26,12 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.jpmml</groupId>
-			<artifactId>pmml-converter</artifactId>
+			<artifactId>pmml-lightgbm</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+			<groupId>com.beust</groupId>
+			<artifactId>jcommander</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -39,43 +39,32 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.0</version>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
 				<configuration>
-					<archive>
-						<manifest>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
-					</archive>
+					<skip>true</skip>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.2.0</version>
-				<configuration>
-					<javadocVersion>1.8</javadocVersion>
-					<sourcepath>${basedir}/src/main/java</sourcepath>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>javacc-maven-plugin</artifactId>
-				<version>2.6</version>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.4</version>
 				<executions>
 					<execution>
+						<phase>package</phase>
 						<goals>
-							<goal>javacc</goal>
+							<goal>shade</goal>
 						</goals>
+						<configuration>
+							<finalName>${project.artifactId}-executable-${project.version}</finalName>
+							<transformers>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>org.jpmml.lightgbm.example.Main</mainClass>
+								</transformer>
+							</transformers>
+						</configuration>
 					</execution>
 				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>net.java.dev.javacc</groupId>
-						<artifactId>javacc</artifactId>
-						<version>7.0.10</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
