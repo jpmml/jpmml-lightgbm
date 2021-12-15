@@ -166,15 +166,15 @@ public class GBDT {
 		}
 	}
 
-	public Schema encodeSchema(String targetField, List<String> targetCategories, LightGBMEncoder encoder){
+	public Schema encodeSchema(String targetName, List<String> targetCategories, LightGBMEncoder encoder){
 		Label label;
 
 		{
-			if(targetField == null){
-				targetField = "_target";
+			if(targetName == null){
+				targetName = "_target";
 			}
 
-			label = this.object_function_.encodeLabel(targetField, targetCategories, encoder);
+			label = this.object_function_.encodeLabel(targetName, targetCategories, encoder);
 		}
 
 		List<Feature> features = new ArrayList<>();
@@ -214,8 +214,6 @@ public class GBDT {
 				categorical = LightGBMUtil.isValues(featureInfo);
 			}
 
-			String activeField = featureNames[i];
-
 			Feature feature;
 
 			if(categorical){
@@ -231,7 +229,7 @@ public class GBDT {
 
 						DataType dataType = TypeUtil.getDataType(values);
 
-						dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, dataType, values);
+						dataField = encoder.createDataField(featureName, OpType.CATEGORICAL, dataType, values);
 
 						if((DataType.BOOLEAN).equals(dataType) && (BooleanFeature.VALUES).equals(values)){
 							feature = new BooleanFeature(encoder, dataField);
@@ -250,7 +248,7 @@ public class GBDT {
 							.sorted()
 							.collect(Collectors.toList());
 
-						dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER, values);
+						dataField = encoder.createDataField(featureName, OpType.CATEGORICAL, DataType.INTEGER, values);
 
 						feature = new DirectCategoricalFeature(encoder, dataField);
 					}
@@ -263,13 +261,13 @@ public class GBDT {
 				DataField dataField;
 
 				if(binary){
-					dataField = encoder.createDataField(activeField, OpType.CATEGORICAL, DataType.INTEGER, Arrays.asList(0, 1));
+					dataField = encoder.createDataField(featureName, OpType.CATEGORICAL, DataType.INTEGER, Arrays.asList(0, 1));
 
 					feature = new BinaryFeature(encoder, dataField, 1);
 				} else
 
 				{
-					dataField = encoder.createDataField(activeField, OpType.CONTINUOUS, DataType.DOUBLE);
+					dataField = encoder.createDataField(featureName, OpType.CONTINUOUS, DataType.DOUBLE);
 
 					Interval interval = LightGBMUtil.parseInterval(featureInfo);
 					if(interval != null){
@@ -375,12 +373,12 @@ public class GBDT {
 		return schema.toTransformedSchema(function);
 	}
 
-	public PMML encodePMML(Map<String, ?> options, String targetField, List<String> targetCategories){
+	public PMML encodePMML(Map<String, ?> options, String targetName, List<String> targetCategories){
 		LightGBMEncoder encoder = new LightGBMEncoder();
 
 		Boolean nanAsMissing = (Boolean)options.get(HasLightGBMOptions.OPTION_NAN_AS_MISSING);
 
-		Schema schema = encodeSchema(targetField, targetCategories, encoder);
+		Schema schema = encodeSchema(targetName, targetCategories, encoder);
 
 		MiningModel miningModel = encodeMiningModel(options, schema);
 

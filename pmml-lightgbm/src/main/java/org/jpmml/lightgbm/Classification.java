@@ -41,13 +41,13 @@ public class Classification extends ObjectiveFunction {
 	}
 
 	@Override
-	public Label encodeLabel(String targetField, List<?> targetCategories, PMMLEncoder encoder){
+	public Label encodeLabel(String targetName, List<?> targetCategories, PMMLEncoder encoder){
 		DataField dataField;
 
 		if(targetCategories == null){
 			targetCategories = LabelUtil.createTargetCategories(this.num_class_);
 
-			dataField = encoder.createDataField(targetField, OpType.CATEGORICAL, DataType.INTEGER, targetCategories);
+			dataField = encoder.createDataField(targetName, OpType.CATEGORICAL, DataType.INTEGER, targetCategories);
 		} else
 
 		{
@@ -55,7 +55,7 @@ public class Classification extends ObjectiveFunction {
 				throw new IllegalArgumentException("Expected " + this.num_class_ + " target categories, got " + targetCategories.size() + " target categories");
 			}
 
-			dataField = encoder.createDataField(targetField, OpType.CATEGORICAL, DataType.STRING, targetCategories);
+			dataField = encoder.createDataField(targetName, OpType.CATEGORICAL, DataType.STRING, targetCategories);
 		}
 
 		return new CategoricalLabel(dataField);

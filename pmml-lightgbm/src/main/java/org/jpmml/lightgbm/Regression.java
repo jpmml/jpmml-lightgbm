@@ -36,13 +36,13 @@ public class Regression extends ObjectiveFunction {
 	}
 
 	@Override
-	public Label encodeLabel(String targetField, List<?> targetCategories, PMMLEncoder encoder){
+	public Label encodeLabel(String targetName, List<?> targetCategories, PMMLEncoder encoder){
 
 		if(targetCategories != null && targetCategories.size() > 0){
 			throw new IllegalArgumentException("Regression requires zero target categories");
 		}
 
-		DataField dataField = encoder.createDataField(targetField, OpType.CONTINUOUS, DataType.DOUBLE);
+		DataField dataField = encoder.createDataField(targetName, OpType.CONTINUOUS, DataType.DOUBLE);
 
 		return new ContinuousLabel(dataField);
 	}
