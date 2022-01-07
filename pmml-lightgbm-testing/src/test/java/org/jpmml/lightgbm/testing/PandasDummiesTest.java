@@ -50,20 +50,10 @@ import org.jpmml.lightgbm.LightGBMEncoder;
 import org.jpmml.lightgbm.LightGBMUtil;
 import org.junit.Test;
 
-public class PandasDummiesTest extends IntegrationTest {
+public class PandasDummiesTest extends IntegrationTest implements LightGBMAlgorithms, LightGBMDatasets {
 
 	public PandasDummiesTest(){
 		super(new RealNumberEquivalence(2));
-	}
-
-	@Test
-	public void evaluateAuditBin() throws Exception {
-		evaluate("Classification", "AuditBin");
-	}
-
-	@Test
-	public void evaluateAuditBinNA() throws Exception {
-		evaluate("Classification", "AuditBinNA");
 	}
 
 	@Override
@@ -71,7 +61,7 @@ public class PandasDummiesTest extends IntegrationTest {
 		ArchiveBatch result = new IntegrationTestBatch(name, dataset, predicate, equivalence){
 
 			@Override
-			public IntegrationTest getIntegrationTest(){
+			public PandasDummiesTest getIntegrationTest(){
 				return PandasDummiesTest.this;
 			}
 
@@ -141,5 +131,15 @@ public class PandasDummiesTest extends IntegrationTest {
 		};
 
 		return result;
+	}
+
+	@Test
+	public void evaluateAuditBin() throws Exception {
+		evaluate(CLASSIFICATION, AUDIT_BIN);
+	}
+
+	@Test
+	public void evaluateAuditBinNA() throws Exception {
+		evaluate(CLASSIFICATION, AUDIT_BIN_NA);
 	}
 }

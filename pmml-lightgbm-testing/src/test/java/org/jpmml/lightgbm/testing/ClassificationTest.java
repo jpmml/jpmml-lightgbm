@@ -24,13 +24,12 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 import com.google.common.base.Equivalence;
-import org.jpmml.converter.testing.Datasets;
 import org.jpmml.evaluator.ResultField;
 import org.jpmml.evaluator.testing.ArchiveBatch;
 import org.jpmml.evaluator.testing.RealNumberEquivalence;
 import org.junit.Test;
 
-public class ClassificationTest extends LightGBMTest implements Datasets {
+public class ClassificationTest extends LightGBMTest implements LightGBMAlgorithms, LightGBMDatasets {
 
 	@Override
 	protected ArchiveBatch createBatch(String name, String dataset, Predicate<ResultField> predicate, Equivalence<Object> equivalence){
@@ -77,66 +76,66 @@ public class ClassificationTest extends LightGBMTest implements Datasets {
 
 	@Test
 	public void evaluateAudit() throws Exception {
-		evaluate("Classification", AUDIT, new RealNumberEquivalence(2));
+		evaluate(CLASSIFICATION, AUDIT, new RealNumberEquivalence(2));
 	}
 
 	@Test
 	public void evaluateRFAudit() throws Exception {
-		evaluate("RFClassification", AUDIT, new RealNumberEquivalence(4));
+		evaluate(RF_CLASSIFICATION, AUDIT, new RealNumberEquivalence(4));
 	}
 
 	@Test
 	public void evaluateAuditLimit() throws Exception {
-		evaluate("Classification", AUDIT + "@17", new RealNumberEquivalence(2));
+		evaluate(CLASSIFICATION, AUDIT_LIMIT, new RealNumberEquivalence(2));
 	}
 
 	@Test
 	public void evaluateAuditInvalid() throws Exception {
-		evaluate("Classification", AUDIT + "Invalid", new RealNumberEquivalence(4));
+		evaluate(CLASSIFICATION, AUDIT_INVALID, new RealNumberEquivalence(4));
 	}
 
 	@Test
 	public void evaluateAuditNA() throws Exception {
-		evaluate("Classification", AUDIT_NA, new RealNumberEquivalence(2));
+		evaluate(CLASSIFICATION, AUDIT_NA, new RealNumberEquivalence(2));
 	}
 
 	@Test
 	public void evaluateAuditNALimit() throws Exception {
-		evaluate("Classification", AUDIT_NA + "@17");
+		evaluate(CLASSIFICATION, AUDIT_NA_LIMIT);
 	}
 
 	@Test
 	public void evaluateIris() throws Exception {
-		evaluate("Classification", IRIS);
+		evaluate(CLASSIFICATION, IRIS);
 	}
 
 	@Test
 	public void evaluateRFIris() throws Exception {
-		evaluate("RFClassification", IRIS);
+		evaluate(RF_CLASSIFICATION, IRIS);
 	}
 
 	@Test
 	public void evaluateIrisLimit() throws Exception {
-		evaluate("Classification", IRIS + "@7", new RealNumberEquivalence(2));
+		evaluate(CLASSIFICATION, IRIS_LIMIT, new RealNumberEquivalence(2));
 	}
 
 	@Test
 	public void evaluateIrisNA() throws Exception {
-		evaluate("Classification", IRIS_NA);
+		evaluate(CLASSIFICATION, IRIS_NA);
 	}
 
 	@Test
 	public void evaluateIrisNALimit() throws Exception {
-		evaluate("Classification", IRIS_NA + "@7");
+		evaluate(CLASSIFICATION, IRIS_NA_LIMIT);
 	}
 
 	@Test
 	public void evaluateVersicolor() throws Exception {
-		evaluate("Classification", VERSICOLOR);
+		evaluate(CLASSIFICATION, VERSICOLOR);
 	}
 
 	@Test
 	public void evaluateVersicolorLimit() throws Exception {
-		evaluate("Classification", VERSICOLOR + "@9");
+		evaluate(CLASSIFICATION, VERSICOLOR_LIMIT);
 	}
 }

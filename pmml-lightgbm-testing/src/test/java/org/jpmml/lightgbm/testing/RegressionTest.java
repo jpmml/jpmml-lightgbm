@@ -26,13 +26,12 @@ import org.dmg.pmml.MiningField;
 import org.dmg.pmml.PMML;
 import org.dmg.pmml.Visitor;
 import org.dmg.pmml.VisitorAction;
-import org.jpmml.converter.testing.Datasets;
 import org.jpmml.evaluator.ResultField;
 import org.jpmml.evaluator.testing.ArchiveBatch;
 import org.jpmml.model.visitors.AbstractVisitor;
 import org.junit.Test;
 
-public class RegressionTest extends LightGBMTest implements Datasets {
+public class RegressionTest extends LightGBMTest implements LightGBMAlgorithms, LightGBMDatasets {
 
 	@Override
 	protected ArchiveBatch createBatch(String name, String dataset, Predicate<ResultField> predicate, Equivalence<Object> equivalence){
@@ -82,76 +81,76 @@ public class RegressionTest extends LightGBMTest implements Datasets {
 
 	@Test
 	public void evaluateAuto() throws Exception {
-		evaluate("Regression", AUTO);
+		evaluate(REGRESSION, AUTO);
 	}
 
 	@Test
 	public void evaluateRFAuto() throws Exception {
-		evaluate("RFRegression", AUTO);
+		evaluate(RF_REGRESSION, AUTO);
 	}
 
 	@Test
 	public void evaluateAutoDirect() throws Exception {
-		evaluate("Regression", AUTO + "Direct");
+		evaluate(REGRESSION, AUTO_DIRECT);
 	}
 
 	@Test
 	public void evaluateAutoLimit() throws Exception {
-		evaluate("Regression", AUTO + "@17");
+		evaluate(REGRESSION, AUTO_LIMIT);
 	}
 
 	@Test
 	public void evaluateAutoNA() throws Exception {
-		evaluate("Regression", AUTO_NA);
+		evaluate(REGRESSION, AUTO_NA);
 	}
 
 	@Test
 	public void evaluateAutoDirectNA() throws Exception {
-		evaluate("Regression", AUTO + "DirectNA");
+		evaluate(REGRESSION, AUTO_DIRECT_NA);
 	}
 
 	@Test
 	public void evaluateAutoNALimit() throws Exception {
-		evaluate("Regression", AUTO_NA + "@17");
+		evaluate(REGRESSION, AUTO_NA_LIMIT);
 	}
 
 	@Test
 	public void evaluateHousing() throws Exception {
-		evaluate("Regression", HOUSING);
+		evaluate(REGRESSION, HOUSING);
 	}
 
 	@Test
 	public void evaluateHousingLimit() throws Exception {
-		evaluate("Regression", HOUSING + "@31");
+		evaluate(REGRESSION, HOUSING_LIMIT);
 	}
 
 	@Test
 	public void evaluateHousingNA() throws Exception {
-		evaluate("Regression", HOUSING_NA);
+		evaluate(REGRESSION, HOUSING_NA);
 	}
 
 	@Test
 	public void evaluateHousingNALimit() throws Exception {
-		evaluate("Regression", HOUSING_NA + "@31");
+		evaluate(REGRESSION, HOUSING_NA_LIMIT);
 	}
 
 	@Test
 	public void evaluateVisit() throws Exception {
-		evaluate("Regression", VISIT);
+		evaluate(REGRESSION, VISIT);
 	}
 
 	@Test
 	public void evaluateVisitLimit() throws Exception {
-		evaluate("Regression", VISIT + "@31");
+		evaluate(REGRESSION, VISIT_LIMIT);
 	}
 
 	@Test
 	public void evaluateVisitNA() throws Exception {
-		evaluate("Regression", VISIT_NA);
+		evaluate(REGRESSION, VISIT_NA);
 	}
 
 	@Test
 	public void evaluateVisitNALimit() throws Exception {
-		evaluate("Regression", VISIT_NA + "@31");
+		evaluate(REGRESSION, VISIT_NA_LIMIT);
 	}
 }
