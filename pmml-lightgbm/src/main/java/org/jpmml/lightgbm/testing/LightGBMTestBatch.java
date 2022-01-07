@@ -40,9 +40,6 @@ import org.jpmml.lightgbm.HasLightGBMOptions;
 import org.jpmml.lightgbm.LightGBMUtil;
 import org.jpmml.model.visitors.AbstractVisitor;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 abstract
 public class LightGBMTestBatch extends IntegrationTestBatch {
 
@@ -130,14 +127,19 @@ public class LightGBMTestBatch extends IntegrationTestBatch {
 						List<MiningField> miningFields = miningSchema.getMiningFields();
 
 						for(MiningField miningField : miningFields){
+							Number importance = miningField.getImportance();
 							MiningField.UsageType usageType = miningField.getUsageType();
 
 							switch(usageType){
 								case TARGET:
-									assertNull(miningField.getImportance());
+									if(importance != null){
+										throw new AssertionError();
+									}
 									break;
 								case ACTIVE:
-									assertNotNull(miningField.getImportance());
+									if(importance == null){
+										throw new AssertionError();
+									}
 									break;
 								default:
 									break;
