@@ -80,7 +80,7 @@ public class TreeModelCompactor extends AbstractTreeModelTransformer {
 	@Override
 	public void exitNode(Node node){
 		Number recordCount = node.getRecordCount();
-		Predicate predicate = node.getPredicate();
+		Predicate predicate = node.requirePredicate();
 
 		if(recordCount != null){
 			node.setRecordCount(null);
@@ -106,7 +106,7 @@ public class TreeModelCompactor extends AbstractTreeModelTransformer {
 		TreeModel.NoTrueChildStrategy noTrueChildStrategy = treeModel.getNoTrueChildStrategy();
 		TreeModel.SplitCharacteristic splitCharacteristic = treeModel.getSplitCharacteristic();
 
-		if(!(TreeModel.MissingValueStrategy.DEFAULT_CHILD).equals(missingValueStrategy) || !(TreeModel.NoTrueChildStrategy.RETURN_NULL_PREDICTION).equals(noTrueChildStrategy) || !(TreeModel.SplitCharacteristic.BINARY_SPLIT).equals(splitCharacteristic)){
+		if((missingValueStrategy != TreeModel.MissingValueStrategy.DEFAULT_CHILD) || (noTrueChildStrategy != TreeModel.NoTrueChildStrategy.RETURN_NULL_PREDICTION) || (splitCharacteristic != TreeModel.SplitCharacteristic.BINARY_SPLIT)){
 			throw new IllegalArgumentException();
 		}
 	}

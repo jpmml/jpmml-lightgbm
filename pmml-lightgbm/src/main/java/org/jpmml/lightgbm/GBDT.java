@@ -231,7 +231,7 @@ public class GBDT {
 
 						dataField = encoder.createDataField(featureName, OpType.CATEGORICAL, dataType, values);
 
-						if((DataType.BOOLEAN).equals(dataType) && (BooleanFeature.VALUES).equals(values)){
+						if((dataType == DataType.BOOLEAN) && (BooleanFeature.VALUES).equals(values)){
 							feature = new BooleanFeature(encoder, dataField);
 						} else
 
