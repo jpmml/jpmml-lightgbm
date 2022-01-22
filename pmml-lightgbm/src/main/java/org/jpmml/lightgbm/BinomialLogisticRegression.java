@@ -33,10 +33,10 @@ public class BinomialLogisticRegression extends Classification {
 	private double sigmoid_;
 
 
-	public BinomialLogisticRegression(String name, boolean average_output, double sigmoid){
-		super(name, average_output, 2);
+	public BinomialLogisticRegression(Section config){
+		super(config);
 
-		this.sigmoid_ = sigmoid;
+		this.sigmoid_ = config.getDouble(CONFIG_SIGMOID);
 	}
 
 	@Override
@@ -48,4 +48,6 @@ public class BinomialLogisticRegression extends Classification {
 
 		return MiningModelUtil.createBinaryLogisticClassification(miningModel, BinomialLogisticRegression.this.sigmoid_, 0d, RegressionModel.NormalizationMethod.LOGIT, true, schema);
 	}
+
+	public static final String CONFIG_SIGMOID = "sigmoid";
 }

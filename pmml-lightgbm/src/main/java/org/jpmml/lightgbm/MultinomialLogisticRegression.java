@@ -34,9 +34,10 @@ import org.jpmml.converter.mining.MiningModelUtil;
 
 public class MultinomialLogisticRegression extends Classification {
 
-	public MultinomialLogisticRegression(String name, boolean average_output, int num_class){
-		super(name, average_output, num_class);
+	public MultinomialLogisticRegression(Section config){
+		super(config);
 
+		int num_class = config.getInt(Classification.CONFIG_NUM_CLASS);
 		if(num_class < 3){
 			throw new IllegalArgumentException("Multi-class classification requires three or more target categories");
 		}

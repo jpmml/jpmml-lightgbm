@@ -34,10 +34,10 @@ public class Classification extends ObjectiveFunction {
 	private int num_class_;
 
 
-	public Classification(String name, boolean average_output, int num_class){
-		super(name, average_output);
+	public Classification(Section config){
+		super(config);
 
-		this.num_class_ = num_class;
+		this.num_class_ = config.getInt(Classification.CONFIG_NUM_CLASS);
 	}
 
 	@Override
@@ -64,4 +64,6 @@ public class Classification extends ObjectiveFunction {
 	public int getNumClass(){
 		return this.num_class_;
 	}
+
+	public static final String CONFIG_NUM_CLASS = "num_class";
 }

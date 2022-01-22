@@ -41,9 +41,9 @@ public class ObjectiveFunction {
 	private boolean average_output_;
 
 
-	public ObjectiveFunction(String name, boolean average_output){
-		this.name_ = name;
-		this.average_output_ = average_output;
+	public ObjectiveFunction(Section config){
+		this.name_ = config.get(ObjectiveFunction.CONFIG_NAME);
+		this.average_output_ = config.containsKey(ObjectiveFunction.CONFIG_AVERAGE_OUTPUT);
 	}
 
 	abstract
@@ -89,4 +89,7 @@ public class ObjectiveFunction {
 	public boolean getAverageOutput(){
 		return this.average_output_;
 	}
+
+	public static final String CONFIG_NAME = "name";
+	public static final String CONFIG_AVERAGE_OUTPUT = "average_output";
 }

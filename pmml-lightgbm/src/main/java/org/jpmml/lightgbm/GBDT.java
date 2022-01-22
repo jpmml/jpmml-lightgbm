@@ -486,11 +486,15 @@ public class GBDT {
 			throw new IllegalArgumentException();
 		}
 
-		boolean average_output = section.containsKey("average_output");
-
 		String name = tokens[0];
 
 		Section config = new Section();
+		config.put(ObjectiveFunction.CONFIG_NAME, name);
+
+		boolean average_output = section.containsKey(ObjectiveFunction.CONFIG_AVERAGE_OUTPUT);
+		if(average_output){
+			config.put(ObjectiveFunction.CONFIG_AVERAGE_OUTPUT, null);
+		} // End if
 
 		if(tokens.length > 1){
 
@@ -511,26 +515,29 @@ public class GBDT {
 			case "fair":
 			// RegressionQuantileloss
 			case "quantile":
-				return new Regression(name, average_output);
+				return new Regression(config);
 			// RegressionPoissonLoss
 			case "poisson":
 			// RegressionGammaLoss
 			case "gamma":
 			// RegressionTweedieLoss
 			case "tweedie":
-				return new PoissonRegression(name, average_output);
+				return new PoissonRegression(config);
 			// LambdarankNDCG
 			case "lambdarank":
-				return new Lambdarank(name, average_output);
+				return new Lambdarank(config);
 			// BinaryLogloss
 			case "binary":
-				return new BinomialLogisticRegression(name, average_output, config.getDouble("sigmoid"));
+				config.put(Classification.CONFIG_NUM_CLASS, "2");
+				return new BinomialLogisticRegression(config);
 			// CrossEntropy
 			case "cross_entropy":
-				return new BinomialLogisticRegression(name, average_output, 1d);
+				config.put(Classification.CONFIG_NUM_CLASS, "2");
+				config.put(BinomialLogisticRegression.CONFIG_SIGMOID, "1.0");
+				return new BinomialLogisticRegression(config);
 			// MulticlassSoftmax
 			case "multiclass":
-				return new MultinomialLogisticRegression(name, average_output, config.getInt("num_class"));
+				return new MultinomialLogisticRegression(config);
 			default:
 				throw new IllegalArgumentException(standardizedName);
 		}
