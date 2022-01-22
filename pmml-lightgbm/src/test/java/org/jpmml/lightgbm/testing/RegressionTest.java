@@ -27,29 +27,28 @@ import org.dmg.pmml.PMML;
 import org.dmg.pmml.Visitor;
 import org.dmg.pmml.VisitorAction;
 import org.jpmml.evaluator.ResultField;
-import org.jpmml.evaluator.testing.ArchiveBatch;
 import org.jpmml.model.visitors.AbstractVisitor;
 import org.junit.Test;
 
 public class RegressionTest extends LightGBMTest implements LightGBMAlgorithms, LightGBMDatasets {
 
 	@Override
-	protected ArchiveBatch createBatch(String name, String dataset, Predicate<ResultField> predicate, Equivalence<Object> equivalence){
-		ArchiveBatch result = new LightGBMTestBatch(name, dataset, predicate, equivalence){
+	public LightGBMTestBatch createBatch(String algorithm, String dataset, Predicate<ResultField> columnFilter, Equivalence<Object> equivalence){
+		LightGBMTestBatch result = new LightGBMTestBatch(algorithm, dataset, columnFilter, equivalence){
 
 			@Override
-			public RegressionTest getIntegrationTest(){
+			public RegressionTest getArchiveBatchTest(){
 				return RegressionTest.this;
 			}
 
 			@Override
 			public PMML getPMML() throws Exception {
-				String[] dataset = parseDataset();
-
 				PMML pmml = super.getPMML();
 
+				String dataset = truncate(getDataset());
+
 				// XXX
-				if((HOUSING).equals(dataset[0]) || (HOUSING_NA).equals(dataset[0])){
+				if((HOUSING).equals(dataset) || (HOUSING_NA).equals(dataset)){
 					Visitor visitor = new AbstractVisitor(){
 
 						@Override

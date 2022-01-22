@@ -21,23 +21,22 @@ package org.jpmml.lightgbm.testing;
 import java.util.function.Predicate;
 
 import com.google.common.base.Equivalence;
+import org.jpmml.converter.testing.ModelEncoderBatchTest;
 import org.jpmml.evaluator.ResultField;
-import org.jpmml.evaluator.testing.ArchiveBatch;
-import org.jpmml.evaluator.testing.IntegrationTest;
 import org.jpmml.evaluator.testing.RealNumberEquivalence;
 
-public class LightGBMTest extends IntegrationTest {
+public class LightGBMTest extends ModelEncoderBatchTest {
 
 	public LightGBMTest(){
 		super(new RealNumberEquivalence(1));
 	}
 
 	@Override
-	protected ArchiveBatch createBatch(String name, String dataset, Predicate<ResultField> predicate, Equivalence<Object> equivalence){
-		ArchiveBatch result = new LightGBMTestBatch(name, dataset, predicate, equivalence){
+	public LightGBMTestBatch createBatch(String algorithm, String dataset, Predicate<ResultField> columnFilter, Equivalence<Object> equivalence){
+		LightGBMTestBatch result = new LightGBMTestBatch(algorithm, dataset, columnFilter, equivalence){
 
 			@Override
-			public LightGBMTest getIntegrationTest(){
+			public LightGBMTest getArchiveBatchTest(){
 				return LightGBMTest.this;
 			}
 		};

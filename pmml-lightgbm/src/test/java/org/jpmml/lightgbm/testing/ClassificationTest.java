@@ -25,18 +25,17 @@ import java.util.function.Predicate;
 
 import com.google.common.base.Equivalence;
 import org.jpmml.evaluator.ResultField;
-import org.jpmml.evaluator.testing.ArchiveBatch;
 import org.jpmml.evaluator.testing.RealNumberEquivalence;
 import org.junit.Test;
 
 public class ClassificationTest extends LightGBMTest implements LightGBMAlgorithms, LightGBMDatasets {
 
 	@Override
-	protected ArchiveBatch createBatch(String name, String dataset, Predicate<ResultField> predicate, Equivalence<Object> equivalence){
-		ArchiveBatch result = new LightGBMTestBatch(name, dataset, predicate, equivalence){
+	public LightGBMTestBatch createBatch(String algorithm, String dataset, Predicate<ResultField> columnFilter, Equivalence<Object> equivalence){
+		LightGBMTestBatch result = new LightGBMTestBatch(algorithm, dataset, columnFilter, equivalence){
 
 			@Override
-			public ClassificationTest getIntegrationTest(){
+			public ClassificationTest getArchiveBatchTest(){
 				return ClassificationTest.this;
 			}
 
@@ -50,19 +49,19 @@ public class ClassificationTest extends LightGBMTest implements LightGBMAlgorith
 			}
 
 			@Override
-			public List<Map<String, String>> getInput() throws IOException {
-				String[] dataset = parseDataset();
+			public List<? extends Map<String, ?>> getInput() throws IOException {
+				List<? extends Map<String, ?>> table = super.getInput();
 
-				List<Map<String, String>> table = super.getInput();
+				String dataset = truncate(getDataset());
 
-				if((AUDIT_NA).equals(dataset[0])){
+				if((AUDIT_NA).equals(dataset)){
 					String income = "Income";
 
-					for(Map<String, String> row : table){
-						String value = row.get(income);
+					for(Map<String, ?> row : table){
+						Object value = row.get(income);
 
 						if(value == null){
-							row.put(income, "NaN");
+							((Map)row).put(income, "NaN");
 						}
 					}
 				}

@@ -18,7 +18,6 @@
  */
 package org.jpmml.lightgbm.testing;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -33,44 +32,46 @@ import org.dmg.pmml.PMMLObject;
 import org.dmg.pmml.Visitor;
 import org.dmg.pmml.VisitorAction;
 import org.dmg.pmml.mining.MiningModel;
+import org.jpmml.converter.testing.ModelEncoderBatch;
+import org.jpmml.converter.testing.OptionsUtil;
 import org.jpmml.evaluator.ResultField;
-import org.jpmml.evaluator.testing.IntegrationTestBatch;
 import org.jpmml.lightgbm.GBDT;
 import org.jpmml.lightgbm.HasLightGBMOptions;
 import org.jpmml.lightgbm.LightGBMUtil;
 import org.jpmml.model.visitors.AbstractVisitor;
 
 abstract
-public class LightGBMTestBatch extends IntegrationTestBatch {
+public class LightGBMTestBatch extends ModelEncoderBatch {
 
-	public LightGBMTestBatch(String name, String dataset, Predicate<ResultField> predicate, Equivalence<Object> equivalence){
-		super(name, dataset, predicate, equivalence);
+	public LightGBMTestBatch(String algorithm, String dataset, Predicate<ResultField> columnFilter, Equivalence<Object> equivalence){
+		super(algorithm, dataset, columnFilter, equivalence);
 	}
 
 	@Override
 	abstract
-	public LightGBMTest getIntegrationTest();
+	public LightGBMTest getArchiveBatchTest();
 
-	public Map<String, Object> getOptions(){
-		String[] dataset = parseDataset();
+	@Override
+	public List<Map<String, Object>> getOptionsMatrix(){
+		String dataset = getDataset();
 
 		Integer numIteration = null;
-		if(dataset.length > 1){
-			numIteration = new Integer(dataset[1]);
+
+		int index = dataset.indexOf('@');
+		if(index > -1){
+			numIteration = new Integer(dataset.substring(index + 1));
 		}
 
 		Map<String, Object> options = new LinkedHashMap<>();
-		options.put(HasLightGBMOptions.OPTION_COMPACT, numIteration != null);
+		options.put(HasLightGBMOptions.OPTION_COMPACT, new Boolean[]{false, true});
 		options.put(HasLightGBMOptions.OPTION_NAN_AS_MISSING, true);
 		options.put(HasLightGBMOptions.OPTION_NUM_ITERATION, numIteration);
 
-		return options;
+		return OptionsUtil.generateOptionsMatrix(options);
 	}
 
 	public String getModelTxtPath(){
-		String[] dataset = parseDataset();
-
-		return "/lgbm/" + getName() + dataset[0] + ".txt";
+		return "/lgbm/" + (getAlgorithm() + truncate(getDataset())) + ".txt";
 	}
 
 	@Override
@@ -90,24 +91,14 @@ public class LightGBMTestBatch extends IntegrationTestBatch {
 		return pmml;
 	}
 
+	@Override
 	public String getInputCsvPath(){
-		String[] dataset = parseDataset();
-
-		return "/csv/" + dataset[0] + ".csv";
+		return "/csv/" + truncate(getDataset()) + ".csv";
 	}
 
 	@Override
-	public List<Map<String, String>> getInput() throws IOException {
-		return loadRecords(getInputCsvPath());
-	}
-
 	public String getOutputCsvPath(){
-		return "/csv/" + getName() + getDataset() + ".csv";
-	}
-
-	@Override
-	public List<Map<String, String>> getOutput() throws IOException {
-		return loadRecords(getOutputCsvPath());
+		return super.getOutputCsvPath();
 	}
 
 	@Override
@@ -152,16 +143,5 @@ public class LightGBMTestBatch extends IntegrationTestBatch {
 			}
 		};
 		visitor.applyTo(pmml);
-	}
-
-	protected String[] parseDataset(){
-		String dataset = getDataset();
-
-		int index = dataset.indexOf('@');
-		if(index > -1){
-			return new String[]{dataset.substring(0, index), dataset.substring(index + 1)};
-		}
-
-		return new String[]{dataset};
 	}
 }

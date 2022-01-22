@@ -18,13 +18,11 @@
  */
 package org.jpmml.lightgbm.testing;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 
 import com.google.common.base.Equivalence;
@@ -40,36 +38,39 @@ import org.jpmml.converter.Feature;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.PMMLUtil;
 import org.jpmml.converter.Schema;
+import org.jpmml.converter.testing.ModelEncoderBatch;
+import org.jpmml.converter.testing.ModelEncoderBatchTest;
 import org.jpmml.evaluator.ResultField;
-import org.jpmml.evaluator.testing.ArchiveBatch;
-import org.jpmml.evaluator.testing.IntegrationTest;
-import org.jpmml.evaluator.testing.IntegrationTestBatch;
 import org.jpmml.evaluator.testing.RealNumberEquivalence;
 import org.jpmml.lightgbm.GBDT;
 import org.jpmml.lightgbm.LightGBMEncoder;
 import org.jpmml.lightgbm.LightGBMUtil;
 import org.junit.Test;
 
-public class PandasDummiesTest extends IntegrationTest implements LightGBMAlgorithms, LightGBMDatasets {
+public class PandasDummiesTest extends ModelEncoderBatchTest implements LightGBMAlgorithms, LightGBMDatasets {
 
 	public PandasDummiesTest(){
 		super(new RealNumberEquivalence(2));
 	}
 
 	@Override
-	protected ArchiveBatch createBatch(String name, String dataset, Predicate<ResultField> predicate, Equivalence<Object> equivalence){
-		ArchiveBatch result = new IntegrationTestBatch(name, dataset, predicate, equivalence){
+	public ModelEncoderBatch createBatch(String algorithm, String dataset, Predicate<ResultField> columnFilter, Equivalence<Object> equivalence){
+		ModelEncoderBatch result = new ModelEncoderBatch(algorithm, dataset, columnFilter, equivalence){
 
 			@Override
-			public PandasDummiesTest getIntegrationTest(){
+			public PandasDummiesTest getArchiveBatchTest(){
 				return PandasDummiesTest.this;
+			}
+
+			public String getModelTxtPath(){
+				return "/lgbm/" + (getAlgorithm() + getDataset()) + ".txt";
 			}
 
 			@Override
 			public PMML getPMML() throws Exception {
 				GBDT gbdt;
 
-				try(InputStream is = open("/lgbm/" + getName() + getDataset() + ".txt")){
+				try(InputStream is = open(getModelTxtPath())){
 					gbdt = LightGBMUtil.loadGBDT(is);
 				}
 
@@ -121,12 +122,12 @@ public class PandasDummiesTest extends IntegrationTest implements LightGBMAlgori
 			}
 
 			@Override
-			public List<Map<String, String>> getInput() throws IOException {
-				String dataset = getDataset();
+			public String getInputCsvPath(){
+				String path = super.getInputCsvPath();
 
-				dataset = dataset.replace("Bin", "");
+				path = path.replace("Bin", "");
 
-				return loadRecords("/csv/" + dataset + ".csv");
+				return path;
 			}
 		};
 
