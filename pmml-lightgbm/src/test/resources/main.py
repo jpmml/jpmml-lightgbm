@@ -28,6 +28,12 @@ def format_name(func, name, num_iteration = 0):
 		return func + name + "@" + str(num_iteration)
 	return func + name
 
+def custom_regression(y_true, y_pred):
+	residual = (y_pred - y_true)
+	grad = residual
+	hess = numpy.ones(len(y_true))
+	return grad, hess
+
 #
 # Multi-class classification
 #
@@ -156,8 +162,8 @@ def build_auto(name, objective = "regression", boosting_type = "gbdt", num_itera
 	mpg = DataFrame(lgbm.predict(X, num_iteration = num_iteration), columns = ["_target"])
 	store_csv(mpg, format_name(func, name, num_iteration) + ".csv")
 
-build_auto("Auto")
-build_auto("Auto", num_iteration = 17)
+build_auto("Auto", objective = custom_regression)
+build_auto("Auto", objective = custom_regression, num_iteration = 17)
 build_auto("Auto", boosting_type = "rf", bagging_freq = 5, bagging_fraction = 0.75)
 build_auto("AutoNA")
 build_auto("AutoNA", num_iteration = 17)

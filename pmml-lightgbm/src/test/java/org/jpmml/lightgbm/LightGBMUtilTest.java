@@ -19,13 +19,22 @@
 package org.jpmml.lightgbm;
 
 import org.dmg.pmml.Interval;
-import org.jpmml.lightgbm.LightGBMUtil;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class LightGBMUtilTest {
+
+	@Test
+	public void parseObjectiveFunction(){
+		String string = MultinomialLogisticRegression.class.getName() + "(softmax num_class:3)";
+
+		Classification classification = (Classification)LightGBMUtil.parseObjectiveFunction(string);
+
+		assertEquals("softmax", classification.getName());
+		assertEquals(3, classification.getNumClass());
+	}
 
 	@Test
 	public void parseInterval(){

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -91,6 +92,43 @@ public class LightGBMUtil {
 		List<String> lines = CharStreams.readLines(reader);
 
 		return lines.iterator();
+	}
+
+	static
+	public ObjectiveFunction parseObjectiveFunction(String string){
+		Matcher matcher = LightGBMUtil.PATTERN_OBJECTIVE_FUNCTION.matcher(string);
+
+		if(!matcher.matches()){
+			throw new IllegalArgumentException(string);
+		}
+
+		String className = matcher.group(1);
+
+		String[] tokens = (matcher.group(2)).split("\\s+");
+		if(tokens.length == 0){
+			throw new IllegalArgumentException(string);
+		}
+
+		String name = tokens[0];
+
+		Section config = new Section();
+		config.put(ObjectiveFunction.CONFIG_NAME, name);
+
+		for(int i = 1; i < tokens.length; i++){
+			String token = tokens[i];
+
+			config.put(token, ':');
+		}
+
+		try {
+			Class<? extends ObjectiveFunction> clazz = (Class.forName(className)).asSubclass(ObjectiveFunction.class);
+
+			Constructor<? extends ObjectiveFunction> constructor = clazz.getDeclaredConstructor(Section.class);
+
+			return constructor.newInstance(config);
+		} catch(ReflectiveOperationException roe){
+			throw new IllegalArgumentException(string, roe);
+		}
 	}
 
 	static
@@ -260,5 +298,6 @@ public class LightGBMUtil {
 		return sb.toString();
 	}
 
+	private static final Pattern PATTERN_OBJECTIVE_FUNCTION = Pattern.compile("(.+)\\((.+)\\)");
 	private static final Pattern PATTERN_UNICODE_ESCAPE = Pattern.compile("\\\\u([0-9A-Fa-f]{4})");
 }

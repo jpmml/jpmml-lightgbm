@@ -167,6 +167,11 @@ public class GBDT {
 	}
 
 	public Schema encodeSchema(String targetName, List<String> targetCategories, LightGBMEncoder encoder){
+		ObjectiveFunction object_function_ = getObjectiveFunction();
+		if(object_function_ == null){
+			throw new IllegalStateException();
+		}
+
 		Label label;
 
 		{
@@ -174,7 +179,7 @@ public class GBDT {
 				targetName = "_target";
 			}
 
-			label = this.object_function_.encodeLabel(targetName, targetCategories, encoder);
+			label = object_function_.encodeLabel(targetName, targetCategories, encoder);
 		}
 
 		List<Feature> features = new ArrayList<>();
@@ -394,10 +399,15 @@ public class GBDT {
 	}
 
 	public MiningModel encodeMiningModel(Map<String, ?> options, Schema schema){
+		ObjectiveFunction object_function_ = getObjectiveFunction();
+		if(object_function_ == null){
+			throw new IllegalStateException();
+		}
+
 		Boolean compact = (Boolean)options.get(HasLightGBMOptions.OPTION_COMPACT);
 		Integer numIterations = (Integer)options.get(HasLightGBMOptions.OPTION_NUM_ITERATION);
 
-		MiningModel miningModel = this.object_function_.encodeMiningModel(Arrays.asList(this.models_), numIterations, schema)
+		MiningModel miningModel = object_function_.encodeMiningModel(Arrays.asList(this.models_), numIterations, schema)
 			.setAlgorithmName("LightGBM");
 
 		if((Boolean.TRUE).equals(compact)){
@@ -419,6 +429,10 @@ public class GBDT {
 
 	public ObjectiveFunction getObjectiveFunction(){
 		return this.object_function_;
+	}
+
+	public void setObjectiveFunction(ObjectiveFunction object_function_){
+		this.object_function_ = object_function_;
 	}
 
 	private Boolean isBinary(int feature){
@@ -481,6 +495,11 @@ public class GBDT {
 
 	static
 	private ObjectiveFunction loadObjectiveFunction(Section section){
+
+		if(!section.containsKey("objective")){
+			return null;
+		}
+
 		String[] tokens = section.getStringArray("objective", -1);
 		if(tokens.length == 0){
 			throw new IllegalArgumentException();
@@ -494,13 +513,10 @@ public class GBDT {
 		boolean average_output = section.containsKey(ObjectiveFunction.CONFIG_AVERAGE_OUTPUT);
 		if(average_output){
 			config.put(ObjectiveFunction.CONFIG_AVERAGE_OUTPUT, null);
-		} // End if
+		}
 
-		if(tokens.length > 1){
-
-			for(int i = 1; i < tokens.length; i++){
-				config.put(tokens[i], ':');
-			}
+		for(int i = 1; i < tokens.length; i++){
+			config.put(tokens[i], ':');
 		}
 
 		String standardizedName = standardizeObjectiveFunctionName(name.toLowerCase());
@@ -538,6 +554,8 @@ public class GBDT {
 			// MulticlassSoftmax
 			case "multiclass":
 				return new MultinomialLogisticRegression(config);
+			case "custom":
+				return null;
 			default:
 				throw new IllegalArgumentException(standardizedName);
 		}

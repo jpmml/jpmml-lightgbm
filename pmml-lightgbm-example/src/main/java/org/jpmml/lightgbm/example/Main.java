@@ -34,6 +34,7 @@ import org.dmg.pmml.PMML;
 import org.jpmml.lightgbm.GBDT;
 import org.jpmml.lightgbm.HasLightGBMOptions;
 import org.jpmml.lightgbm.LightGBMUtil;
+import org.jpmml.lightgbm.ObjectiveFunction;
 import org.jpmml.model.metro.MetroJAXBUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +61,12 @@ public class Main {
 		required = true
 	)
 	private File output = null;
+
+	@Parameter (
+		names = {"--objective"},
+		description = "Custom objective function"
+	)
+	private String objectiveFunction = null;
 
 	@Parameter (
 		names = {"--target-name"},
@@ -144,6 +151,14 @@ public class Main {
 			logger.error("Failed to load GBDT", e);
 
 			throw e;
+		}
+
+		if(this.objectiveFunction != null){
+			logger.info("Setting custom objective function");
+
+			ObjectiveFunction objectiveFunction = LightGBMUtil.parseObjectiveFunction(this.objectiveFunction);
+
+			gbdt.setObjectiveFunction(objectiveFunction);
 		}
 
 		Map<String, Object> options = new LinkedHashMap<>();

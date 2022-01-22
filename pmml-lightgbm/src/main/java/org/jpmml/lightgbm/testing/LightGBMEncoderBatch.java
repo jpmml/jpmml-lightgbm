@@ -38,6 +38,7 @@ import org.jpmml.evaluator.ResultField;
 import org.jpmml.lightgbm.GBDT;
 import org.jpmml.lightgbm.HasLightGBMOptions;
 import org.jpmml.lightgbm.LightGBMUtil;
+import org.jpmml.lightgbm.ObjectiveFunction;
 import org.jpmml.model.visitors.AbstractVisitor;
 
 abstract
@@ -70,6 +71,10 @@ public class LightGBMEncoderBatch extends ModelEncoderBatch {
 		return OptionsUtil.generateOptionsMatrix(options);
 	}
 
+	public ObjectiveFunction getObjectiveFunction(){
+		return null;
+	}
+
 	public String getModelTxtPath(){
 		return "/lgbm/" + (getAlgorithm() + truncate(getDataset())) + ".txt";
 	}
@@ -80,6 +85,11 @@ public class LightGBMEncoderBatch extends ModelEncoderBatch {
 
 		try(InputStream is = open(getModelTxtPath())){
 			gbdt = LightGBMUtil.loadGBDT(is);
+		}
+
+		ObjectiveFunction objectiveFunction = getObjectiveFunction();
+		if(objectiveFunction != null){
+			gbdt.setObjectiveFunction(objectiveFunction);
 		}
 
 		Map<String, ?> options = getOptions();

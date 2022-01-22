@@ -27,6 +27,9 @@ import org.dmg.pmml.PMML;
 import org.dmg.pmml.Visitor;
 import org.dmg.pmml.VisitorAction;
 import org.jpmml.evaluator.ResultField;
+import org.jpmml.lightgbm.ObjectiveFunction;
+import org.jpmml.lightgbm.Regression;
+import org.jpmml.lightgbm.Section;
 import org.jpmml.model.visitors.AbstractVisitor;
 import org.junit.Test;
 
@@ -39,6 +42,26 @@ public class RegressionTest extends LightGBMEncoderBatchTest implements LightGBM
 			@Override
 			public RegressionTest getArchiveBatchTest(){
 				return RegressionTest.this;
+			}
+
+			@Override
+			public ObjectiveFunction getObjectiveFunction(){
+				ObjectiveFunction objectiveFunction = super.getObjectiveFunction();
+
+				String algorithm = getAlgorithm();
+				String dataset = getDataset();
+
+				if((REGRESSION).equals(algorithm)){
+
+					if((AUTO).equals(dataset) || (AUTO_LIMIT).equals(dataset)){
+						Section config = new Section();
+						config.put(ObjectiveFunction.CONFIG_NAME, "custom_regression");
+
+						return new Regression(config);
+					}
+				}
+
+				return objectiveFunction;
 			}
 
 			@Override
