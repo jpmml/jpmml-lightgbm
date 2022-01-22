@@ -41,15 +41,15 @@ import org.jpmml.lightgbm.LightGBMUtil;
 import org.jpmml.model.visitors.AbstractVisitor;
 
 abstract
-public class LightGBMTestBatch extends ModelEncoderBatch {
+public class LightGBMEncoderBatch extends ModelEncoderBatch {
 
-	public LightGBMTestBatch(String algorithm, String dataset, Predicate<ResultField> columnFilter, Equivalence<Object> equivalence){
+	public LightGBMEncoderBatch(String algorithm, String dataset, Predicate<ResultField> columnFilter, Equivalence<Object> equivalence){
 		super(algorithm, dataset, columnFilter, equivalence);
 	}
 
 	@Override
 	abstract
-	public LightGBMTest getArchiveBatchTest();
+	public LightGBMEncoderBatchTest getArchiveBatchTest();
 
 	@Override
 	public List<Map<String, Object>> getOptionsMatrix(){

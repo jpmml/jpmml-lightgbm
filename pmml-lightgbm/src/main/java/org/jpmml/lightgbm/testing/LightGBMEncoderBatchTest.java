@@ -25,19 +25,19 @@ import org.jpmml.converter.testing.ModelEncoderBatchTest;
 import org.jpmml.evaluator.ResultField;
 import org.jpmml.evaluator.testing.RealNumberEquivalence;
 
-public class LightGBMTest extends ModelEncoderBatchTest {
+public class LightGBMEncoderBatchTest extends ModelEncoderBatchTest {
 
-	public LightGBMTest(){
+	public LightGBMEncoderBatchTest(){
 		super(new RealNumberEquivalence(1));
 	}
 
 	@Override
-	public LightGBMTestBatch createBatch(String algorithm, String dataset, Predicate<ResultField> columnFilter, Equivalence<Object> equivalence){
-		LightGBMTestBatch result = new LightGBMTestBatch(algorithm, dataset, columnFilter, equivalence){
+	public LightGBMEncoderBatch createBatch(String algorithm, String dataset, Predicate<ResultField> columnFilter, Equivalence<Object> equivalence){
+		LightGBMEncoderBatch result = new LightGBMEncoderBatch(algorithm, dataset, columnFilter, equivalence){
 
 			@Override
-			public LightGBMTest getArchiveBatchTest(){
-				return LightGBMTest.this;
+			public LightGBMEncoderBatchTest getArchiveBatchTest(){
+				return LightGBMEncoderBatchTest.this;
 			}
 		};
 
