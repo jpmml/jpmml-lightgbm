@@ -25,13 +25,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 import com.google.common.base.Equivalence;
-import org.dmg.pmml.MiningField;
-import org.dmg.pmml.MiningSchema;
 import org.dmg.pmml.PMML;
-import org.dmg.pmml.PMMLObject;
-import org.dmg.pmml.Visitor;
-import org.dmg.pmml.VisitorAction;
-import org.dmg.pmml.mining.MiningModel;
 import org.jpmml.converter.testing.ModelEncoderBatch;
 import org.jpmml.converter.testing.OptionsUtil;
 import org.jpmml.evaluator.ResultField;
@@ -39,7 +33,7 @@ import org.jpmml.lightgbm.GBDT;
 import org.jpmml.lightgbm.HasLightGBMOptions;
 import org.jpmml.lightgbm.LightGBMUtil;
 import org.jpmml.lightgbm.ObjectiveFunction;
-import org.jpmml.model.visitors.AbstractVisitor;
+import org.jpmml.model.visitors.VisitorBattery;
 
 abstract
 public class LightGBMEncoderBatch extends ModelEncoderBatch {
@@ -112,46 +106,11 @@ public class LightGBMEncoderBatch extends ModelEncoderBatch {
 	}
 
 	@Override
-	protected void validatePMML(PMML pmml) throws Exception {
-		super.validatePMML(pmml);
+	public VisitorBattery getValidators(){
+		VisitorBattery visitorBattery = super.getValidators();
 
-		Visitor visitor = new AbstractVisitor(){
+		visitorBattery.add(FieldImportanceInspector.class);
 
-			@Override
-			public VisitorAction visit(MiningModel miningModel){
-				PMMLObject parent = getParent();
-
-				if(parent instanceof PMML){
-					MiningSchema miningSchema = miningModel.getMiningSchema();
-
-					if(miningSchema.hasMiningFields()){
-						List<MiningField> miningFields = miningSchema.getMiningFields();
-
-						for(MiningField miningField : miningFields){
-							Number importance = miningField.getImportance();
-							MiningField.UsageType usageType = miningField.getUsageType();
-
-							switch(usageType){
-								case TARGET:
-									if(importance != null){
-										throw new AssertionError();
-									}
-									break;
-								case ACTIVE:
-									if(importance == null){
-										throw new AssertionError();
-									}
-									break;
-								default:
-									break;
-							}
-						}
-					}
-				}
-
-				return super.visit(miningModel);
-			}
-		};
-		visitor.applyTo(pmml);
+		return visitorBattery;
 	}
 }

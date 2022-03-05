@@ -25,6 +25,8 @@ import org.dmg.pmml.True;
 import org.dmg.pmml.tree.Node;
 import org.dmg.pmml.tree.TreeModel;
 import org.jpmml.converter.visitors.AbstractTreeModelTransformer;
+import org.jpmml.model.UnsupportedAttributeException;
+import org.jpmml.model.UnsupportedElementException;
 
 public class TreeModelCompactor extends AbstractTreeModelTransformer {
 
@@ -35,14 +37,14 @@ public class TreeModelCompactor extends AbstractTreeModelTransformer {
 		Object defaultChild = node.getDefaultChild();
 
 		if(id == null){
-			throw new IllegalArgumentException();
+			throw new UnsupportedElementException(node);
 		} // End if
 
 		if(node.hasNodes()){
 			List<Node> children = node.getNodes();
 
-			if(children.size() != 2 || defaultChild == null){
-				throw new IllegalArgumentException();
+			if(defaultChild == null || children.size() != 2){
+				throw new UnsupportedElementException(node);
 			}
 
 			Node firstChild = children.get(0);
@@ -60,7 +62,7 @@ public class TreeModelCompactor extends AbstractTreeModelTransformer {
 			} else
 
 			{
-				throw new IllegalArgumentException();
+				throw new UnsupportedElementException(node);
 			}
 
 			node.setDefaultChild(null);
@@ -70,7 +72,7 @@ public class TreeModelCompactor extends AbstractTreeModelTransformer {
 
 		{
 			if(score == null || defaultChild != null){
-				throw new IllegalArgumentException();
+				throw new UnsupportedElementException(node);
 			}
 		}
 
@@ -102,17 +104,23 @@ public class TreeModelCompactor extends AbstractTreeModelTransformer {
 
 	@Override
 	public void enterTreeModel(TreeModel treeModel){
+		super.enterTreeModel(treeModel);
+
 		TreeModel.MissingValueStrategy missingValueStrategy = treeModel.getMissingValueStrategy();
-		TreeModel.NoTrueChildStrategy noTrueChildStrategy = treeModel.getNoTrueChildStrategy();
-		TreeModel.SplitCharacteristic splitCharacteristic = treeModel.getSplitCharacteristic();
-
-		if((missingValueStrategy != TreeModel.MissingValueStrategy.DEFAULT_CHILD) || (noTrueChildStrategy != TreeModel.NoTrueChildStrategy.RETURN_NULL_PREDICTION) || (splitCharacteristic != TreeModel.SplitCharacteristic.BINARY_SPLIT)){
-			throw new IllegalArgumentException();
+		if(missingValueStrategy != TreeModel.MissingValueStrategy.DEFAULT_CHILD){
+			throw new UnsupportedAttributeException(treeModel, missingValueStrategy);
 		}
-	}
 
-	@Override
-	public void exitTreeModel(TreeModel treeModel){
+		TreeModel.NoTrueChildStrategy noTrueChildStrategy = treeModel.getNoTrueChildStrategy();
+		if(noTrueChildStrategy != TreeModel.NoTrueChildStrategy.RETURN_NULL_PREDICTION){
+			throw new UnsupportedAttributeException(treeModel, noTrueChildStrategy);
+		}
+
+		TreeModel.SplitCharacteristic splitCharacteristic = treeModel.getSplitCharacteristic();
+		if(splitCharacteristic != TreeModel.SplitCharacteristic.BINARY_SPLIT){
+			throw new UnsupportedAttributeException(treeModel, splitCharacteristic);
+		}
+
 		treeModel
 			.setMissingValueStrategy(TreeModel.MissingValueStrategy.NONE)
 			.setNoTrueChildStrategy(TreeModel.NoTrueChildStrategy.RETURN_LAST_PREDICTION)
