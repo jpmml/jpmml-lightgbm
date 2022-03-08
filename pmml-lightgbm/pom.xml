@@ -13,7 +13,7 @@
 	<packaging>jar</packaging>
 
 	<name>JPMML LightGBM converter</name>
-	<description>JPMML LightGBM to class model converter</description>
+	<description>JPMML LightGBM to PMML converter</description>
 
 	<licenses>
 		<license>
@@ -50,7 +50,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.0</version>
+				<version>3.2.2</version>
 				<configuration>
 					<archive>
 						<manifestEntries>
@@ -63,7 +63,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.2.0</version>
 				<configuration>
 					<javadocVersion>1.8</javadocVersion>
 					<sourcepath>${basedir}/src/main/java</sourcepath>
