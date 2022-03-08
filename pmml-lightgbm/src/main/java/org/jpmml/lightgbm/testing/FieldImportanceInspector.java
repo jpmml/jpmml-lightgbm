@@ -22,11 +22,14 @@ import java.util.List;
 
 import org.dmg.pmml.MiningField;
 import org.dmg.pmml.MiningSchema;
+import org.dmg.pmml.Model;
 import org.dmg.pmml.PMML;
 import org.dmg.pmml.PMMLAttributes;
 import org.dmg.pmml.PMMLObject;
 import org.dmg.pmml.VisitorAction;
 import org.dmg.pmml.mining.MiningModel;
+import org.dmg.pmml.mining.Segment;
+import org.dmg.pmml.tree.TreeModel;
 import org.jpmml.model.MisplacedAttributeException;
 import org.jpmml.model.MissingAttributeException;
 import org.jpmml.model.visitors.AbstractVisitor;
@@ -38,33 +41,74 @@ public class FieldImportanceInspector extends AbstractVisitor {
 		PMMLObject parent = getParent();
 
 		if(parent instanceof PMML){
-			MiningSchema miningSchema = miningModel.getMiningSchema();
+			ensureImportancesDefined(miningModel);
+		} else
 
-			if(miningSchema.hasMiningFields()){
-				List<MiningField> miningFields = miningSchema.getMiningFields();
-
-				for(MiningField miningField : miningFields){
-					Number importance = miningField.getImportance();
-					MiningField.UsageType usageType = miningField.getUsageType();
-
-					switch(usageType){
-						case TARGET:
-							if(importance != null){
-								throw new MisplacedAttributeException(miningField, PMMLAttributes.MININGFIELD_IMPORTANCE, importance);
-							}
-							break;
-						case ACTIVE:
-							if(importance == null){
-								throw new MissingAttributeException(miningField, PMMLAttributes.MININGFIELD_IMPORTANCE);
-							}
-							break;
-						default:
-							break;
-					}
-				}
-			}
+		if(parent instanceof Segment){
+			ensureImportancesNotDefined(miningModel);
 		}
 
 		return super.visit(miningModel);
+	}
+
+	@Override
+	public VisitorAction visit(TreeModel treeModel){
+		ensureImportancesNotDefined(treeModel);
+
+		return super.visit(treeModel);
+	}
+
+	static
+	private void ensureImportancesDefined(Model model){
+		MiningSchema miningSchema = model.requireMiningSchema();
+
+		if(miningSchema.hasMiningFields()){
+			List<MiningField> miningFields = miningSchema.getMiningFields();
+
+			for(MiningField miningField : miningFields){
+				Number importance = miningField.getImportance();
+				MiningField.UsageType usageType = miningField.getUsageType();
+
+				switch(usageType){
+					case TARGET:
+						if(importance != null){
+							throw new MisplacedAttributeException(miningField, PMMLAttributes.MININGFIELD_IMPORTANCE, importance);
+						}
+						break;
+					case ACTIVE:
+						if(importance == null){
+							throw new MissingAttributeException(miningField, PMMLAttributes.MININGFIELD_IMPORTANCE);
+						}
+						break;
+					default:
+						break;
+				}
+			}
+		}
+	}
+
+	static
+	private void ensureImportancesNotDefined(Model model){
+		MiningSchema miningSchema = model.requireMiningSchema();
+
+		if(miningSchema.hasMiningFields()){
+			List<MiningField> miningFields = miningSchema.getMiningFields();
+
+			for(MiningField miningField : miningFields){
+				Number importance = miningField.getImportance();
+				MiningField.UsageType usageType = miningField.getUsageType();
+
+				switch(usageType){
+					case TARGET:
+					case ACTIVE:
+						if(importance != null){
+							throw new MisplacedAttributeException(miningField, PMMLAttributes.MININGFIELD_IMPORTANCE, importance);
+						}
+						break;
+					default:
+						break;
+				}
+			}
+		}
 	}
 }
