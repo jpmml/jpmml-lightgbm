@@ -27,26 +27,59 @@ A typical workflow can be summarized as follows:
 
 ### The LightGBM side of operations
 
-Using the [`lightgbm`](https://github.com/Microsoft/LightGBM/tree/master/python-package) package to train a regression model for the example Boston housing dataset:
+Training a binary classification model using the [`Audit.csv](https://github.com/jpmml/jpmml-lightgbm/blob/master/pmml-lightgbm/src/test/resources/csv/Audit.csv) dataset.
+
+#### R language
+
+```R
+library("lightgbm")
+
+df = read.csv("Audit.csv", stringsAsFactors = TRUE)
+
+# Three continuous features, followed by five categorical features
+X = df[c("Age", "Hours", "Income", "Education", "Employment", "Gender", "Marital", "Occupation")]
+y = df[["Adjusted"]]
+
+cat_cols = c("Education", "Employment", "Gender", "Marital", "Occupation")
+for(cat_col in cat_cols){
+	X[[cat_col]] = as.numeric(X[[cat_col]])
+}
+
+audit.matrix = as.matrix(X)
+audit.ds = lgb.Dataset(data = audit.matrix, label = y, categorical_feature = cat_cols)
+
+audit.lgbm = lgb.train(params = list(objective = "binary"), data = audit.ds, nrounds = 131)
+lgb.save(audit.lgbm, "LightGBMAudit.txt")
+```
+
+#### Python language
 
 ```python
-from sklearn.datasets import load_boston
+import lightgbm
+import pandas
 
-boston = load_boston()
+df = pandas.read_csv("Audit.csv")
 
-from lightgbm import LGBMRegressor
+# Three continuous features, followed by five categorical features
+X = df[["Age", "Hours", "Income", "Education", "Employment", "Gender", "Marital", "Occupation"]]
+y = df["Adjusted"]
 
-lgbm = LGBMRegressor(objective = "regression")
-lgbm.fit(boston.data, boston.target, feature_name = boston.feature_names)
+cat_cols = ["Education", "Employment", "Gender", "Marital", "Occupation"]
 
-lgbm.booster_.save_model("lightgbm.txt")
+for cat_col in cat_cols:
+	X[cat_col] = X[cat_col].astype("category")
+
+audit_ds = lightgbm.Dataset(data = X, label = y, categorical_feature = cat_cols)
+
+audit_booster = lightgbm.train({"objective" : "binary", "num_iterations" : 131}, audit_ds)
+audit_booster.save_model("LightGBMAudit.txt")
 ```
 
 ### The JPMML-LightGBM side of operations
 
-Converting the text file `lightgbm.txt` to a PMML file `lightgbm.pmml`:
+Converting the text file `LightGBMAudit.txt` to a PMML file `LightGBMAudit.pmml`:
 ```
-java -jar pmml-lightgbm-example/target/pmml-lightgbm-example-executable-1.4-SNAPSHOT.jar --lgbm-input lightgbm.txt --pmml-output lightgbm.pmml
+java -jar pmml-lightgbm-example/target/pmml-lightgbm-example-executable-1.4-SNAPSHOT.jar --lgbm-input LightGBMAudit.txt --pmml-output LightGBMAudit.pmml
 ```
 
 Getting help:
