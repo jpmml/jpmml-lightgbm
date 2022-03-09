@@ -33,11 +33,11 @@ import org.jpmml.lightgbm.Section;
 import org.jpmml.model.visitors.AbstractVisitor;
 import org.junit.Test;
 
-public class RegressionTest extends LightGBMEncoderBatchTest implements LightGBMAlgorithms, LightGBMDatasets {
+public class RegressionTest extends ValidatingLightGBMEncoderBatchTest implements LightGBMAlgorithms, LightGBMDatasets {
 
 	@Override
-	public LightGBMEncoderBatch createBatch(String algorithm, String dataset, Predicate<ResultField> columnFilter, Equivalence<Object> equivalence){
-		LightGBMEncoderBatch result = new LightGBMEncoderBatch(algorithm, dataset, columnFilter, equivalence){
+	public ValidatingLightGBMEncoderBatch createBatch(String algorithm, String dataset, Predicate<ResultField> columnFilter, Equivalence<Object> equivalence){
+		ValidatingLightGBMEncoderBatch result = new ValidatingLightGBMEncoderBatch(algorithm, dataset, columnFilter, equivalence){
 
 			@Override
 			public RegressionTest getArchiveBatchTest(){

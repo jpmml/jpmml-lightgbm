@@ -33,7 +33,6 @@ import org.jpmml.lightgbm.GBDT;
 import org.jpmml.lightgbm.HasLightGBMOptions;
 import org.jpmml.lightgbm.LightGBMUtil;
 import org.jpmml.lightgbm.ObjectiveFunction;
-import org.jpmml.model.visitors.VisitorBattery;
 
 abstract
 public class LightGBMEncoderBatch extends ModelEncoderBatch {
@@ -103,14 +102,5 @@ public class LightGBMEncoderBatch extends ModelEncoderBatch {
 	@Override
 	public String getOutputCsvPath(){
 		return super.getOutputCsvPath();
-	}
-
-	@Override
-	public VisitorBattery getValidators(){
-		VisitorBattery visitorBattery = super.getValidators();
-
-		visitorBattery.add(FieldImportanceInspector.class);
-
-		return visitorBattery;
 	}
 }

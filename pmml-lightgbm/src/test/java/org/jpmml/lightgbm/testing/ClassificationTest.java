@@ -28,11 +28,11 @@ import org.jpmml.evaluator.ResultField;
 import org.jpmml.evaluator.testing.RealNumberEquivalence;
 import org.junit.Test;
 
-public class ClassificationTest extends LightGBMEncoderBatchTest implements LightGBMAlgorithms, LightGBMDatasets {
+public class ClassificationTest extends ValidatingLightGBMEncoderBatchTest implements LightGBMAlgorithms, LightGBMDatasets {
 
 	@Override
-	public LightGBMEncoderBatch createBatch(String algorithm, String dataset, Predicate<ResultField> columnFilter, Equivalence<Object> equivalence){
-		LightGBMEncoderBatch result = new LightGBMEncoderBatch(algorithm, dataset, columnFilter, equivalence){
+	public ValidatingLightGBMEncoderBatch createBatch(String algorithm, String dataset, Predicate<ResultField> columnFilter, Equivalence<Object> equivalence){
+		ValidatingLightGBMEncoderBatch result = new ValidatingLightGBMEncoderBatch(algorithm, dataset, columnFilter, equivalence){
 
 			@Override
 			public ClassificationTest getArchiveBatchTest(){
