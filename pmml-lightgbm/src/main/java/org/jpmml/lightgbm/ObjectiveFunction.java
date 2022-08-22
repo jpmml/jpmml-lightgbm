@@ -77,7 +77,7 @@ public class ObjectiveFunction {
 		}
 
 		MiningModel miningModel = new MiningModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(continuousLabel))
-			.setSegmentation(MiningModelUtil.createSegmentation(this.average_output_ ? Segmentation.MultipleModelMethod.AVERAGE : Segmentation.MultipleModelMethod.SUM, treeModels));
+			.setSegmentation(MiningModelUtil.createSegmentation(this.average_output_ ? Segmentation.MultipleModelMethod.AVERAGE : Segmentation.MultipleModelMethod.SUM, Segmentation.MissingPredictionTreatment.RETURN_MISSING, treeModels));
 
 		return miningModel;
 	}
