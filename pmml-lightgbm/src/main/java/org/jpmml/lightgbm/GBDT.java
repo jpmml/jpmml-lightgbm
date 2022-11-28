@@ -202,10 +202,6 @@ public class GBDT {
 			if(LightGBMUtil.isNone(featureInfo)){
 				features.add(null);
 
-				if(hasPandasCategories){
-					pandasCategoryIndex++;
-				}
-
 				continue;
 			}
 
