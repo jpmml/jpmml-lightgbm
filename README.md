@@ -91,8 +91,8 @@ java -jar pmml-lightgbm-example/target/pmml-lightgbm-example-executable-1.4-SNAP
 
 * [Stacking Scikit-Learn, LightGBM and XGBoost models](https://openscoring.io/blog/2020/01/02/stacking_sklearn_lightgbm_xgboost/)
 * [Deploying LightGBM models on Java/JVM platform](https://openscoring.io/blog/2019/12/03/deploying_lightgbm_java/)
-* [Extending Scikit-Learn with GBDT plus LR ensemble (GBDT+LR) model type](https://openscoring.io/blog/2019/06/19/sklearn_gbdt_lr_ensemble/) (Using LightGBM models on the GBDT side of GBDT+LR ensemble)
-* [Converting Scikit-Learn plus LightGBM pipelines to PMML documents](https://openscoring.io/blog/2019/04/07/converting_sklearn_lightgbm_pipeline_pmml/)
+* [Extending Scikit-Learn with GBDT+LR ensemble models](https://openscoring.io/blog/2019/06/19/sklearn_gbdt_lr_ensemble/) (Using LightGBM models on the GBDT side of GBDT+LR ensemble)
+* [Converting Scikit-Learn LightGBM pipelines to PMML](https://openscoring.io/blog/2019/04/07/converting_sklearn_lightgbm_pipeline_pmml/)
 
 # License #
 
