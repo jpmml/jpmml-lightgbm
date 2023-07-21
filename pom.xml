@@ -64,12 +64,12 @@
 			<dependency>
 				<groupId>org.jpmml</groupId>
 				<artifactId>pmml-converter</artifactId>
-				<version>1.5.4</version>
+				<version>1.5.5</version>
 			</dependency>
 			<dependency>
 				<groupId>org.jpmml</groupId>
 				<artifactId>pmml-converter-testing</artifactId>
-				<version>1.5.4</version>
+				<version>1.5.5</version>
 			</dependency>
 
 			<dependency>
