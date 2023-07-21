@@ -87,6 +87,7 @@ public class GBDT {
 				switch(this.version){
 					case "v2":
 					case "v3":
+					case "v4":
 						break;
 					default:
 						throw new IllegalArgumentException("Version " + this.version + " is not supported");
