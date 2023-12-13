@@ -10,7 +10,7 @@
 
 	<groupId>org.jpmml</groupId>
 	<artifactId>jpmml-lightgbm</artifactId>
-	<version>1.4.7</version>
+	<version>1.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>JPMML-LightGBM</name>
@@ -53,12 +53,12 @@
 			<dependency>
 				<groupId>org.jpmml</groupId>
 				<artifactId>pmml-lightgbm</artifactId>
-				<version>1.4.7</version>
+				<version>1.5-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.jpmml</groupId>
 				<artifactId>pmml-lightgbm-example</artifactId>
-				<version>1.4.7</version>
+				<version>1.5-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
