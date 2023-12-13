@@ -799,6 +799,7 @@ parameters:
 [lambdarank_truncation_level: 30]
 [lambdarank_norm: 1]
 [label_gain: ]
+[lambdarank_position_bias_regularization: 0]
 [eval_at: ]
 [multi_error_top_k: 1]
 [auc_mu_weights: ]
