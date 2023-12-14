@@ -29,18 +29,36 @@ import static org.junit.Assert.assertNull;
 public class PandasUtilTest {
 
 	@Test
-	public void parse() throws Exception {
-		List<List<?>> pandasCategories = parsePandasCategorical("null");
+	public void parse(){
+		assertNull(parsePandasCategorical("null"));
 
-		assertNull(pandasCategories);
+		assertEquals(PandasUtilTest.CATEGORIES_LIST_OF_LISTS, parsePandasCategorical(PandasUtilTest.CATEGORIES_STRING));
+	}
 
-		pandasCategories = parsePandasCategorical("[[\"null\", \"A\", \"B, B\", \"C, [C], C\"], [-2, -1, 0, 1, 2], [-2.0, -1.0, 0.0, 1.0, 2.0], [false, true]]");
+	@Test
+	public void format(){
+		assertEquals("null", formatPandasCategorical(null));
 
-		assertEquals(Arrays.asList(Arrays.asList("null", "A", "B, B", "C, [C], C"), Arrays.asList(-2L, -1L, 0L, 1L, 2L), Arrays.asList(-2d, -1d, 0d, 1d, 2d), Arrays.asList(Boolean.FALSE, Boolean.TRUE)), pandasCategories);
+		assertEquals(removeWhitespace(PandasUtilTest.CATEGORIES_STRING), removeWhitespace(formatPandasCategorical(PandasUtilTest.CATEGORIES_LIST_OF_LISTS)));
 	}
 
 	static
 	private List<List<?>> parsePandasCategorical(String value){
 		return PandasUtil.parsePandasCategorical(PandasUtil.PREFIX_PANDAS_CATEGORICAL + value);
 	}
+
+	static
+	private String formatPandasCategorical(List<List<?>> objects){
+		String result = PandasUtil.formatPandasCategorical(objects);
+
+		return result.substring(PandasUtil.PREFIX_PANDAS_CATEGORICAL.length());
+	}
+
+	static
+	private String removeWhitespace(String string){
+		return string.replaceAll("\\s","");
+	}
+
+	private static final String CATEGORIES_STRING = "[[\"null\", \"A\", \"B, B\", \"C, [C], C\"], [-2, -1, 0, 1, 2], [-2.0, -1.0, 0.0, 1.0, 2.0], [false, true]]";
+	private static final List<List<?>> CATEGORIES_LIST_OF_LISTS = Arrays.asList(Arrays.asList("null", "A", "B, B", "C, [C], C"), Arrays.asList(-2L, -1L, 0L, 1L, 2L), Arrays.asList(-2d, -1d, 0d, 1d, 2d), Arrays.asList(Boolean.FALSE, Boolean.TRUE));
 }

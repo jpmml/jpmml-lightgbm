@@ -43,11 +43,25 @@ public class PandasUtil {
 
 		JsonElement element = JsonParser.parseString(string);
 
-		Gson gson = new GsonBuilder()
-		    .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
-		    .create();
+		Gson gson = createGson();
 
 		return gson.fromJson(element, ListOfLists.class);
+	}
+
+	static
+	public String formatPandasCategorical(List<List<?>> objects){
+		Gson gson = createGson();
+
+		return PandasUtil.PREFIX_PANDAS_CATEGORICAL + gson.toJson(objects, ListOfLists.class);
+	}
+
+	static
+	private Gson createGson(){
+		Gson result = new GsonBuilder()
+			.setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
+			.create();
+
+		return result;
 	}
 
 	static
