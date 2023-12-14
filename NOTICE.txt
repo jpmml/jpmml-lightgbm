@@ -1,4 +1,5 @@
 JPMML-LightGBM includes third-party dependencies that are released under the Apache License, Version 2.0:
+  * Gson - https://github.com/google/gson
   * Guava - https://github.com/google/guava
   * JCommander - http://jcommander.org
 

@@ -40,6 +40,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
@@ -65,27 +70,7 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
 					<javadocVersion>1.8</javadocVersion>
-					<sourcepath>${basedir}/src/main/java</sourcepath>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>javacc-maven-plugin</artifactId>
-				<version>3.0.1</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>javacc</goal>
-						</goals>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>net.java.dev.javacc</groupId>
-						<artifactId>javacc</artifactId>
-						<version>7.0.13</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 		</plugins>
 	</build>

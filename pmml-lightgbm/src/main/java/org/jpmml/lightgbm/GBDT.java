@@ -68,7 +68,7 @@ public class GBDT {
 
 	private Map<String, String> feature_importances = Collections.emptyMap();
 
-	private List<List<Object>> pandas_categorical = Collections.emptyList();
+	private List<List<?>> pandas_categorical = Collections.emptyList();
 
 
 	public void load(List<Section> sections){
@@ -611,7 +611,7 @@ public class GBDT {
 		return result;
 	}
 
-	private List<List<Object>> loadPandasCategorical(Section section){
+	private List<List<?>> loadPandasCategorical(Section section){
 		String id = section.id();
 
 		try {
