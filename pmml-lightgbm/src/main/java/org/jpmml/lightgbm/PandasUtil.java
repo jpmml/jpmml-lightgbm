@@ -28,23 +28,19 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.ToNumberPolicy;
 
-public class PandasCategoricalParser {
+public class PandasUtil {
 
-	private String string = null;
-
-
-	public PandasCategoricalParser(String string){
-		setString(string);
+	private PandasUtil(){
 	}
 
-	public List<List<?>> parsePandasCategorical(){
-		String string = getString();
+	static
+	public List<List<?>> parsePandasCategorical(String string){
 
-		if(!string.startsWith(PandasCategoricalParser.PREFIX)){
+		if(!string.startsWith(PandasUtil.PREFIX_PANDAS_CATEGORICAL)){
 			throw new IllegalArgumentException(string);
 		}
 
-		string = string.substring(PandasCategoricalParser.PREFIX.length());
+		string = string.substring(PandasUtil.PREFIX_PANDAS_CATEGORICAL.length());
 
 		JsonElement element = JsonParser.parseString(string);
 
@@ -60,17 +56,9 @@ public class PandasCategoricalParser {
 		return result;
 	}
 
-	public String getString(){
-		return this.string;
-	}
-
-	private void setString(String string){
-		this.string = string;
-	}
-
 	static
 	private class ListOfLists extends ArrayList<List<?>> {
 	}
 
-	private static final String PREFIX = "pandas_categorical:";
+	public static final String PREFIX_PANDAS_CATEGORICAL = "pandas_categorical:";
 }

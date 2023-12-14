@@ -26,7 +26,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class PandasCategoricalParserTest {
+public class PandasUtilTest {
 
 	@Test
 	public void parse() throws Exception {
@@ -41,8 +41,6 @@ public class PandasCategoricalParserTest {
 
 	static
 	private List<List<?>> parsePandasCategorical(String value){
-		PandasCategoricalParser parser = new PandasCategoricalParser("pandas_categorical:" + value);
-
-		return parser.parsePandasCategorical();
+		return PandasUtil.parsePandasCategorical(PandasUtil.PREFIX_PANDAS_CATEGORICAL + value);
 	}
 }

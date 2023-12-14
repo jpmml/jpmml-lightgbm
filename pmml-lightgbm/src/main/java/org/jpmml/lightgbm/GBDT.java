@@ -615,9 +615,7 @@ public class GBDT {
 		String id = section.id();
 
 		try {
-			PandasCategoricalParser parser = new PandasCategoricalParser(id);
-
-			return parser.parsePandasCategorical();
+			return PandasUtil.parsePandasCategorical(id);
 		} catch(Exception e){
 			throw new IllegalArgumentException(id, e);
 		}
