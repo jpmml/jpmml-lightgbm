@@ -615,7 +615,12 @@ public class GBDT {
 		String id = section.id();
 
 		try {
-			return PandasUtil.parsePandasCategorical(id);
+			List<List<?>> result = PandasUtil.parsePandasCategorical(id);
+			if(result == null){
+				result = Collections.emptyList();
+			}
+
+			return result;
 		} catch(Exception e){
 			throw new IllegalArgumentException(id, e);
 		}

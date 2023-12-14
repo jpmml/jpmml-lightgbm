@@ -19,12 +19,12 @@
 package org.jpmml.lightgbm;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class PandasUtilTest {
 
@@ -32,7 +32,7 @@ public class PandasUtilTest {
 	public void parse() throws Exception {
 		List<List<?>> pandasCategories = parsePandasCategorical("null");
 
-		assertEquals(Collections.emptyList(), pandasCategories);
+		assertNull(pandasCategories);
 
 		pandasCategories = parsePandasCategorical("[[\"null\", \"A\", \"B, B\", \"C, [C], C\"], [-2, -1, 0, 1, 2], [-2.0, -1.0, 0.0, 1.0, 2.0], [false, true]]");
 

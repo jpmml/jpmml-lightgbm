@@ -19,7 +19,6 @@
 package org.jpmml.lightgbm;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -48,12 +47,7 @@ public class PandasUtil {
 		    .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
 		    .create();
 
-		List<List<?>> result = gson.fromJson(element, ListOfLists.class);
-		if(result == null){
-			result = Collections.emptyList();
-		}
-
-		return result;
+		return gson.fromJson(element, ListOfLists.class);
 	}
 
 	static
