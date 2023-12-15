@@ -226,33 +226,46 @@ public class GBDT {
 				} else
 
 				{
+					List<?> values = LightGBMUtil.parseValues(featureInfo).stream()
+						.filter(value -> value != GBDT.CATEGORY_MISSING)
+						.sorted()
+						.collect(Collectors.toList());
+
+					DataType dataType = DataType.INTEGER;
+
+					boolean direct = true;
+
 					if(hasPandasCategories){
-						List<?> values = this.pandas_categorical.get(pandasCategoryIndex);
 
-						DataType dataType = TypeUtil.getDataType(values);
+						if(pandasCategoryIndex >= this.pandas_categorical.size()){
+							throw new IllegalArgumentException("Conflicting categorical feature information between the header and \"pandas_categorical\" sections");
+						}
 
-						dataField = encoder.createDataField(featureName, OpType.CATEGORICAL, dataType, values);
+						List<?> pandasCategoryValues = this.pandas_categorical.get(pandasCategoryIndex);
 
-						if((dataType == DataType.BOOLEAN) && (BooleanFeature.VALUES).equals(values)){
-							feature = new BooleanFeature(encoder, dataField);
+						values = pandasCategoryValues;
+
+						dataType = TypeUtil.getDataType(pandasCategoryValues);
+
+						direct = false;
+
+						pandasCategoryIndex++;
+					}
+
+					dataField = encoder.createDataField(featureName, OpType.CATEGORICAL, dataType, values);
+
+					if((dataType == DataType.BOOLEAN) && (BooleanFeature.VALUES).equals(values)){
+						feature = new BooleanFeature(encoder, dataField);
+					} else
+
+					{
+						if(direct){
+							feature = new DirectCategoricalFeature(encoder, dataField);
 						} else
 
 						{
 							feature = new CategoricalFeature(encoder, dataField);
 						}
-
-						pandasCategoryIndex++;
-					} else
-
-					{
-						List<Integer> values = LightGBMUtil.parseValues(featureInfo).stream()
-							.filter(value -> value != GBDT.CATEGORY_MISSING)
-							.sorted()
-							.collect(Collectors.toList());
-
-						dataField = encoder.createDataField(featureName, OpType.CATEGORICAL, DataType.INTEGER, values);
-
-						feature = new DirectCategoricalFeature(encoder, dataField);
 					}
 				}
 
@@ -269,9 +282,10 @@ public class GBDT {
 				} else
 
 				{
+					Interval interval = LightGBMUtil.parseInterval(featureInfo);
+
 					dataField = encoder.createDataField(featureName, OpType.CONTINUOUS, DataType.DOUBLE);
 
-					Interval interval = LightGBMUtil.parseInterval(featureInfo);
 					if(interval != null){
 						dataField.addIntervals(interval);
 					}
@@ -287,13 +301,6 @@ public class GBDT {
 			Double importance = getFeatureImportance(featureName);
 			if(importance != null){
 				encoder.addFeatureImportance(feature, importance);
-			}
-		}
-
-		if(hasPandasCategories){
-
-			if(pandasCategoryIndex != this.pandas_categorical.size()){
-				throw new IllegalArgumentException();
 			}
 		}
 
