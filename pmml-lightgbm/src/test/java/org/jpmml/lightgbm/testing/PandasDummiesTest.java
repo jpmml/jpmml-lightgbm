@@ -35,8 +35,8 @@ import org.jpmml.converter.BinaryFeature;
 import org.jpmml.converter.CategoricalLabel;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
+import org.jpmml.converter.FieldUtil;
 import org.jpmml.converter.Label;
-import org.jpmml.converter.PMMLUtil;
 import org.jpmml.converter.Schema;
 import org.jpmml.converter.testing.ModelEncoderBatch;
 import org.jpmml.converter.testing.ModelEncoderBatchTest;
@@ -106,7 +106,7 @@ public class PandasDummiesTest extends ModelEncoderBatchTest implements LightGBM
 							dataField = encoder.createDataField(name, OpType.CATEGORICAL, DataType.STRING);
 						}
 
-						PMMLUtil.addValues(dataField, Collections.singletonList(value));
+						FieldUtil.addValues(dataField, Collections.singletonList(value));
 
 						features.add(new BinaryFeature(encoder, dataField, value));
 					}
