@@ -341,7 +341,7 @@ public class GBDT {
 					BinaryFeature binaryFeature = (BinaryFeature)feature;
 
 					Boolean binary = isBinary(index);
-					if(binary != null && binary.booleanValue()){
+					if(binary == null || binary.booleanValue()){
 						return binaryFeature;
 					}
 
@@ -357,7 +357,7 @@ public class GBDT {
 					CategoricalFeature categoricalFeature = (CategoricalFeature)feature;
 
 					Boolean categorical = isCategorical(index);
-					if(categorical != null && categorical.booleanValue()){
+					if(categorical == null || categorical.booleanValue()){
 						return categoricalFeature;
 					}
 				} else
