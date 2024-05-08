@@ -35,10 +35,10 @@ public class PoissonRegression extends Regression {
 	}
 
 	@Override
-	public MiningModel encodeMiningModel(List<Tree> trees, Integer numIteration, Schema schema){
+	public MiningModel encodeModel(List<Tree> trees, Integer numIteration, Schema schema){
 		Schema segmentSchema = schema.toAnonymousSchema();
 
-		MiningModel miningModel = super.encodeMiningModel(trees, numIteration, segmentSchema)
+		MiningModel miningModel = super.encodeModel(trees, numIteration, segmentSchema)
 			.setOutput(ModelUtil.createPredictedOutput("lgbmValue", OpType.CONTINUOUS, DataType.DOUBLE));
 
 		return MiningModelUtil.createRegression(miningModel, RegressionModel.NormalizationMethod.EXP, schema);

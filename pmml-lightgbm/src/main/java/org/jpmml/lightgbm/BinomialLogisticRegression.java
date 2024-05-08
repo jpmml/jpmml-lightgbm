@@ -40,7 +40,7 @@ public class BinomialLogisticRegression extends Classification {
 	}
 
 	@Override
-	public MiningModel encodeMiningModel(List<Tree> trees, Integer numIteration, Schema schema){
+	public MiningModel encodeModel(List<Tree> trees, Integer numIteration, Schema schema){
 		Schema segmentSchema = schema.toAnonymousRegressorSchema(DataType.DOUBLE);
 
 		MiningModel miningModel = createMiningModel(trees, numIteration, segmentSchema)

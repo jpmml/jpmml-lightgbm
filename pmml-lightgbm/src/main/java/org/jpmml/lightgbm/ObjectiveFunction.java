@@ -50,7 +50,7 @@ public class ObjectiveFunction {
 	public Label encodeLabel(String targetName, List<?> targetCategories, PMMLEncoder encoder);
 
 	abstract
-	public MiningModel encodeMiningModel(List<Tree> trees, Integer numIteration, Schema schema);
+	public MiningModel encodeModel(List<Tree> trees, Integer numIteration, Schema schema);
 
 	protected MiningModel createMiningModel(List<Tree> trees, Integer numIteration, Schema schema){
 		ContinuousLabel continuousLabel = (ContinuousLabel)schema.getLabel();

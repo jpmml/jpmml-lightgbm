@@ -389,27 +389,33 @@ public class GBDT {
 
 		Schema schema = encodeSchema(targetName, targetCategories, encoder);
 
-		MiningModel miningModel = encodeMiningModel(options, schema);
+		MiningModel miningModel = encodeModel(options, schema);
 
 		PMML pmml = encoder.encodePMML(miningModel);
 
 		return pmml;
 	}
 
-	public MiningModel encodeMiningModel(Map<String, ?> options, Schema schema){
+	public MiningModel encodeModel(Map<String, ?> options, Schema schema){
+		Integer numIterations = (Integer)options.get(HasLightGBMOptions.OPTION_NUM_ITERATION);
+
+		schema = configureSchema(options, schema);
+
+		MiningModel miningModel = encodeModel(numIterations, schema);
+
+		miningModel = configureModel(options, miningModel);
+
+		return miningModel;
+	}
+
+	public MiningModel encodeModel(Integer numIterations, Schema schema){
 		ObjectiveFunction object_function_ = getObjectiveFunction();
 		if(object_function_ == null){
 			throw new IllegalStateException();
 		}
 
-		Integer numIterations = (Integer)options.get(HasLightGBMOptions.OPTION_NUM_ITERATION);
-
-		schema = configureSchema(options, schema);
-
-		MiningModel miningModel = object_function_.encodeMiningModel(Arrays.asList(this.models_), numIterations, schema)
+		MiningModel miningModel = object_function_.encodeModel(Arrays.asList(this.models_), numIterations, schema)
 			.setAlgorithmName("LightGBM");
-
-		miningModel = configureModel(options, miningModel);
 
 		return miningModel;
 	}

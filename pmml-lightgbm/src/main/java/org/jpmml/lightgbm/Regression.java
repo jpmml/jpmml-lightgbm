@@ -48,7 +48,7 @@ public class Regression extends ObjectiveFunction {
 	}
 
 	@Override
-	public MiningModel encodeMiningModel(List<Tree> trees, Integer numIteration, Schema schema){
+	public MiningModel encodeModel(List<Tree> trees, Integer numIteration, Schema schema){
 		MiningModel miningModel = createMiningModel(trees, numIteration, schema);
 
 		return miningModel;

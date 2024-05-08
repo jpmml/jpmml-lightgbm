@@ -116,7 +116,7 @@ public class PandasDummiesTest extends ModelEncoderBatchTest implements LightGBM
 
 				Schema lgbmSchema = gbdt.toLightGBMSchema(schema);
 
-				MiningModel miningModel = gbdt.encodeMiningModel(Collections.emptyMap(), lgbmSchema);
+				MiningModel miningModel = gbdt.encodeModel(Collections.emptyMap(), lgbmSchema);
 
 				return encoder.encodePMML(miningModel);
 			}
