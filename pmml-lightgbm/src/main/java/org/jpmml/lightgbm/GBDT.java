@@ -29,10 +29,12 @@ import java.util.stream.Collectors;
 
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
+import org.dmg.pmml.Field;
 import org.dmg.pmml.Interval;
 import org.dmg.pmml.InvalidValueTreatmentMethod;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.PMML;
+import org.dmg.pmml.Value.Property;
 import org.dmg.pmml.Visitor;
 import org.dmg.pmml.mining.MiningModel;
 import org.jpmml.converter.BinaryFeature;
@@ -40,6 +42,7 @@ import org.jpmml.converter.BooleanFeature;
 import org.jpmml.converter.CategoricalFeature;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
+import org.jpmml.converter.FieldUtil;
 import org.jpmml.converter.InvalidValueDecorator;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.ModelEncoder;
@@ -47,7 +50,6 @@ import org.jpmml.converter.Schema;
 import org.jpmml.converter.SchemaUtil;
 import org.jpmml.converter.TypeUtil;
 import org.jpmml.converter.WildcardFeature;
-import org.jpmml.converter.visitors.NaNAsMissingDecorator;
 import org.jpmml.lightgbm.visitors.TreeModelCompactor;
 
 public class GBDT {
@@ -385,19 +387,11 @@ public class GBDT {
 	public PMML encodePMML(Map<String, ?> options, String targetName, List<String> targetCategories){
 		LightGBMEncoder encoder = new LightGBMEncoder();
 
-		Boolean nanAsMissing = (Boolean)options.get(HasLightGBMOptions.OPTION_NAN_AS_MISSING);
-
 		Schema schema = encodeSchema(targetName, targetCategories, encoder);
 
 		MiningModel miningModel = encodeMiningModel(options, schema);
 
 		PMML pmml = encoder.encodePMML(miningModel);
-
-		if((Boolean.TRUE).equals(nanAsMissing)){
-			Visitor visitor = new NaNAsMissingDecorator();
-
-			visitor.applyTo(pmml);
-		}
 
 		return pmml;
 	}
@@ -411,6 +405,8 @@ public class GBDT {
 		Boolean compact = (Boolean)options.get(HasLightGBMOptions.OPTION_COMPACT);
 		Integer numIterations = (Integer)options.get(HasLightGBMOptions.OPTION_NUM_ITERATION);
 
+		schema = configureSchema(options, schema);
+
 		MiningModel miningModel = object_function_.encodeMiningModel(Arrays.asList(this.models_), numIterations, schema)
 			.setAlgorithmName("LightGBM");
 
@@ -421,6 +417,49 @@ public class GBDT {
 		}
 
 		return miningModel;
+	}
+
+	public Schema configureSchema(Map<String, ?> options, Schema schema){
+		Boolean nanAsMissing = (Boolean)options.get(HasLightGBMOptions.OPTION_NAN_AS_MISSING);
+
+		Function<Feature, Feature> function = new Function<Feature, Feature>(){
+
+			@Override
+			public Feature apply(Feature feature){
+
+				if(feature == null){
+					return feature;
+				}
+
+				nanAsMissing:
+				if(nanAsMissing != null && nanAsMissing){
+					DataType dataType = feature.getDataType();
+
+					switch(dataType){
+						case INTEGER:
+							break;
+						case FLOAT:
+						case DOUBLE:
+							{
+								Field<?> field = feature.getField();
+
+								if(field instanceof DataField){
+									DataField dataField = (DataField)field;
+
+									FieldUtil.addValues(dataField, Property.MISSING, Collections.singletonList("NaN"));
+								}
+							}
+							break;
+						default:
+							break;
+					}
+				}
+
+				return feature;
+			}
+		};
+
+		return schema.toTransformedSchema(function);
 	}
 
 	public String[] getFeatureNames(){
