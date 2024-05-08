@@ -35,7 +35,6 @@ import org.dmg.pmml.InvalidValueTreatmentMethod;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.PMML;
 import org.dmg.pmml.Value.Property;
-import org.dmg.pmml.Visitor;
 import org.dmg.pmml.mining.MiningModel;
 import org.jpmml.converter.BinaryFeature;
 import org.jpmml.converter.BooleanFeature;
@@ -51,6 +50,7 @@ import org.jpmml.converter.SchemaUtil;
 import org.jpmml.converter.TypeUtil;
 import org.jpmml.converter.WildcardFeature;
 import org.jpmml.lightgbm.visitors.TreeModelCompactor;
+import org.jpmml.model.visitors.VisitorBattery;
 
 public class GBDT {
 
@@ -402,7 +402,6 @@ public class GBDT {
 			throw new IllegalStateException();
 		}
 
-		Boolean compact = (Boolean)options.get(HasLightGBMOptions.OPTION_COMPACT);
 		Integer numIterations = (Integer)options.get(HasLightGBMOptions.OPTION_NUM_ITERATION);
 
 		schema = configureSchema(options, schema);
@@ -410,11 +409,7 @@ public class GBDT {
 		MiningModel miningModel = object_function_.encodeMiningModel(Arrays.asList(this.models_), numIterations, schema)
 			.setAlgorithmName("LightGBM");
 
-		if((Boolean.TRUE).equals(compact)){
-			Visitor visitor = new TreeModelCompactor();
-
-			visitor.applyTo(miningModel);
-		}
+		miningModel = configureModel(options, miningModel);
 
 		return miningModel;
 	}
@@ -460,6 +455,20 @@ public class GBDT {
 		};
 
 		return schema.toTransformedSchema(function);
+	}
+
+	public MiningModel configureModel(Map<String, ?> options, MiningModel miningModel){
+		Boolean compact = (Boolean)options.get(HasLightGBMOptions.OPTION_COMPACT);
+
+		VisitorBattery visitors = new VisitorBattery();
+
+		if((Boolean.TRUE).equals(compact)){
+			visitors.add(TreeModelCompactor.class);
+		}
+
+		visitors.applyTo(miningModel);
+
+		return miningModel;
 	}
 
 	public String[] getFeatureNames(){
