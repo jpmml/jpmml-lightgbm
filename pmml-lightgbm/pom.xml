@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.jpmml</groupId>
 		<artifactId>jpmml-lightgbm</artifactId>
-		<version>1.5.3</version>
+		<version>1.5-SNAPSHOT</version>
 	</parent>
 
 	<groupId>org.jpmml</groupId>
@@ -24,7 +24,7 @@
 	</licenses>
 
 	<properties>
-		<project.build.outputTimestamp>2024-05-08T18:22:18Z</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2024-05-08T18:22:51Z</project.build.outputTimestamp>
 	</properties>
 
 	<dependencies>
