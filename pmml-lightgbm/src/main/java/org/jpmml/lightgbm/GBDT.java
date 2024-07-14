@@ -315,7 +315,7 @@ public class GBDT {
 
 		Function<Feature, Feature> function = new Function<Feature, Feature>(){
 
-			private ModelEncoder encoder = (ModelEncoder)schema.getEncoder();
+			private ModelEncoder encoder = schema.getEncoder();
 
 			private List<? extends Feature> features = schema.getFeatures();
 
