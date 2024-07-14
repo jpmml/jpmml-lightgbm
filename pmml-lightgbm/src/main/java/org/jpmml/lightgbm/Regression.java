@@ -26,7 +26,7 @@ import org.dmg.pmml.OpType;
 import org.dmg.pmml.mining.MiningModel;
 import org.jpmml.converter.ContinuousLabel;
 import org.jpmml.converter.Label;
-import org.jpmml.converter.PMMLEncoder;
+import org.jpmml.converter.ModelEncoder;
 import org.jpmml.converter.Schema;
 
 public class Regression extends ObjectiveFunction {
@@ -36,7 +36,7 @@ public class Regression extends ObjectiveFunction {
 	}
 
 	@Override
-	public Label encodeLabel(String targetName, List<?> targetCategories, PMMLEncoder encoder){
+	public Label encodeLabel(String targetName, List<?> targetCategories, ModelEncoder encoder){
 
 		if(targetCategories != null && targetCategories.size() > 0){
 			throw new IllegalArgumentException("Regression requires zero target categories");

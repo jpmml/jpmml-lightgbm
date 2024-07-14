@@ -26,7 +26,7 @@ import org.dmg.pmml.OpType;
 import org.jpmml.converter.CategoricalLabel;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.LabelUtil;
-import org.jpmml.converter.PMMLEncoder;
+import org.jpmml.converter.ModelEncoder;
 
 abstract
 public class Classification extends ObjectiveFunction {
@@ -41,7 +41,7 @@ public class Classification extends ObjectiveFunction {
 	}
 
 	@Override
-	public Label encodeLabel(String targetName, List<?> targetCategories, PMMLEncoder encoder){
+	public Label encodeLabel(String targetName, List<?> targetCategories, ModelEncoder encoder){
 		DataField dataField;
 
 		if(targetCategories == null){
