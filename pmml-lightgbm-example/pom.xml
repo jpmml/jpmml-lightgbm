@@ -23,10 +23,6 @@
 		</license>
 	</licenses>
 
-	<properties>
-		<project.build.outputTimestamp>2024-05-08T18:22:51Z</project.build.outputTimestamp>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.jpmml</groupId>
@@ -44,7 +40,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
-				<version>3.1.1</version>
+				<version>3.1.2</version>
 				<configuration>
 					<skip>true</skip>
 				</configuration>
@@ -52,7 +48,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.5.3</version>
+				<version>3.6.0</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
