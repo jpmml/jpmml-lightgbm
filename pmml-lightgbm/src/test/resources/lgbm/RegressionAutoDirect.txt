@@ -697,6 +697,7 @@ parameters:
 [extra_trees: 0]
 [extra_seed: 6]
 [early_stopping_round: 0]
+[early_stopping_min_delta: 0]
 [first_metric_only: 0]
 [max_delta_step: 0]
 [lambda_l1: 0]
