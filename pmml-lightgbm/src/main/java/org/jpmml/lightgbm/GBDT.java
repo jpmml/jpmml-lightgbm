@@ -205,6 +205,21 @@ public class GBDT {
 			if(LightGBMUtil.isNone(featureInfo)){
 				features.add(null);
 
+				pandasCategorical:
+				if(hasPandasCategories){
+
+					if(pandasCategoryIndex >= this.pandas_categorical.size()){
+						break pandasCategorical;
+					}
+
+					List<?> pandasCategoryValues = this.pandas_categorical.get(pandasCategoryIndex);
+
+					// A constant categorical column
+					if(pandasCategoryValues.size() == 1){
+						pandasCategoryIndex++;
+					}
+				}
+
 				continue;
 			}
 
@@ -237,6 +252,7 @@ public class GBDT {
 
 					boolean direct = true;
 
+					pandasCategorical:
 					if(hasPandasCategories){
 
 						if(pandasCategoryIndex >= this.pandas_categorical.size()){
@@ -244,6 +260,9 @@ public class GBDT {
 						}
 
 						List<?> pandasCategoryValues = this.pandas_categorical.get(pandasCategoryIndex);
+						if(pandasCategoryValues.size() < values.size()){
+							throw new IllegalArgumentException("Expected at least " + values.size() + " category levels, got " + pandasCategoryValues.size() + " category levels");
+						}
 
 						values = pandasCategoryValues;
 
