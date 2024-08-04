@@ -169,7 +169,7 @@ public class GBDT {
 		}
 	}
 
-	public Schema encodeSchema(String targetName, List<String> targetCategories, LightGBMEncoder encoder){
+	public Schema encodeSchema(String targetName, List<String> targetCategories, ModelEncoder encoder){
 		ObjectiveFunction object_function_ = getObjectiveFunction();
 		if(object_function_ == null){
 			throw new IllegalStateException();
