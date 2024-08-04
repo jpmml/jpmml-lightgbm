@@ -240,6 +240,12 @@ public class Tree {
 				defaultLeft = false;
 			} else
 
+			if(feature instanceof NullFeature){
+				NullFeature nullFeature = (NullFeature)feature;
+
+				throw new IllegalArgumentException("Cannot generate split for undefined (none) feature " + nullFeature.getName());
+			} else
+
 			{
 				ContinuousFeature continuousFeature = feature.toContinuousFeature();
 

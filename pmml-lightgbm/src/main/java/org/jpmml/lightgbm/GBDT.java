@@ -203,7 +203,7 @@ public class GBDT {
 			String featureInfo = featureInfos[i];
 
 			if(LightGBMUtil.isNone(featureInfo)){
-				features.add(null);
+				features.add(new NullFeature(encoder, featureName, DataType.DOUBLE));
 
 				pandasCategorical:
 				if(hasPandasCategories){
@@ -383,6 +383,12 @@ public class GBDT {
 					}
 				} else
 
+				if(feature instanceof NullFeature){
+					NullFeature nullFeature = (NullFeature)feature;
+
+					return nullFeature;
+				} else
+
 				if(feature instanceof WildcardFeature){
 					WildcardFeature wildcardFeature = (WildcardFeature)feature;
 
@@ -447,8 +453,10 @@ public class GBDT {
 			@Override
 			public Feature apply(Feature feature){
 
-				if(feature == null){
-					return feature;
+				if(feature instanceof NullFeature){
+					NullFeature nullFeature = (NullFeature)feature;
+
+					return nullFeature;
 				}
 
 				nanAsMissing:
