@@ -42,7 +42,7 @@ public class ObjectiveFunction {
 
 
 	public ObjectiveFunction(Section config){
-		this.name_ = config.get(ObjectiveFunction.CONFIG_NAME);
+		this.name_ = config.get(ObjectiveFunction.CONFIG_NAME, false);
 		this.average_output_ = config.containsKey(ObjectiveFunction.CONFIG_AVERAGE_OUTPUT);
 	}
 

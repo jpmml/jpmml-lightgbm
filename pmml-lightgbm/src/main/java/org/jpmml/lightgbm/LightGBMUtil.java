@@ -103,21 +103,24 @@ public class LightGBMUtil {
 		}
 
 		String className = matcher.group(1);
-
-		String[] tokens = (matcher.group(2)).split("\\s+");
-		if(tokens.length == 0){
-			throw new IllegalArgumentException(string);
-		}
-
-		String name = tokens[0];
+		String args = matcher.group(2);
 
 		Section config = new Section();
-		config.put(ObjectiveFunction.CONFIG_NAME, name);
 
-		for(int i = 1; i < tokens.length; i++){
-			String token = tokens[i];
+		if(args != null && (args.trim()).length() > 0){
+			String[] tokens = args.split("\\s+");
 
-			config.put(token, ':');
+			if(tokens.length > 0){
+				String name = tokens[0];
+
+				config.put(ObjectiveFunction.CONFIG_NAME, name);
+
+				for(int i = 1; i < tokens.length; i++){
+					String token = tokens[i];
+
+					config.put(token, ':');
+				}
+			}
 		}
 
 		try {
@@ -298,6 +301,6 @@ public class LightGBMUtil {
 		return sb.toString();
 	}
 
-	private static final Pattern PATTERN_OBJECTIVE_FUNCTION = Pattern.compile("(.+)\\((.+)\\)");
+	private static final Pattern PATTERN_OBJECTIVE_FUNCTION = Pattern.compile("([^\\(]+)(?:\\((.*)\\))?");
 	private static final Pattern PATTERN_UNICODE_ESCAPE = Pattern.compile("\\\\u([0-9A-Fa-f]{4})");
 }

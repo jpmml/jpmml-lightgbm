@@ -37,6 +37,27 @@ public class LightGBMUtilTest {
 	}
 
 	@Test
+	public void parseCustObjectiveFunction(){
+		String string = CustomRegression.class.getName();
+
+		Regression regression = (Regression)LightGBMUtil.parseObjectiveFunction(string);
+
+		assertNull(regression.getName());
+
+		string = CustomRegression.class.getName() + "()";
+
+		regression = (Regression)LightGBMUtil.parseObjectiveFunction(string);
+
+		assertNull(regression.getName());
+
+		string = CustomRegression.class.getName() + "(puppy)";
+
+		regression = (Regression)LightGBMUtil.parseObjectiveFunction(string);
+
+		assertEquals("puppy", regression.getName());
+	}
+
+	@Test
 	public void parseInterval(){
 		Interval interval = LightGBMUtil.parseInterval("[-inf:0]");
 
