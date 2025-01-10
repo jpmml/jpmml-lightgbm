@@ -683,7 +683,7 @@ parameters:
 [num_iterations: 31]
 [learning_rate: 0.1]
 [num_leaves: 31]
-[num_threads: 2]
+[num_threads: 16]
 [seed: 0]
 [deterministic: 0]
 [force_col_wise: 0]
