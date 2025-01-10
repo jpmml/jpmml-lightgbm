@@ -15,7 +15,7 @@ Enter the project root directory and build using [Apache Maven](https://maven.ap
 mvn clean install
 ```
 
-The build produces a library JAR file `pmml-lightgbm/target/pmml-lightgbm-1.5-SNAPSHOT.jar`, and an executable uber-JAR file `pmml-lightgbm-example/target/pmml-lightgbm-example-executable-1.5-SNAPSHOT.jar`.
+The build produces a library JAR file `pmml-lightgbm/target/pmml-lightgbm-1.6-SNAPSHOT.jar`, and an executable uber-JAR file `pmml-lightgbm-example/target/pmml-lightgbm-example-executable-1.6-SNAPSHOT.jar`.
 
 # Usage #
 
@@ -79,12 +79,12 @@ audit_booster.save_model("LightGBMAudit.txt")
 
 Converting the text file `LightGBMAudit.txt` to a PMML file `LightGBMAudit.pmml`:
 ```
-java -jar pmml-lightgbm-example/target/pmml-lightgbm-example-executable-1.5-SNAPSHOT.jar --lgbm-input LightGBMAudit.txt --pmml-output LightGBMAudit.pmml
+java -jar pmml-lightgbm-example/target/pmml-lightgbm-example-executable-1.6-SNAPSHOT.jar --lgbm-input LightGBMAudit.txt --pmml-output LightGBMAudit.pmml
 ```
 
 Getting help:
 ```
-java -jar pmml-lightgbm-example/target/pmml-lightgbm-example-executable-1.5-SNAPSHOT.jar  --help
+java -jar pmml-lightgbm-example/target/pmml-lightgbm-example-executable-1.6-SNAPSHOT.jar  --help
 ```
 
 # Documentation #
