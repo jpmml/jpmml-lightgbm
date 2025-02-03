@@ -19,12 +19,11 @@
 package org.jpmml.lightgbm.testing;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 
 import com.google.common.base.Equivalence;
 import org.jpmml.evaluator.ResultField;
+import org.jpmml.evaluator.Table;
 import org.jpmml.evaluator.testing.RealNumberEquivalence;
 import org.junit.Test;
 
@@ -49,21 +48,20 @@ public class ClassificationTest extends ValidatingLightGBMEncoderBatchTest imple
 			}
 
 			@Override
-			public List<? extends Map<String, ?>> getInput() throws IOException {
-				List<? extends Map<String, ?>> table = super.getInput();
+			public Table getInput() throws IOException {
+				Table table = super.getInput();
 
 				String dataset = truncate(getDataset());
 
 				if((AUDIT_NA).equals(dataset)){
-					String income = "Income";
-
-					for(Map<String, ?> row : table){
-						Object value = row.get(income);
+					table.apply("Income", (value) -> {
 
 						if(value == null){
-							((Map)row).put(income, "NaN");
+							return "NaN";
 						}
-					}
+
+						return value;
+					});
 				}
 
 				return table;
