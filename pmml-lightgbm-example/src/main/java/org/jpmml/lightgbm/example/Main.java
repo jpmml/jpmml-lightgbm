@@ -27,6 +27,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.beust.jcommander.DefaultUsageFormatter;
+import com.beust.jcommander.IUsageFormatter;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
@@ -43,64 +45,72 @@ import org.slf4j.LoggerFactory;
 public class Main {
 
 	@Parameter (
-		names = {"--help"},
-		description = "Show the list of configuration options and exit",
-		help = true
-	)
-	private boolean help = false;
-
-	@Parameter (
 		names = {"--lgbm-input"},
 		description = "LightGBM text input file",
-		required = true
+		required = true,
+		order = 1
 	)
 	private File input = null;
 
 	@Parameter (
 		names = {"--pmml-output"},
 		description = "PMML output file",
-		required = true
+		required = true,
+		order = 2
 	)
 	private File output = null;
 
 	@Parameter (
 		names = {"--objective"},
-		description = "Custom objective function"
+		description = "Custom objective function",
+		order = 3
 	)
 	private String objectiveFunction = null;
 
 	@Parameter (
 		names = {"--target-name"},
-		description = "Target name. Defaults to \"_target\""
+		description = "Target name. Defaults to \"_target\"",
+		order = 4
 	)
 	private String targetName = null;
 
 	@Parameter (
 		names = {"--target-categories"},
-		description = "Target categories. Defaults to 0-based index [0, 1, .., num_class - 1]"
+		description = "Target categories. Defaults to 0-based index [0, 1, .., num_class - 1]",
+		order = 5
 	)
 	private List<String> targetCategories = null;
 
 	@Parameter (
 		names = {"--X-" + HasLightGBMOptions.OPTION_COMPACT},
 		description = "Transform LightGBM-style trees to PMML-style trees",
-		arity = 1
+		arity = 1,
+		order = 6
 	)
 	private boolean compact = true;
 
 	@Parameter (
 		names = {"--X-" + HasLightGBMOptions.OPTION_NAN_AS_MISSING},
 		description = "Treat Not-a-Number (NaN) values as missing values",
-		arity = 1
+		arity = 1,
+		order = 7
 	)
 	private boolean nanAsMissing = true;
 
 	@Parameter (
 		names = {"--X-" + HasLightGBMOptions.OPTION_NUM_ITERATION},
-		description = "Limit the number of trees. Defaults to all trees"
+		description = "Limit the number of trees. Defaults to all trees",
+		order = 8
 	)
 	private Integer numIteration = null;
 
+	@Parameter (
+		names = {"--help"},
+		description = "Show the list of configuration options and exit",
+		help = true,
+		order = Integer.MAX_VALUE
+	)
+	private boolean help = false;
 
 	static
 	public void main(String... args) throws Exception {
@@ -108,6 +118,8 @@ public class Main {
 
 		JCommander commander = new JCommander(main);
 		commander.setProgramName(Main.class.getName());
+
+		IUsageFormatter usageFormatter = new DefaultUsageFormatter(commander);
 
 		try {
 			commander.parse(args);
@@ -117,7 +129,7 @@ public class Main {
 			sb.append(pe.toString());
 			sb.append("\n");
 
-			commander.usage(sb);
+			usageFormatter.usage(sb);
 
 			System.err.println(sb.toString());
 
@@ -127,7 +139,7 @@ public class Main {
 		if(main.help){
 			StringBuilder sb = new StringBuilder();
 
-			commander.usage(sb);
+			usageFormatter.usage(sb);
 
 			System.out.println(sb.toString());
 
