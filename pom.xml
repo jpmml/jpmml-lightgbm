@@ -50,6 +50,7 @@
 
 	<properties>
 		<jdk.version>11</jdk.version>
+		<jpmml-converter.version>1.6.0</jpmml-converter.version>
 		<project.build.outputTimestamp>2025-01-10T21:07:04Z</project.build.outputTimestamp>
 	</properties>
 
@@ -69,12 +70,12 @@
 			<dependency>
 				<groupId>org.jpmml</groupId>
 				<artifactId>pmml-converter</artifactId>
-				<version>1.5.12</version>
+				<version>${jpmml-converter.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.jpmml</groupId>
 				<artifactId>pmml-converter-testing</artifactId>
-				<version>1.5.12</version>
+				<version>${jpmml-converter.version}</version>
 			</dependency>
 
 			<dependency>

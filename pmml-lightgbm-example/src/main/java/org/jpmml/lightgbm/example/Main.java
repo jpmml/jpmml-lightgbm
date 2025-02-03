@@ -35,7 +35,8 @@ import org.jpmml.lightgbm.GBDT;
 import org.jpmml.lightgbm.HasLightGBMOptions;
 import org.jpmml.lightgbm.LightGBMUtil;
 import org.jpmml.lightgbm.ObjectiveFunction;
-import org.jpmml.model.metro.MetroJAXBUtil;
+import org.jpmml.model.JAXBSerializer;
+import org.jpmml.model.metro.MetroJAXBSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -185,8 +186,10 @@ public class Main {
 		try(OutputStream os = new FileOutputStream(this.output)){
 			logger.info("Marshalling PMML..");
 
+			JAXBSerializer jaxbSerializer = new MetroJAXBSerializer();
+
 			long begin = System.currentTimeMillis();
-			MetroJAXBUtil.marshalPMML(pmml, os);
+			jaxbSerializer.serializePretty(pmml, os);
 			long end = System.currentTimeMillis();
 
 			logger.info("Marshalled PMML in {} ms.", (end - begin));
