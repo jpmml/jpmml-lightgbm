@@ -45,7 +45,7 @@ import org.jpmml.evaluator.testing.RealNumberEquivalence;
 import org.jpmml.lightgbm.GBDT;
 import org.jpmml.lightgbm.LightGBMEncoder;
 import org.jpmml.lightgbm.LightGBMUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PandasDummiesTest extends ModelEncoderBatchTest implements LightGBMAlgorithms, LightGBMDatasets {
 

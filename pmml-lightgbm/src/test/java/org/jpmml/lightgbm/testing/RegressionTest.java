@@ -31,7 +31,7 @@ import org.jpmml.lightgbm.ObjectiveFunction;
 import org.jpmml.lightgbm.Regression;
 import org.jpmml.lightgbm.Section;
 import org.jpmml.model.visitors.AbstractVisitor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class RegressionTest extends ValidatingLightGBMEncoderBatchTest implements LightGBMAlgorithms, LightGBMDatasets {
 
