@@ -6,7 +6,7 @@ Java library and command-line application for converting [LightGBM](https://gith
 # Prerequisites #
 
 * LightGBM 2.0.0 or newer.
-* Java 1.8 or newer.
+* Java 11 or newer.
 
 # Installation #
 
