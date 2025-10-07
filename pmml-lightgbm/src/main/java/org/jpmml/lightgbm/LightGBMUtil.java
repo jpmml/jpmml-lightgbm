@@ -264,11 +264,7 @@ public class LightGBMUtil {
 			return null;
 		}
 
-		Interval interval = new Interval(closure)
-			.setLeftMargin(leftMargin)
-			.setRightMargin(rightMargin);
-
-		return interval;
+		return new Interval(closure, leftMargin, rightMargin);
 	}
 
 	static
