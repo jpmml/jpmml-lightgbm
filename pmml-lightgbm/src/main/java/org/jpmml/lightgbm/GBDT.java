@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -69,6 +70,8 @@ public class GBDT {
 	private Tree[] models_;
 
 	private Map<String, String> feature_importances = Collections.emptyMap();
+
+	private String linear_tree;
 
 	private List<List<?>> pandas_categorical = Collections.emptyList();
 
@@ -149,6 +152,8 @@ public class GBDT {
 			if(!section.checkId("parameters:")){
 				break parameters;
 			}
+
+			this.linear_tree = section.get("linear_tree", false);
 
 			index++;
 
@@ -518,6 +523,10 @@ public class GBDT {
 
 	public void setObjectiveFunction(ObjectiveFunction object_function_){
 		this.object_function_ = object_function_;
+	}
+
+	public boolean hasLinearTree(){
+		return Objects.equals("1", this.linear_tree);
 	}
 
 	private Boolean isBinary(int feature){

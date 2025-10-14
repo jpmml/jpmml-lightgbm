@@ -62,6 +62,10 @@ public class Section extends LinkedHashMap<String, String> {
 		return LightGBMUtil.parseIntArray(get(key), length);
 	}
 
+	public int[][] getIntArrayList(String key, int[] lengths){
+		return LightGBMUtil.parseIntArrayList(get(key), lengths);
+	}
+
 	public long parseUnsignedInt(String key){
 		return Long.parseLong(get(key));
 	}
@@ -76,6 +80,10 @@ public class Section extends LinkedHashMap<String, String> {
 
 	public double[] getDoubleArray(String key, int length){
 		return LightGBMUtil.parseDoubleArray(get(key), length);
+	}
+
+	public double[][] getDoubleArrayList(String key, int[] lengths){
+		return LightGBMUtil.parseDoubleArrayList(get(key), lengths);
 	}
 
 	public String getString(String key){
@@ -126,12 +134,6 @@ public class Section extends LinkedHashMap<String, String> {
 		if(index > 0){
 			key = string.substring(0, index);
 			value = string.substring(index + 1);
-
-			value = value.trim();
-
-			if(value.length() == 0){
-				value = null;
-			}
 		} else
 
 		{

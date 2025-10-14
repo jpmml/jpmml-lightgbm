@@ -23,11 +23,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import com.google.common.primitives.Doubles;
 import org.dmg.pmml.DataType;
 import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.Predicate;
 import org.dmg.pmml.SimplePredicate;
 import org.dmg.pmml.True;
+import org.dmg.pmml.regression.Regression;
 import org.dmg.pmml.tree.CountingBranchNode;
 import org.dmg.pmml.tree.CountingLeafNode;
 import org.dmg.pmml.tree.Node;
@@ -41,6 +43,7 @@ import org.jpmml.converter.ModelUtil;
 import org.jpmml.converter.PredicateManager;
 import org.jpmml.converter.Schema;
 import org.jpmml.converter.ValueUtil;
+import org.jpmml.converter.regression.RegressionModelUtil;
 
 public class Tree {
 
@@ -69,6 +72,16 @@ public class Tree {
 	private int[] cat_boundaries_;
 
 	private long[] cat_threshold_;
+
+	private int is_linear;
+
+	private double[] leaf_const;
+
+	private int[] num_features;
+
+	private int[][] leaf_features;
+
+	private double[][] leaf_coeff;
 
 
 	public void load(Section section){
@@ -99,6 +112,20 @@ public class Tree {
 		if(this.num_cat_ > 0){
 			this.cat_boundaries_ = section.getIntArray("cat_boundaries", this.num_cat_ + 1);
 			this.cat_threshold_ = section.getUnsignedIntArray("cat_threshold", -1);
+		}
+
+		String is_linear = section.get("is_linear", false);
+		if(is_linear == null){
+			return;
+		}
+
+		this.is_linear = section.getInt("is_linear");
+
+		if(this.is_linear == 1){
+			this.leaf_const = section.getDoubleArray("leaf_const", this.num_leaves_);
+			this.num_features = section.getIntArray("num_features", this.num_leaves_);
+			this.leaf_features = section.getIntArrayList("leaf_features", this.num_features);
+			this.leaf_coeff = section.getDoubleArrayList("leaf_coeff", this.num_features);
 		}
 	}
 
@@ -279,7 +306,7 @@ public class Tree {
 				.setRecordCount(ValueUtil.narrow(this.internal_count_[index]))
 				.addNodes(leftChild, rightChild);
 
-			return result;
+			return encodeRegression(index, result, schema);
 		} else
 
 		// Leaf node
@@ -292,8 +319,43 @@ public class Tree {
 				.setId(id)
 				.setRecordCount(ValueUtil.narrow(this.leaf_count_[index]));
 
+			return encodeRegression(index, result, schema);
+		}
+	}
+
+	public Node encodeRegression(int index, Node node, Schema schema){
+
+		if(this.is_linear == 1){
+			int[] leaf_features = this.leaf_features[index];
+
+			if(leaf_features.length == 0){
+
+				if(this.leaf_const[index] == this.leaf_value_[index]){
+					return node;
+				}
+			}
+
+			List<Feature> features = new ArrayList<>();
+
+			for(int i = 0; i < leaf_features.length; i++){
+				Feature feature = schema.getFeature(leaf_features[i]);
+
+				features.add(feature);
+			}
+
+			List<Double> coefficients = Doubles.asList(this.leaf_coeff[index]);
+			Double intercept = this.leaf_const[index];
+
+			Regression regression = new Regression(MiningFunction.REGRESSION, null)
+				.addRegressionTables(RegressionModelUtil.createRegressionTable(features, coefficients, intercept));
+
+			Node result = node.toComplexNode()
+				.setEmbeddedModel(regression);
+
 			return result;
 		}
+
+		return node;
 	}
 
 	private List<Object> selectValues(boolean indexAsValue, List<?> values, java.util.function.Predicate<Object> valueFilter, int cat_idx, boolean left){

@@ -27,8 +27,6 @@ public interface LightGBMDatasets extends Datasets {
 	String AUDIT_INVALID = AUDIT + "Invalid";
 	String AUDIT_LIMIT = AUDIT + "@17";
 	String AUDIT_NA_LIMIT = AUDIT_NA + "@17";
-	String AUTO_DIRECT = AUTO + "Direct";
-	String AUTO_DIRECT_NA = AUTO_DIRECT + "NA";
 	String AUTO_LIMIT = AUTO + "@17";
 	String AUTO_NA_LIMIT = AUTO_NA + "@17";
 	String HOUSING_LIMIT = HOUSING + "@31";

@@ -18,6 +18,10 @@
  */
 package org.jpmml.lightgbm.testing;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 import com.google.common.base.Equivalence;
@@ -27,6 +31,8 @@ import org.dmg.pmml.PMML;
 import org.dmg.pmml.Visitor;
 import org.dmg.pmml.VisitorAction;
 import org.jpmml.evaluator.ResultField;
+import org.jpmml.evaluator.testing.RealNumberEquivalence;
+import org.jpmml.lightgbm.HasLightGBMOptions;
 import org.jpmml.lightgbm.ObjectiveFunction;
 import org.jpmml.lightgbm.Regression;
 import org.jpmml.lightgbm.Section;
@@ -42,6 +48,22 @@ public class RegressionTest extends ValidatingLightGBMEncoderBatchTest implement
 			@Override
 			public RegressionTest getArchiveBatchTest(){
 				return RegressionTest.this;
+			}
+
+			@Override
+			public List<Map<String, Object>> getOptionsMatrix(){
+				List<Map<String, Object>> optionsMatrix = super.getOptionsMatrix();
+
+				String algorithm = getAlgorithm();
+
+				if((LINEARTREE_REGRESSION).equals(algorithm)){
+					Map<String, Object> options = new LinkedHashMap<>();
+					options.put(HasLightGBMOptions.OPTION_NAN_AS_MISSING, true);
+
+					return Collections.singletonList(options);
+				}
+
+				return optionsMatrix;
 			}
 
 			@Override
@@ -87,15 +109,6 @@ public class RegressionTest extends ValidatingLightGBMEncoderBatchTest implement
 
 				return pmml;
 			}
-
-			@Override
-			public String getInputCsvPath(){
-				String path = super.getInputCsvPath();
-
-				path = path.replace("Direct", "");
-
-				return path;
-			}
 		};
 
 		return result;
@@ -107,13 +120,13 @@ public class RegressionTest extends ValidatingLightGBMEncoderBatchTest implement
 	}
 
 	@Test
-	public void evaluateRFAuto() throws Exception {
-		evaluate(RF_REGRESSION, AUTO);
+	public void evaluateLinearTreeAuto() throws Exception {
+		evaluate(LINEARTREE_REGRESSION, AUTO, new RealNumberEquivalence(4));
 	}
 
 	@Test
-	public void evaluateAutoDirect() throws Exception {
-		evaluate(REGRESSION, AUTO_DIRECT);
+	public void evaluateRFAuto() throws Exception {
+		evaluate(RF_REGRESSION, AUTO);
 	}
 
 	@Test
@@ -127,8 +140,8 @@ public class RegressionTest extends ValidatingLightGBMEncoderBatchTest implement
 	}
 
 	@Test
-	public void evaluateAutoDirectNA() throws Exception {
-		evaluate(REGRESSION, AUTO_DIRECT_NA);
+	public void evaluateLinearTreeAutoNA() throws Exception {
+		evaluate(LINEARTREE_REGRESSION, AUTO_NA, new RealNumberEquivalence(4));
 	}
 
 	@Test

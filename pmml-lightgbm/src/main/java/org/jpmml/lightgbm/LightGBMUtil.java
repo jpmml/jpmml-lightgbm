@@ -136,23 +136,94 @@ public class LightGBMUtil {
 
 	static
 	public String[] parseStringArray(String string, int length){
-		String[] result = string.split("\\s");
+		String[] tokens = string.split(" ");
 
-		if(length > -1 && result.length != length){
-			throw new IllegalArgumentException("Expected " + length + " elements, got " + result.length + " elements");
+		if(length > -1 && tokens.length != length){
+			throw new IllegalArgumentException();
+		}
+
+		return tokens;
+	}
+
+	static
+	public String[][] parseStringArrayList(String string, int[] lengths){
+		List<String> tokens = new ArrayList<>();
+
+		Pattern pattern = Pattern.compile("([^ ]+)| ");
+
+		Matcher matcher = pattern.matcher(string);
+		while(matcher.find()){
+			tokens.add(matcher.group());
+		}
+
+		Iterator<String> it = tokens.iterator();
+
+		String result[][] = new String[lengths.length][];
+
+		for(int i = 0; i < lengths.length; i++){
+			int length = lengths[i];
+
+			result[i] = new String[length];
+
+			if(length == 0){
+				getSpace(it);
+			} else
+
+			{
+				for(int j = 0; j < length; j++){
+					result[i][j] = getToken(it);
+
+					getSpace(it);
+				}
+
+				getSpace(it);
+			}
+		}
+
+		if(it.hasNext()){
+			throw new IllegalArgumentException();
 		}
 
 		return result;
 	}
 
 	static
+	private String getSpace(Iterator<String> it){
+		String string = it.next();
+
+		if(!(" ").equals(string)){
+			throw new IllegalArgumentException();
+		}
+
+		return string;
+	}
+
+	static
+	private String getToken(Iterator<String> it){
+		String string = it.next();
+
+		if((" ").equals(string)){
+			throw new IllegalArgumentException();
+		}
+
+		return string;
+	}
+
+	static
 	public int[] parseIntArray(String string, int length){
 		String[] values = parseStringArray(string, length);
 
-		int[] result = new int[values.length];
+		return toIntArray(values);
+	}
 
-		for(int i = 0; i < result.length; i++){
-			result[i] = parseInt(values[i]);
+	static
+	public int[][] parseIntArrayList(String string, int[] lengths){
+		String[][] values = parseStringArrayList(string, lengths);
+
+		int[][] result = new int[values.length][];
+
+		for(int i = 0; i < values.length; i++){
+			result[i] = toIntArray(values[i]);
 		}
 
 		return result;
@@ -162,47 +233,27 @@ public class LightGBMUtil {
 	public long[] parseUnsignedIntArray(String string, int length){
 		String[] values = parseStringArray(string, length);
 
-		long[] result = new long[values.length];
-
-		for(int i = 0; i < result.length; i++){
-			result[i] = parseUnsignedInt(values[i]);
-		}
-
-		return result;
+		return toUnsignedIntArray(values);
 	}
 
 	static
 	public double[] parseDoubleArray(String string, int length){
 		String[] values = parseStringArray(string, length);
 
-		double[] result = new double[values.length];
+		return toDoubleArray(values);
+	}
 
-		for(int i = 0; i < result.length; i++){
-			result[i] = parseDouble(values[i]);
+	static
+	public double[][] parseDoubleArrayList(String string, int[] lengths){
+		String[][] values = parseStringArrayList(string, lengths);
+
+		double[][] result = new double[values.length][];
+
+		for(int i = 0; i < values.length; i++){
+			result[i] = toDoubleArray(values[i]);
 		}
 
 		return result;
-	}
-
-	static
-	private int parseInt(String string){
-		return Integer.parseInt(string);
-	}
-
-	static
-	private long parseUnsignedInt(String string){
-		return Long.parseLong(string);
-	}
-
-	static
-	private double parseDouble(String string){
-
-		switch(string){
-			case "inf":
-				return Double.POSITIVE_INFINITY;
-			default:
-				return Double.parseDouble(string);
-		}
 	}
 
 	static
@@ -229,7 +280,7 @@ public class LightGBMUtil {
 	public Interval parseInterval(String string){
 
 		if(string.length() < 3){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(string);
 		}
 
 		String bounds = string.substring(0, 1) + string.substring(string.length() - 1, string.length());
@@ -295,6 +346,60 @@ public class LightGBMUtil {
 		matcher.appendTail(sb);
 
 		return sb.toString();
+	}
+
+	static
+	private int[] toIntArray(String[] values){
+		int[] result = new int[values.length];
+
+		for(int i = 0; i < values.length; i++){
+			result[i] = parseInt(values[i]);
+		}
+
+		return result;
+	}
+
+	static
+	private long[] toUnsignedIntArray(String[] values){
+		long[] result = new long[values.length];
+
+		for(int i = 0; i < values.length; i++){
+			result[i] = parseUnsignedInt(values[i]);
+		}
+
+		return result;
+	}
+
+	static
+	private double[] toDoubleArray(String[] values){
+		double[] result = new double[values.length];
+
+		for(int i = 0; i < values.length; i++){
+			result[i] = parseDouble(values[i]);
+		}
+
+		return result;
+	}
+
+	static
+	private int parseInt(String string){
+		return Integer.parseInt(string);
+	}
+
+	static
+	private long parseUnsignedInt(String string){
+		return Long.parseLong(string);
+	}
+
+	static
+	private double parseDouble(String string){
+
+		switch(string){
+			case "inf":
+				return Double.POSITIVE_INFINITY;
+			default:
+				return Double.parseDouble(string);
+		}
 	}
 
 	private static final Pattern PATTERN_OBJECTIVE_FUNCTION = Pattern.compile("([^\\(]+)(?:\\((.*)\\))?");

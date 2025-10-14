@@ -23,5 +23,6 @@ public interface LightGBMAlgorithms {
 	String CLASSIFICATION = "Classification";
 	String RF_CLASSIFICATION = "RFClassification";
 	String REGRESSION = "Regression";
+	String LINEARTREE_REGRESSION = "LinearTreeRegression";
 	String RF_REGRESSION = "RFRegression";
 }

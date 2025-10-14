@@ -87,7 +87,7 @@ public class Main {
 		arity = 1,
 		order = 6
 	)
-	private boolean compact = true;
+	private Boolean compact = null;
 
 	@Parameter (
 		names = {"--X-" + HasLightGBMOptions.OPTION_NAN_AS_MISSING},
@@ -174,8 +174,13 @@ public class Main {
 			gbdt.setObjectiveFunction(objectiveFunction);
 		}
 
+		Boolean compact = this.compact;
+		if(compact == null){
+			compact = !gbdt.hasLinearTree();
+		}
+
 		Map<String, Object> options = new LinkedHashMap<>();
-		options.put(HasLightGBMOptions.OPTION_COMPACT, this.compact);
+		options.put(HasLightGBMOptions.OPTION_COMPACT, compact);
 		options.put(HasLightGBMOptions.OPTION_NAN_AS_MISSING, this.nanAsMissing);
 		options.put(HasLightGBMOptions.OPTION_NUM_ITERATION, this.numIteration);
 

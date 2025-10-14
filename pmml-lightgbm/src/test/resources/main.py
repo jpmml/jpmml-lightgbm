@@ -168,23 +168,21 @@ build_auto("Auto", boosting_type = "rf", bagging_freq = 5, bagging_fraction = 0.
 build_auto("AutoNA")
 build_auto("AutoNA", num_iteration = 17)
 
-def build_auto_direct(name):
-	df = load_csv(name + ".csv")
+def build_lineartree_auto(name):
+	df = load_csv(name + ".csv", ["cylinders", "model_year", "origin"])
 	X = df[["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"]]
 	y = df["mpg"]
 
-	lgbm = LGBMRegressor(n_estimators = 31)
-	lgbm.fit(X.values, y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"], categorical_feature =  ["cylinders", "model_year", "origin"])
+	lgbm = LGBMRegressor(linear_tree = True, n_estimators = 31)
+	lgbm.fit(X, y)
 
-	name = re.sub("Auto", "AutoDirect", name);
+	store_lgbm(lgbm, "LinearTreeRegression" + name + ".txt")
 
-	store_lgbm(lgbm, "Regression" + name + ".txt")
+	mpg = DataFrame(lgbm.predict(X), columns = ["_target"])
+	store_csv(mpg, "LinearTreeRegression" + name + ".csv")
 
-	mpg = DataFrame(lgbm.predict(X.values), columns = ["_target"])
-	store_csv(mpg, "Regression" + name + ".csv")
-
-build_auto_direct("Auto")
-build_auto_direct("AutoNA")
+build_lineartree_auto("Auto")
+build_lineartree_auto("AutoNA")
 
 def build_housing(name, objective = "regression", num_iteration = 0):
 	df = load_csv(name + ".csv", ["CHAS"])
