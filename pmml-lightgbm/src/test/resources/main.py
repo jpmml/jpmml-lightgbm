@@ -88,6 +88,23 @@ build_audit("Audit", boosting_type = "rf", bagging_freq = 10, bagging_fraction =
 build_audit("AuditNA", objective = "cross_entropy")
 build_audit("AuditNA", objective = "cross_entropy", num_iteration = 17)
 
+def build_lineartree_audit(name):
+	df = load_csv(name + ".csv", ["Employment", "Education", "Marital", "Occupation", "Gender", "Deductions"])
+	X = df[["Age", "Employment", "Education", "Marital", "Occupation", "Income", "Gender", "Deductions", "Hours"]]
+	y = df["Adjusted"]
+
+	lgbm = LGBMClassifier(linear_tree = True, n_estimators = 31)
+	lgbm.fit(X, y)
+
+	store_lgbm(lgbm, "LinearTreeClassification" + name + ".txt")
+
+	adjusted = DataFrame(lgbm.predict(X), columns = ["_target"])
+	adjusted_proba = DataFrame(lgbm.predict_proba(X), columns = ["probability(0)", "probability(1)"])
+	store_csv(pandas.concat((adjusted, adjusted_proba), axis = 1), "LinearTreeClassification" + name + ".csv")
+
+build_lineartree_audit("Audit")
+build_lineartree_audit("AuditNA")
+
 def build_audit_invalid():
 	df = load_csv("AuditInvalid.csv", ["Employment", "Education", "Marital", "Occupation", "Gender", "Deductions"])
 	X = df[["Age", "Employment", "Education", "Marital", "Occupation", "Income", "Gender", "Deductions", "Hours"]]

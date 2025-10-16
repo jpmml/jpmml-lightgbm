@@ -21,8 +21,9 @@ package org.jpmml.lightgbm.testing;
 public interface LightGBMAlgorithms {
 
 	String CLASSIFICATION = "Classification";
-	String RF_CLASSIFICATION = "RFClassification";
+	String LINEARTREE_CLASSIFICATION = "LinearTree" + CLASSIFICATION;
+	String RF_CLASSIFICATION = "RF" + CLASSIFICATION;
 	String REGRESSION = "Regression";
-	String LINEARTREE_REGRESSION = "LinearTreeRegression";
-	String RF_REGRESSION = "RFRegression";
+	String LINEARTREE_REGRESSION = "LinearTree" + REGRESSION;
+	String RF_REGRESSION = "RF" + REGRESSION;
 }

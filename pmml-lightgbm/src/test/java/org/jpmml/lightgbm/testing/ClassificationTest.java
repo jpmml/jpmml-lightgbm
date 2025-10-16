@@ -19,12 +19,17 @@
 package org.jpmml.lightgbm.testing;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 import com.google.common.base.Equivalence;
 import org.jpmml.evaluator.ResultField;
 import org.jpmml.evaluator.Table;
 import org.jpmml.evaluator.testing.RealNumberEquivalence;
+import org.jpmml.lightgbm.HasLightGBMOptions;
 import org.junit.jupiter.api.Test;
 
 public class ClassificationTest extends ValidatingLightGBMEncoderBatchTest implements LightGBMAlgorithms, LightGBMDatasets {
@@ -36,6 +41,22 @@ public class ClassificationTest extends ValidatingLightGBMEncoderBatchTest imple
 			@Override
 			public ClassificationTest getArchiveBatchTest(){
 				return ClassificationTest.this;
+			}
+
+			@Override
+			public List<Map<String, Object>> getOptionsMatrix(){
+				List<Map<String, Object>> optionsMatrix = super.getOptionsMatrix();
+
+				String algorithm = getAlgorithm();
+
+				if((LINEARTREE_CLASSIFICATION).equals(algorithm)){
+					Map<String, Object> options = new LinkedHashMap<>();
+					options.put(HasLightGBMOptions.OPTION_NAN_AS_MISSING, true);
+
+					return Collections.singletonList(options);
+				}
+
+				return optionsMatrix;
 			}
 
 			@Override
@@ -77,6 +98,11 @@ public class ClassificationTest extends ValidatingLightGBMEncoderBatchTest imple
 	}
 
 	@Test
+	public void evaluateLinearTreeAudit() throws Exception {
+		evaluate(LINEARTREE_CLASSIFICATION, AUDIT, new RealNumberEquivalence(8 + 8));
+	}
+
+	@Test
 	public void evaluateRFAudit() throws Exception {
 		evaluate(RF_CLASSIFICATION, AUDIT, new RealNumberEquivalence(4));
 	}
@@ -94,6 +120,11 @@ public class ClassificationTest extends ValidatingLightGBMEncoderBatchTest imple
 	@Test
 	public void evaluateAuditNA() throws Exception {
 		evaluate(CLASSIFICATION, AUDIT_NA, new RealNumberEquivalence(2));
+	}
+
+	@Test
+	public void evaluateLinearTreeAuditNA() throws Exception {
+		evaluate(LINEARTREE_CLASSIFICATION, AUDIT_NA, new RealNumberEquivalence(8 + 8));
 	}
 
 	@Test
