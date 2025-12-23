@@ -27,6 +27,7 @@ import org.jpmml.converter.CategoricalLabel;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.LabelUtil;
 import org.jpmml.converter.ModelEncoder;
+import org.jpmml.converter.SchemaException;
 
 abstract
 public class Classification extends ObjectiveFunction {
@@ -52,7 +53,7 @@ public class Classification extends ObjectiveFunction {
 
 		{
 			if(targetCategories.size() != this.num_class_){
-				throw new IllegalArgumentException("Expected " + this.num_class_ + " target categories, got " + targetCategories.size() + " target categories");
+				throw new SchemaException("Expected " + this.num_class_ + " target categories, got " + targetCategories.size() + " target categories");
 			}
 
 			dataField = encoder.createDataField(targetName, OpType.CATEGORICAL, DataType.STRING, targetCategories);

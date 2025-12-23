@@ -28,6 +28,7 @@ import org.jpmml.converter.ContinuousLabel;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.ModelEncoder;
 import org.jpmml.converter.Schema;
+import org.jpmml.converter.SchemaException;
 
 public class Regression extends ObjectiveFunction {
 
@@ -39,7 +40,7 @@ public class Regression extends ObjectiveFunction {
 	public Label encodeLabel(String targetName, List<?> targetCategories, ModelEncoder encoder){
 
 		if(targetCategories != null && targetCategories.size() > 0){
-			throw new IllegalArgumentException("Regression requires zero target categories");
+			throw new SchemaException("Regression requires zero target categories");
 		}
 
 		DataField dataField = encoder.createDataField(targetName, OpType.CONTINUOUS, DataType.DOUBLE);
