@@ -106,7 +106,7 @@ public class Tree {
 		} else
 
 		{
-			throw new LightGBMException("Expected one or more leaves, got " + this.num_leaves_ + " leaves");
+			throw new LightGBMException("Expected one or more leaves, got " + this.num_leaves_);
 		} // End if
 
 		if(this.num_cat_ > 0){

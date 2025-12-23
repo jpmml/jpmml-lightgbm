@@ -266,7 +266,7 @@ public class GBDT {
 
 						List<?> pandasCategoryValues = this.pandas_categorical.get(pandasCategoryIndex);
 						if(pandasCategoryValues.size() < values.size()){
-							throw new LightGBMException("Expected at least " + values.size() + " category levels, got " + pandasCategoryValues.size() + " category levels");
+							throw new LightGBMException("Expected at least " + values.size() + " category levels, got " + pandasCategoryValues.size());
 						}
 
 						values = pandasCategoryValues;
