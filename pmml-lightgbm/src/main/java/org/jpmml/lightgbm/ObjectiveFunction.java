@@ -53,7 +53,7 @@ public class ObjectiveFunction {
 	public MiningModel encodeModel(List<Tree> trees, Integer numIteration, Schema schema);
 
 	protected MiningModel createMiningModel(List<Tree> trees, Integer numIteration, Schema schema){
-		ContinuousLabel continuousLabel = (ContinuousLabel)schema.getLabel();
+		ContinuousLabel continuousLabel = schema.requireContinuousLabel();
 
 		Schema segmentSchema = schema.toAnonymousSchema();
 
