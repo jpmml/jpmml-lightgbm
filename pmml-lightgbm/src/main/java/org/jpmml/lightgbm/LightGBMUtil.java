@@ -130,7 +130,7 @@ public class LightGBMUtil {
 
 			return constructor.newInstance(config);
 		} catch(ReflectiveOperationException roe){
-			throw new IllegalArgumentException(string, roe);
+			throw new LightGBMException("Failed to create custom objective function", roe);
 		}
 	}
 

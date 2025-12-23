@@ -95,7 +95,7 @@ public class GBDT {
 					case "v4":
 						break;
 					default:
-						throw new IllegalArgumentException("Version " + this.version + " is not supported");
+						throw new LightGBMException("Version \'" + this.version + "\' is not supported");
 				}
 			}
 
@@ -261,12 +261,12 @@ public class GBDT {
 					if(hasPandasCategories){
 
 						if(pandasCategoryIndex >= this.pandas_categorical.size()){
-							throw new IllegalArgumentException("Conflicting categorical feature information between the header and \"pandas_categorical\" sections");
+							throw new LightGBMException("Conflicting categorical feature information between the header and \'pandas_categorical\' sections");
 						}
 
 						List<?> pandasCategoryValues = this.pandas_categorical.get(pandasCategoryIndex);
 						if(pandasCategoryValues.size() < values.size()){
-							throw new IllegalArgumentException("Expected at least " + values.size() + " category levels, got " + pandasCategoryValues.size() + " category levels");
+							throw new LightGBMException("Expected at least " + values.size() + " category levels, got " + pandasCategoryValues.size() + " category levels");
 						}
 
 						values = pandasCategoryValues;
@@ -651,7 +651,7 @@ public class GBDT {
 			case "custom":
 				return null;
 			default:
-				throw new IllegalArgumentException(standardizedName);
+				throw new LightGBMException("Objective function \'" + name + "\' is not supported");
 		}
 	}
 
@@ -711,16 +711,12 @@ public class GBDT {
 	private List<List<?>> loadPandasCategorical(Section section){
 		String id = section.id();
 
-		try {
-			List<List<?>> result = PandasUtil.parsePandasCategorical(id);
-			if(result == null){
-				result = Collections.emptyList();
-			}
-
-			return result;
-		} catch(Exception e){
-			throw new IllegalArgumentException(id, e);
+		List<List<?>> result = PandasUtil.parsePandasCategorical(id);
+		if(result == null){
+			result = Collections.emptyList();
 		}
+
+		return result;
 	}
 
 	static

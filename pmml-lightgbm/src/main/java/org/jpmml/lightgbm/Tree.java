@@ -106,7 +106,7 @@ public class Tree {
 		} else
 
 		{
-			throw new IllegalArgumentException("Expected one or more leaves, got " + this.num_leaves_ + " leaves");
+			throw new LightGBMException("Expected one or more leaves, got " + this.num_leaves_ + " leaves");
 		} // End if
 
 		if(this.num_cat_ > 0){
@@ -165,11 +165,11 @@ public class Tree {
 				BinaryFeature binaryFeature = (BinaryFeature)feature;
 
 				if(hasCategoricalMask(decision_type_)){
-					throw new IllegalArgumentException("Expected a false (off) categorical split mask for binary feature " + binaryFeature.getName() + ", got true (on)");
+					throw new LightGBMException("Expected a false (off) categorical split mask for binary feature " + binaryFeature.getName() + ", got true (on)");
 				} // End if
 
 				if(threshold_ != 0.5d){
-					throw new IllegalArgumentException("Expected 0.5 as a threshold value for binary feature " + binaryFeature.getName() + ", got " + threshold_);
+					throw new LightGBMException("Expected 0.5 as a threshold value for binary feature " + binaryFeature.getName() + ", got " + threshold_);
 				}
 
 				Object value = binaryFeature.getValue();
@@ -182,7 +182,7 @@ public class Tree {
 				BinaryCategoricalFeature binaryCategoricalFeature = (BinaryCategoricalFeature)feature;
 
 				if(!hasCategoricalMask(decision_type_)){
-					throw new IllegalArgumentException("Expected a true (on) categorical split mask for binary categorical feature " + binaryCategoricalFeature.getName() + ", got false (off)");
+					throw new LightGBMException("Expected a true (on) categorical split mask for binary categorical feature " + binaryCategoricalFeature.getName() + ", got false (off)");
 				}
 
 				String name = binaryCategoricalFeature.getName();
@@ -217,7 +217,7 @@ public class Tree {
 				} else
 
 				{
-					throw new IllegalArgumentException("Neither left nor right branch is selectable");
+					throw new LightGBMException("Neither left nor right branch is selectable");
 				}
 			} else
 
@@ -225,7 +225,7 @@ public class Tree {
 				CategoricalFeature categoricalFeature = (CategoricalFeature)feature;
 
 				if(!hasCategoricalMask(decision_type_)){
-					throw new IllegalArgumentException("Expected a true (on) categorical split mask for categorical feature " + categoricalFeature.getName() + ", got false (off)");
+					throw new LightGBMException("Expected a true (on) categorical split mask for categorical feature " + categoricalFeature.getName() + ", got false (off)");
 				}
 
 				String name = categoricalFeature.getName();
@@ -244,11 +244,11 @@ public class Tree {
 				Set<?> parentValues = categoryManager.getValue(name);
 
 				if(leftValues.size() == 0){
-					throw new IllegalArgumentException("Left branch is not selectable");
+					throw new LightGBMException("Left branch is not selectable");
 				} // End if
 
 				if(parentValues != null && rightValues.size() == parentValues.size()){
-					throw new IllegalArgumentException("Right branch is not selectable");
+					throw new LightGBMException("Right branch is not selectable");
 				}
 
 				leftCategoryManager = categoryManager.fork(name, leftValues);
@@ -270,14 +270,14 @@ public class Tree {
 			if(feature instanceof NullFeature){
 				NullFeature nullFeature = (NullFeature)feature;
 
-				throw new IllegalArgumentException("Cannot generate split for undefined (none) feature " + nullFeature.getName());
+				throw new LightGBMException("Cannot generate split for undefined (none) feature " + nullFeature.getName());
 			} else
 
 			{
 				ContinuousFeature continuousFeature = feature.toContinuousFeature();
 
 				if(hasCategoricalMask(decision_type_)){
-					throw new IllegalArgumentException("Expected a false (off) categorical split mask for continuous feature " + continuousFeature.getName() + ", got true (on)");
+					throw new LightGBMException("Expected a false (off) categorical split mask for continuous feature " + continuousFeature.getName() + ", got true (on)");
 				}
 
 				Number value = threshold_;

@@ -39,7 +39,7 @@ public class MultinomialLogisticRegression extends Classification {
 
 		int num_class = config.getInt(Classification.CONFIG_NUM_CLASS);
 		if(num_class < 3){
-			throw new IllegalArgumentException("Multi-class classification requires three or more target categories");
+			throw new LightGBMException("Multi-class classification requires three or more target categories");
 		}
 	}
 

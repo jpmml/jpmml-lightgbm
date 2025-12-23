@@ -41,11 +41,15 @@ public class PandasUtil {
 
 		string = string.substring(PandasUtil.PREFIX_PANDAS_CATEGORICAL.length());
 
-		JsonElement element = JsonParser.parseString(string);
+		try {
+			JsonElement element = JsonParser.parseString(string);
 
-		Gson gson = createGson();
+			Gson gson = createGson();
 
-		return gson.fromJson(element, ListOfLists.class);
+			return gson.fromJson(element, ListOfLists.class);
+		} catch(Exception e){
+			throw new LightGBMException("Failed to parse \'pandas_categorical\' section", e);
+		}
 	}
 
 	static
