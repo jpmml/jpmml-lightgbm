@@ -26,6 +26,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.ToNumberPolicy;
+import org.jpmml.converter.ExceptionUtil;
 
 public class PandasUtil {
 
@@ -48,7 +49,7 @@ public class PandasUtil {
 
 			return gson.fromJson(element, ListOfLists.class);
 		} catch(Exception e){
-			throw new LightGBMException("Failed to parse \'pandas_categorical\' section", e);
+			throw new LightGBMException("Failed to parse " + ExceptionUtil.formatName("pandas_categorical") + " section", e);
 		}
 	}
 

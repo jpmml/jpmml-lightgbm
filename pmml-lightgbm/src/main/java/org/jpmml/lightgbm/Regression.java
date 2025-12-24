@@ -25,10 +25,10 @@ import org.dmg.pmml.DataType;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.mining.MiningModel;
 import org.jpmml.converter.ContinuousLabel;
+import org.jpmml.converter.InvalidLabelException;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.ModelEncoder;
 import org.jpmml.converter.Schema;
-import org.jpmml.converter.SchemaException;
 
 public class Regression extends ObjectiveFunction {
 
@@ -39,8 +39,8 @@ public class Regression extends ObjectiveFunction {
 	@Override
 	public Label encodeLabel(String targetName, List<?> targetCategories, ModelEncoder encoder){
 
-		if(targetCategories != null && targetCategories.size() > 0){
-			throw new SchemaException("Regression requires zero target categories");
+		if(targetCategories != null && !targetCategories.isEmpty()){
+			throw new InvalidLabelException("Expected zero target categories, got " + targetCategories.size());
 		}
 
 		DataField dataField = encoder.createDataField(targetName, OpType.CONTINUOUS, DataType.DOUBLE);

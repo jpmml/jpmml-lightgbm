@@ -24,10 +24,11 @@ import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
 import org.dmg.pmml.OpType;
 import org.jpmml.converter.CategoricalLabel;
+import org.jpmml.converter.ExceptionUtil;
+import org.jpmml.converter.InvalidLabelException;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.LabelUtil;
 import org.jpmml.converter.ModelEncoder;
-import org.jpmml.converter.SchemaException;
 
 abstract
 public class Classification extends ObjectiveFunction {
@@ -53,7 +54,7 @@ public class Classification extends ObjectiveFunction {
 
 		{
 			if(targetCategories.size() != this.num_class_){
-				throw new SchemaException("Expected " + this.num_class_ + " target categories, got " + targetCategories.size());
+				throw new InvalidLabelException("Expected " + ExceptionUtil.formatCount(this.num_class_, "target category", "target categories") + ", got " + targetCategories.size());
 			}
 
 			dataField = encoder.createDataField(targetName, OpType.CATEGORICAL, DataType.STRING, targetCategories);

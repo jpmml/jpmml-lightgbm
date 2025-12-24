@@ -35,9 +35,10 @@ import org.dmg.pmml.tree.CountingLeafNode;
 import org.dmg.pmml.tree.Node;
 import org.dmg.pmml.tree.TreeModel;
 import org.jpmml.converter.BinaryFeature;
-import org.jpmml.converter.CategoricalFeature;
 import org.jpmml.converter.CategoryManager;
 import org.jpmml.converter.ContinuousFeature;
+import org.jpmml.converter.DiscreteFeature;
+import org.jpmml.converter.ExceptionUtil;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.ModelUtil;
 import org.jpmml.converter.PredicateManager;
@@ -165,11 +166,11 @@ public class Tree {
 				BinaryFeature binaryFeature = (BinaryFeature)feature;
 
 				if(hasCategoricalMask(decision_type_)){
-					throw new LightGBMException("Expected a false (off) categorical split mask for binary feature " + binaryFeature.getName() + ", got true (on)");
+					throw new LightGBMException("Expected a false (off) categorical split mask for binary feature " + ExceptionUtil.formatName(binaryFeature) + ", got true (on)");
 				} // End if
 
 				if(threshold_ != 0.5d){
-					throw new LightGBMException("Expected 0.5 as a threshold value for binary feature " + binaryFeature.getName() + ", got " + threshold_);
+					throw new LightGBMException("Expected a 0.5 threshold value for binary feature " + ExceptionUtil.formatName(binaryFeature) + ", got " + threshold_);
 				}
 
 				Object value = binaryFeature.getValue();
@@ -182,7 +183,7 @@ public class Tree {
 				BinaryCategoricalFeature binaryCategoricalFeature = (BinaryCategoricalFeature)feature;
 
 				if(!hasCategoricalMask(decision_type_)){
-					throw new LightGBMException("Expected a true (on) categorical split mask for binary categorical feature " + binaryCategoricalFeature.getName() + ", got false (off)");
+					throw new LightGBMException("Expected a true (on) categorical split mask for binary categorical feature " + ExceptionUtil.formatName(binaryCategoricalFeature) + ", got false (off)");
 				}
 
 				String name = binaryCategoricalFeature.getName();
@@ -221,18 +222,18 @@ public class Tree {
 				}
 			} else
 
-			if(feature instanceof CategoricalFeature){
-				CategoricalFeature categoricalFeature = (CategoricalFeature)feature;
+			if(feature instanceof DiscreteFeature){
+				DiscreteFeature discreteFeature = (DiscreteFeature)feature;
 
 				if(!hasCategoricalMask(decision_type_)){
-					throw new LightGBMException("Expected a true (on) categorical split mask for categorical feature " + categoricalFeature.getName() + ", got false (off)");
+					throw new LightGBMException("Expected a true (on) categorical split mask for categorical feature " + ExceptionUtil.formatName(discreteFeature) + ", got false (off)");
 				}
 
-				String name = categoricalFeature.getName();
+				String name = discreteFeature.getName();
 
-				boolean indexAsValue = (categoricalFeature instanceof DirectCategoricalFeature);
+				boolean indexAsValue = (discreteFeature instanceof DirectCategoricalFeature);
 
-				List<?> values = categoricalFeature.getValues();
+				List<?> values = discreteFeature.getValues();
 
 				java.util.function.Predicate<Object> valueFilter = categoryManager.getValueFilter(name);
 
@@ -254,10 +255,10 @@ public class Tree {
 				leftCategoryManager = categoryManager.fork(name, leftValues);
 				rightCategoryManager = categoryManager.fork(name, rightValues);
 
-				leftPredicate = predicateManager.createPredicate(categoricalFeature, leftValues);
+				leftPredicate = predicateManager.createPredicate(discreteFeature, leftValues);
 
 				if(rightValues.size() > 0){
-					rightPredicate = predicateManager.createPredicate(categoricalFeature, rightValues);
+					rightPredicate = predicateManager.createPredicate(discreteFeature, rightValues);
 				} else
 
 				{
@@ -270,14 +271,14 @@ public class Tree {
 			if(feature instanceof NullFeature){
 				NullFeature nullFeature = (NullFeature)feature;
 
-				throw new LightGBMException("Cannot generate split for undefined (none) feature " + nullFeature.getName());
+				throw new LightGBMException("Cannot generate split for undefined (none) feature " + ExceptionUtil.formatName(nullFeature));
 			} else
 
 			{
 				ContinuousFeature continuousFeature = feature.toContinuousFeature();
 
 				if(hasCategoricalMask(decision_type_)){
-					throw new LightGBMException("Expected a false (off) categorical split mask for continuous feature " + continuousFeature.getName() + ", got true (on)");
+					throw new LightGBMException("Expected a false (off) categorical split mask for continuous feature " + ExceptionUtil.formatName(continuousFeature) + ", got true (on)");
 				}
 
 				Number value = threshold_;

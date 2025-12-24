@@ -41,6 +41,8 @@ import org.jpmml.converter.BinaryFeature;
 import org.jpmml.converter.BooleanFeature;
 import org.jpmml.converter.CategoricalFeature;
 import org.jpmml.converter.ContinuousFeature;
+import org.jpmml.converter.DiscreteFeature;
+import org.jpmml.converter.ExceptionUtil;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.FieldUtil;
 import org.jpmml.converter.InvalidValueDecorator;
@@ -95,7 +97,7 @@ public class GBDT {
 					case "v4":
 						break;
 					default:
-						throw new LightGBMException("Version \'" + this.version + "\' is not supported");
+						throw new LightGBMException("Version " + ExceptionUtil.formatVersion(this.version) + " is not supported");
 				}
 			}
 
@@ -261,12 +263,12 @@ public class GBDT {
 					if(hasPandasCategories){
 
 						if(pandasCategoryIndex >= this.pandas_categorical.size()){
-							throw new LightGBMException("Conflicting categorical feature information between the header and \'pandas_categorical\' sections");
+							throw new LightGBMException("Conflicting categorical feature information between the header and " + ExceptionUtil.formatName("pandas_categorical") + " sections");
 						}
 
 						List<?> pandasCategoryValues = this.pandas_categorical.get(pandasCategoryIndex);
 						if(pandasCategoryValues.size() < values.size()){
-							throw new LightGBMException("Expected at least " + values.size() + " category levels, got " + pandasCategoryValues.size());
+							throw new LightGBMException("Expected at least " + ExceptionUtil.formatCount(values.size(), "category level") + ", got " + pandasCategoryValues.size());
 						}
 
 						values = pandasCategoryValues;
@@ -379,12 +381,12 @@ public class GBDT {
 					}
 				} else
 
-				if(feature instanceof CategoricalFeature){
-					CategoricalFeature categoricalFeature = (CategoricalFeature)feature;
+				if(feature instanceof DiscreteFeature){
+					DiscreteFeature discreteFeature = (DiscreteFeature)feature;
 
 					Boolean categorical = isCategorical(index);
 					if(categorical == null || categorical.booleanValue()){
-						return categoricalFeature;
+						return discreteFeature;
 					}
 				} else
 
@@ -651,7 +653,7 @@ public class GBDT {
 			case "custom":
 				return null;
 			default:
-				throw new LightGBMException("Objective function \'" + name + "\' is not supported");
+				throw new LightGBMException("Objective function " + ExceptionUtil.formatParameter(name) + " is not supported");
 		}
 	}
 
