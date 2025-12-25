@@ -35,6 +35,7 @@ import org.dmg.pmml.Interval;
 import org.dmg.pmml.InvalidValueTreatmentMethod;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.PMML;
+import org.dmg.pmml.PMMLConstants;
 import org.dmg.pmml.Value.Property;
 import org.dmg.pmml.mining.MiningModel;
 import org.jpmml.converter.BinaryFeature;
@@ -481,7 +482,7 @@ public class GBDT {
 								if(field instanceof DataField){
 									DataField dataField = (DataField)field;
 
-									FieldUtil.addValues(dataField, Property.MISSING, Collections.singletonList("NaN"));
+									FieldUtil.addValues(dataField, Property.MISSING, Collections.singletonList(PMMLConstants.NOT_A_NUMBER));
 								}
 							}
 							break;

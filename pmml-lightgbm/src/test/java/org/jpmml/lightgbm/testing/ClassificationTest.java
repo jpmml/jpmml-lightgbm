@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 import com.google.common.base.Equivalence;
+import org.dmg.pmml.PMMLConstants;
 import org.jpmml.evaluator.ResultField;
 import org.jpmml.evaluator.Table;
 import org.jpmml.evaluator.testing.RealNumberEquivalence;
@@ -78,7 +79,7 @@ public class ClassificationTest extends ValidatingLightGBMEncoderBatchTest imple
 					table.apply("Income", (value) -> {
 
 						if(value == null){
-							return "NaN";
+							return PMMLConstants.NOT_A_NUMBER;
 						}
 
 						return value;
