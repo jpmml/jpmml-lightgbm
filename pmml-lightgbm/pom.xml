@@ -8,9 +8,7 @@
 		<version>1.6-SNAPSHOT</version>
 	</parent>
 
-	<groupId>org.jpmml</groupId>
 	<artifactId>pmml-lightgbm</artifactId>
-	<packaging>jar</packaging>
 
 	<name>JPMML LightGBM converter</name>
 	<description>JPMML LightGBM to PMML converter</description>
