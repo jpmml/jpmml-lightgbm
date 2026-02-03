@@ -105,7 +105,7 @@ public class ClassificationTest extends ValidatingLightGBMEncoderBatchTest imple
 
 	@Test
 	public void evaluateRFAudit() throws Exception {
-		evaluate(RF_CLASSIFICATION, AUDIT, new RealNumberEquivalence(4));
+		evaluate(RF_CLASSIFICATION, AUDIT, new RealNumberEquivalence(2 + 2));
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class ClassificationTest extends ValidatingLightGBMEncoderBatchTest imple
 
 	@Test
 	public void evaluateAuditInvalid() throws Exception {
-		evaluate(CLASSIFICATION, AUDIT_INVALID, new RealNumberEquivalence(4));
+		evaluate(CLASSIFICATION, AUDIT_INVALID, new RealNumberEquivalence(2 + 2));
 	}
 
 	@Test

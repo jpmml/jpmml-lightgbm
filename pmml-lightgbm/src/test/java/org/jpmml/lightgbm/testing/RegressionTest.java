@@ -121,7 +121,7 @@ public class RegressionTest extends ValidatingLightGBMEncoderBatchTest implement
 
 	@Test
 	public void evaluateLinearTreeAuto() throws Exception {
-		evaluate(LINEARTREE_REGRESSION, AUTO, new RealNumberEquivalence(4));
+		evaluate(LINEARTREE_REGRESSION, AUTO, new RealNumberEquivalence(2 + 2));
 	}
 
 	@Test
@@ -141,7 +141,7 @@ public class RegressionTest extends ValidatingLightGBMEncoderBatchTest implement
 
 	@Test
 	public void evaluateLinearTreeAutoNA() throws Exception {
-		evaluate(LINEARTREE_REGRESSION, AUTO_NA, new RealNumberEquivalence(4));
+		evaluate(LINEARTREE_REGRESSION, AUTO_NA, new RealNumberEquivalence(2 + 2));
 	}
 
 	@Test
