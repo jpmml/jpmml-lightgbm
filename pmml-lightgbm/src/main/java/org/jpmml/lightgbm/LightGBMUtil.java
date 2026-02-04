@@ -18,10 +18,10 @@
  */
 package org.jpmml.lightgbm;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,7 +31,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.google.common.io.CharStreams;
 import org.dmg.pmml.Interval;
 
 public class LightGBMUtil {
@@ -87,11 +86,10 @@ public class LightGBMUtil {
 
 	static
 	public Iterator<String> parseText(InputStream is) throws IOException {
-		Reader reader = new InputStreamReader(is, "US-ASCII");
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is, "US-ASCII"));
 
-		List<String> lines = CharStreams.readLines(reader);
-
-		return lines.iterator();
+		return reader.lines()
+			.iterator();
 	}
 
 	static
