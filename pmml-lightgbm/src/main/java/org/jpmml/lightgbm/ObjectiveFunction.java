@@ -21,6 +21,7 @@ package org.jpmml.lightgbm;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.Iterables;
 import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.Model;
 import org.dmg.pmml.mining.MiningModel;
@@ -77,10 +78,21 @@ public class ObjectiveFunction {
 			treeModels.add(treeModel);
 		}
 
-		MiningModel miningModel = new MiningModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(continuousLabel))
-			.setSegmentation(MiningModelUtil.createSegmentation(this.average_output_ ? Segmentation.MultipleModelMethod.AVERAGE : Segmentation.MultipleModelMethod.SUM, Segmentation.MissingPredictionTreatment.RETURN_MISSING, treeModels));
+		if(treeModels.size() == 1){
+			TreeModel treeModel = Iterables.getOnlyElement(treeModels);
 
-		return miningModel;
+			treeModel = treeModel
+				.setMiningSchema(ModelUtil.createMiningSchema(continuousLabel));
+
+			return treeModel;
+		} else
+
+		{
+			MiningModel miningModel = new MiningModel(MiningFunction.REGRESSION, ModelUtil.createMiningSchema(continuousLabel))
+				.setSegmentation(MiningModelUtil.createSegmentation(this.average_output_ ? Segmentation.MultipleModelMethod.AVERAGE : Segmentation.MultipleModelMethod.SUM, Segmentation.MissingPredictionTreatment.RETURN_MISSING, treeModels));
+
+			return miningModel;
+		}
 	}
 
 	public String getName(){
