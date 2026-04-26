@@ -482,7 +482,7 @@ public class GBDT {
 								if(field instanceof DataField){
 									DataField dataField = (DataField)field;
 
-									FieldUtil.addValues(dataField, Property.MISSING, Collections.singletonList(PMMLConstants.NOT_A_NUMBER));
+									FieldUtil.addValue(dataField, Property.MISSING, PMMLConstants.NOT_A_NUMBER);
 								}
 							}
 							break;

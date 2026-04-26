@@ -106,7 +106,7 @@ public class PandasDummiesTest extends ModelEncoderBatchTest implements LightGBM
 							dataField = encoder.createDataField(name, OpType.CATEGORICAL, DataType.STRING);
 						}
 
-						FieldUtil.addValues(dataField, Collections.singletonList(value));
+						FieldUtil.addValue(dataField, value);
 
 						features.add(new BinaryFeature(encoder, dataField, value));
 					}
