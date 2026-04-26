@@ -22,8 +22,8 @@ import java.util.List;
 
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
+import org.dmg.pmml.Model;
 import org.dmg.pmml.OpType;
-import org.dmg.pmml.mining.MiningModel;
 import org.jpmml.converter.ContinuousLabel;
 import org.jpmml.converter.InvalidLabelException;
 import org.jpmml.converter.Label;
@@ -49,9 +49,9 @@ public class Regression extends ObjectiveFunction {
 	}
 
 	@Override
-	public MiningModel encodeModel(List<Tree> trees, Integer numIteration, Schema schema){
-		MiningModel miningModel = createMiningModel(trees, numIteration, schema);
+	public Model encodeModel(List<Tree> trees, Integer numIteration, Schema schema){
+		Model model = encodeOutputGroup(trees, numIteration, schema);
 
-		return miningModel;
+		return model;
 	}
 }

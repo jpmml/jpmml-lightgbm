@@ -33,11 +33,11 @@ import org.dmg.pmml.DataType;
 import org.dmg.pmml.Field;
 import org.dmg.pmml.Interval;
 import org.dmg.pmml.InvalidValueTreatmentMethod;
+import org.dmg.pmml.Model;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.PMML;
 import org.dmg.pmml.PMMLConstants;
 import org.dmg.pmml.Value.Property;
-import org.dmg.pmml.mining.MiningModel;
 import org.jpmml.converter.BinaryFeature;
 import org.jpmml.converter.BooleanFeature;
 import org.jpmml.converter.CategoricalFeature;
@@ -422,35 +422,35 @@ public class GBDT {
 
 		Schema schema = encodeSchema(targetName, targetCategories, encoder);
 
-		MiningModel miningModel = encodeModel(options, schema);
+		Model model = encodeModel(options, schema);
 
-		PMML pmml = encoder.encodePMML(miningModel);
+		PMML pmml = encoder.encodePMML(model);
 
 		return pmml;
 	}
 
-	public MiningModel encodeModel(Map<String, ?> options, Schema schema){
+	public Model encodeModel(Map<String, ?> options, Schema schema){
 		Integer numIterations = (Integer)options.get(HasLightGBMOptions.OPTION_NUM_ITERATION);
 
 		schema = configureSchema(options, schema);
 
-		MiningModel miningModel = encodeModel(numIterations, schema);
+		Model model = encodeModel(numIterations, schema);
 
-		miningModel = configureModel(options, miningModel);
+		model = configureModel(options, model);
 
-		return miningModel;
+		return model;
 	}
 
-	public MiningModel encodeModel(Integer numIterations, Schema schema){
+	public Model encodeModel(Integer numIterations, Schema schema){
 		ObjectiveFunction object_function_ = getObjectiveFunction();
 		if(object_function_ == null){
 			throw new IllegalStateException();
 		}
 
-		MiningModel miningModel = object_function_.encodeModel(Arrays.asList(this.models_), numIterations, schema)
+		Model model = object_function_.encodeModel(Arrays.asList(this.models_), numIterations, schema)
 			.setAlgorithmName("LightGBM");
 
-		return miningModel;
+		return model;
 	}
 
 	public Schema configureSchema(Map<String, ?> options, Schema schema){
@@ -498,7 +498,7 @@ public class GBDT {
 		return schema.toTransformedSchema(function);
 	}
 
-	public MiningModel configureModel(Map<String, ?> options, MiningModel miningModel){
+	public Model configureModel(Map<String, ?> options, Model model){
 		Boolean compact = (Boolean)options.get(HasLightGBMOptions.OPTION_COMPACT);
 
 		VisitorBattery visitors = new VisitorBattery();
@@ -507,9 +507,9 @@ public class GBDT {
 			visitors.add(TreeModelCompactor.class);
 		}
 
-		visitors.applyTo(miningModel);
+		visitors.applyTo(model);
 
-		return miningModel;
+		return model;
 	}
 
 	public String[] getFeatureNames(){

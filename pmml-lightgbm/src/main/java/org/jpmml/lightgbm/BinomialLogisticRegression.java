@@ -21,6 +21,7 @@ package org.jpmml.lightgbm;
 import java.util.List;
 
 import org.dmg.pmml.DataType;
+import org.dmg.pmml.Model;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.mining.MiningModel;
 import org.dmg.pmml.regression.RegressionModel;
@@ -43,10 +44,10 @@ public class BinomialLogisticRegression extends Classification {
 	public MiningModel encodeModel(List<Tree> trees, Integer numIteration, Schema schema){
 		Schema segmentSchema = schema.toAnonymousRegressorSchema(DataType.DOUBLE);
 
-		MiningModel miningModel = createMiningModel(trees, numIteration, segmentSchema)
+		Model model = encodeOutputGroup(trees, numIteration, segmentSchema)
 			.setOutput(ModelUtil.createPredictedOutput("lgbmValue", OpType.CONTINUOUS, DataType.DOUBLE));
 
-		return MiningModelUtil.createBinaryLogisticClassification(miningModel, BinomialLogisticRegression.this.sigmoid_, 0d, RegressionModel.NormalizationMethod.LOGIT, true, schema);
+		return MiningModelUtil.createBinaryLogisticClassification(model, BinomialLogisticRegression.this.sigmoid_, 0d, RegressionModel.NormalizationMethod.LOGIT, true, schema);
 	}
 
 	public static final String CONFIG_SIGMOID = "sigmoid";

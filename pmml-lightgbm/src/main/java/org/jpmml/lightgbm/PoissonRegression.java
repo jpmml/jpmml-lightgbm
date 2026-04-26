@@ -21,6 +21,7 @@ package org.jpmml.lightgbm;
 import java.util.List;
 
 import org.dmg.pmml.DataType;
+import org.dmg.pmml.Model;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.mining.MiningModel;
 import org.dmg.pmml.regression.RegressionModel;
@@ -38,9 +39,9 @@ public class PoissonRegression extends Regression {
 	public MiningModel encodeModel(List<Tree> trees, Integer numIteration, Schema schema){
 		Schema segmentSchema = schema.toAnonymousSchema();
 
-		MiningModel miningModel = super.encodeModel(trees, numIteration, segmentSchema)
+		Model model = super.encodeModel(trees, numIteration, segmentSchema)
 			.setOutput(ModelUtil.createPredictedOutput("lgbmValue", OpType.CONTINUOUS, DataType.DOUBLE));
 
-		return MiningModelUtil.createRegression(miningModel, RegressionModel.NormalizationMethod.EXP, schema);
+		return MiningModelUtil.createRegression(model, RegressionModel.NormalizationMethod.EXP, schema);
 	}
 }

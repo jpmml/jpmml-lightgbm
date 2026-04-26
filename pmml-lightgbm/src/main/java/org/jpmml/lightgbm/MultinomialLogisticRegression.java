@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.dmg.pmml.DataType;
+import org.dmg.pmml.Model;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.mining.MiningModel;
 import org.dmg.pmml.regression.RegressionModel;
@@ -47,17 +48,17 @@ public class MultinomialLogisticRegression extends Classification {
 	public MiningModel encodeModel(List<Tree> trees, Integer numIteration, Schema schema){
 		Schema segmentSchema = schema.toAnonymousRegressorSchema(DataType.DOUBLE);
 
-		List<MiningModel> miningModels = new ArrayList<>();
+		List<Model> models = new ArrayList<>();
 
 		CategoricalLabel categoricalLabel = schema.requireCategoricalLabel();
 
 		for(int i = 0, rows = categoricalLabel.size(), columns = (trees.size() / rows); i < rows; i++){
-			MiningModel miningModel = createMiningModel(FortranMatrixUtil.getRow(trees, rows, columns, i), numIteration, segmentSchema)
+			Model model = encodeOutputGroup(FortranMatrixUtil.getRow(trees, rows, columns, i), numIteration, segmentSchema)
 				.setOutput(ModelUtil.createPredictedOutput(FieldNameUtil.create("lgbmValue", categoricalLabel.getValue(i)), OpType.CONTINUOUS, DataType.DOUBLE));
 
-			miningModels.add(miningModel);
+			models.add(model);
 		}
 
-		return MiningModelUtil.createClassification(miningModels, RegressionModel.NormalizationMethod.SOFTMAX, true, schema);
+		return MiningModelUtil.createClassification(models, RegressionModel.NormalizationMethod.SOFTMAX, true, schema);
 	}
 }

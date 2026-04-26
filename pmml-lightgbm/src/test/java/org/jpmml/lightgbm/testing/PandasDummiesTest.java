@@ -28,9 +28,9 @@ import java.util.function.Predicate;
 import com.google.common.base.Equivalence;
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
+import org.dmg.pmml.Model;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.PMML;
-import org.dmg.pmml.mining.MiningModel;
 import org.jpmml.converter.BinaryFeature;
 import org.jpmml.converter.CategoricalLabel;
 import org.jpmml.converter.ContinuousFeature;
@@ -116,9 +116,9 @@ public class PandasDummiesTest extends ModelEncoderBatchTest implements LightGBM
 
 				Schema lgbmSchema = gbdt.toLightGBMSchema(schema);
 
-				MiningModel miningModel = gbdt.encodeModel(Collections.emptyMap(), lgbmSchema);
+				Model model = gbdt.encodeModel(Collections.emptyMap(), lgbmSchema);
 
-				return encoder.encodePMML(miningModel);
+				return encoder.encodePMML(model);
 			}
 
 			@Override

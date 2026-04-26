@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.dmg.pmml.MiningFunction;
+import org.dmg.pmml.Model;
 import org.dmg.pmml.mining.MiningModel;
 import org.dmg.pmml.mining.Segmentation;
 import org.dmg.pmml.tree.TreeModel;
@@ -50,9 +51,9 @@ public class ObjectiveFunction {
 	public Label encodeLabel(String targetName, List<?> targetCategories, ModelEncoder encoder);
 
 	abstract
-	public MiningModel encodeModel(List<Tree> trees, Integer numIteration, Schema schema);
+	public Model encodeModel(List<Tree> trees, Integer numIteration, Schema schema);
 
-	protected MiningModel createMiningModel(List<Tree> trees, Integer numIteration, Schema schema){
+	protected Model encodeOutputGroup(List<Tree> trees, Integer numIteration, Schema schema){
 		ContinuousLabel continuousLabel = schema.requireContinuousLabel();
 
 		Schema segmentSchema = schema.toAnonymousSchema();
