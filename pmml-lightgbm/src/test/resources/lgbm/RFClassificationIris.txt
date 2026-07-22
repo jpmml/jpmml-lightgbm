@@ -11537,6 +11537,7 @@ parameters:
 [machines: ]
 [gpu_platform_id: -1]
 [gpu_device_id: -1]
+[gpu_device_id_list: ]
 [gpu_use_dp: 0]
 [num_gpu: 1]
 
