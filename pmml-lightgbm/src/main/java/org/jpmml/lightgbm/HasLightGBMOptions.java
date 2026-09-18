@@ -18,26 +18,11 @@
  */
 package org.jpmml.lightgbm;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import org.jpmml.converter.tree.HasTreeModelOptions;
 
-import org.jpmml.converter.HasNativeConfiguration;
-import org.jpmml.converter.HasOptions;
-
-public interface HasLightGBMOptions extends HasOptions, HasNativeConfiguration {
-
-	String OPTION_COMPACT = "compact";
+public interface HasLightGBMOptions extends HasTreeModelOptions {
 
 	String OPTION_NAN_AS_MISSING = "nan_as_missing";
 
 	String OPTION_NUM_ITERATION = "num_iteration";
-
-	@Override
-	default
-	public Map<String, ?> getNativeConfiguration(){
-		Map<String, Object> result = new LinkedHashMap<>();
-		result.put(HasLightGBMOptions.OPTION_COMPACT, Boolean.FALSE);
-
-		return result;
-	}
 }

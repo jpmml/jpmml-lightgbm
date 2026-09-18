@@ -33,6 +33,7 @@ import org.dmg.pmml.DataType;
 import org.dmg.pmml.Field;
 import org.dmg.pmml.Interval;
 import org.dmg.pmml.InvalidValueTreatmentMethod;
+import org.dmg.pmml.MiningFunction;
 import org.dmg.pmml.Model;
 import org.dmg.pmml.OpType;
 import org.dmg.pmml.PMML;
@@ -49,12 +50,13 @@ import org.jpmml.converter.FieldUtil;
 import org.jpmml.converter.InvalidValueDecorator;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.ModelEncoder;
+import org.jpmml.converter.ModelTransformer;
 import org.jpmml.converter.Schema;
 import org.jpmml.converter.SchemaUtil;
 import org.jpmml.converter.TypeUtil;
 import org.jpmml.converter.WildcardFeature;
-import org.jpmml.lightgbm.visitors.TreeModelCompactor;
-import org.jpmml.model.visitors.VisitorBattery;
+import org.jpmml.converter.tree.HasTreeModelOptions;
+import org.jpmml.converter.tree.TreeModelTransformerBuilder;
 
 public class GBDT {
 
@@ -499,15 +501,22 @@ public class GBDT {
 	}
 
 	public Model configureModel(Map<String, ?> options, Model model){
-		Boolean compact = (Boolean)options.get(HasLightGBMOptions.OPTION_COMPACT);
+		ModelTransformer modelTransformer = new TreeModelTransformerBuilder(MiningFunction.REGRESSION){
 
-		VisitorBattery visitors = new VisitorBattery();
+			@Override
+			protected Map<String, ?> getDefaults(){
 
-		if((Boolean.TRUE).equals(compact)){
-			visitors.add(TreeModelCompactor.class);
+				if(hasLinearTree()){
+					return Collections.singletonMap(HasTreeModelOptions.OPTION_COMPACT, Boolean.FALSE);
+				}
+
+				return Collections.emptyMap();
+			}
 		}
+			.putOptions(options)
+			.build();
 
-		visitors.applyTo(model);
+		modelTransformer.applyTo(model);
 
 		return model;
 	}
