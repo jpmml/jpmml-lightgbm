@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 import com.google.common.base.Equivalence;
@@ -50,7 +51,7 @@ public class ClassificationTest extends ValidatingLightGBMEncoderBatchTest imple
 
 				String algorithm = getAlgorithm();
 
-				if((LINEARTREE_CLASSIFICATION).equals(algorithm)){
+				if(Objects.equals(LINEARTREE_CLASSIFICATION, algorithm)){
 					Map<String, Object> options = new LinkedHashMap<>();
 					options.put(HasLightGBMOptions.OPTION_NAN_AS_MISSING, true);
 
@@ -75,7 +76,7 @@ public class ClassificationTest extends ValidatingLightGBMEncoderBatchTest imple
 
 				String dataset = truncate(getDataset());
 
-				if((AUDIT_NA).equals(dataset)){
+				if(Objects.equals(AUDIT_NA, dataset)){
 					table.apply("Income", (value) -> {
 
 						if(value == null){

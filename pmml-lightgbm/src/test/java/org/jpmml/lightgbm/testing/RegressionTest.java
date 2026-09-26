@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 import com.google.common.base.Equivalence;
@@ -56,7 +57,7 @@ public class RegressionTest extends ValidatingLightGBMEncoderBatchTest implement
 
 				String algorithm = getAlgorithm();
 
-				if((LINEARTREE_REGRESSION).equals(algorithm)){
+				if(Objects.equals(LINEARTREE_REGRESSION, algorithm)){
 					Map<String, Object> options = new LinkedHashMap<>();
 					options.put(HasLightGBMOptions.OPTION_NAN_AS_MISSING, true);
 
@@ -73,9 +74,9 @@ public class RegressionTest extends ValidatingLightGBMEncoderBatchTest implement
 				String algorithm = getAlgorithm();
 				String dataset = getDataset();
 
-				if((REGRESSION).equals(algorithm)){
+				if(Objects.equals(REGRESSION, algorithm)){
 
-					if((AUTO).equals(dataset) || (AUTO_LIMIT).equals(dataset)){
+					if(Objects.equals(AUTO, dataset) || Objects.equals(AUTO_LIMIT, dataset)){
 						Section config = new Section();
 						config.put(ObjectiveFunction.CONFIG_NAME, "custom_regression");
 
@@ -93,7 +94,7 @@ public class RegressionTest extends ValidatingLightGBMEncoderBatchTest implement
 				String dataset = truncate(getDataset());
 
 				// XXX
-				if((HOUSING).equals(dataset) || (HOUSING_NA).equals(dataset)){
+				if(Objects.equals(HOUSING, dataset) || Objects.equals(HOUSING_NA, dataset)){
 					Visitor visitor = new AbstractVisitor(){
 
 						@Override
