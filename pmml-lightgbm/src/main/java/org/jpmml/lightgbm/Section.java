@@ -120,7 +120,7 @@ public class Section extends LinkedHashMap<String, String> {
 	public String put(String string){
 
 		if(string.startsWith("[") && string.endsWith("]")){
-			return put(string.substring("[".length(), string.length() - "]".length()), ':');
+			return putParameter(string.substring("[".length(), string.length() - "]".length()));
 		}
 
 		return put(string, '=');
@@ -140,6 +140,18 @@ public class Section extends LinkedHashMap<String, String> {
 			key = string;
 			value = null;
 		}
+
+		return super.put(key, value);
+	}
+
+	private String putParameter(String string){
+		int index = string.indexOf(':');
+		if(index < 0){
+			throw new IllegalArgumentException(string);
+		}
+
+		String key = string.substring(0, index);
+		String value = (string.substring(index + 1)).trim();
 
 		return super.put(key, value);
 	}
