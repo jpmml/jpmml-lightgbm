@@ -26,6 +26,7 @@ import java.io.OutputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.beust.jcommander.DefaultUsageFormatter;
 import com.beust.jcommander.IUsageFormatter;
@@ -33,6 +34,9 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import org.dmg.pmml.PMML;
+import org.jpmml.converter.Parameters;
+import org.jpmml.converter.SchemaParameters;
+import org.jpmml.converter.tree.TreeModelParameters;
 import org.jpmml.lightgbm.GBDT;
 import org.jpmml.lightgbm.HasLightGBMOptions;
 import org.jpmml.lightgbm.LightGBMUtil;
@@ -48,69 +52,102 @@ public class Main {
 		names = {"--lgbm-input"},
 		description = "LightGBM text input file",
 		required = true,
-		order = 1
+		order = Parameters.BLOCK_IO + 1
 	)
 	private File input = null;
 
 	@Parameter (
-		names = {"--pmml-output"},
-		description = "PMML output file",
+		names = {Parameters.NAME_PMML_OUTPUT},
+		description = Parameters.DESCRIPTION_PMML_OUTPUT,
 		required = true,
-		order = 2
+		order = Parameters.BLOCK_IO + 2
 	)
 	private File output = null;
 
 	@Parameter (
-		names = {"--objective"},
-		description = "Custom objective function",
-		order = 3
-	)
-	private String objectiveFunction = null;
-
-	@Parameter (
-		names = {"--target-name"},
-		description = "Target name. Defaults to \"_target\"",
-		order = 4
+		names = {SchemaParameters.NAME_TARGET_NAME},
+		description = SchemaParameters.DESCRIPTION_TARGET_NAME,
+		order = Parameters.BLOCK_SCHEMA + 1
 	)
 	private String targetName = null;
 
 	@Parameter (
-		names = {"--target-categories"},
-		description = "Target categories. Defaults to 0-based index [0, 1, .., num_class - 1]",
-		order = 5
+		names = {SchemaParameters.NAME_TARGET_CATEGORIES},
+		description = SchemaParameters.DESCRIPTION_TARGET_CATEGORIES,
+		order = Parameters.BLOCK_SCHEMA + 2
 	)
 	private List<String> targetCategories = null;
 
 	@Parameter (
-		names = {"--X-" + HasLightGBMOptions.OPTION_COMPACT},
-		description = "Transform LightGBM-style trees to PMML-style trees",
-		arity = 1,
-		order = 6
-	)
-	private Boolean compact = null;
-
-	@Parameter (
-		names = {"--X-" + HasLightGBMOptions.OPTION_NAN_AS_MISSING},
+		names = {"--nan-as-missing"},
 		description = "Treat Not-a-Number (NaN) values as missing values",
 		arity = 1,
-		order = 7
+		order = Parameters.BLOCK_SCHEMA + 3
 	)
-	private boolean nanAsMissing = true;
+	private Boolean nanAsMissing = null;
 
 	@Parameter (
-		names = {"--X-" + HasLightGBMOptions.OPTION_NUM_ITERATION},
+		names = {"--objective"},
+		description = "Custom objective function",
+		order = Parameters.BLOCK_MODEL + 1
+	)
+	private String objectiveFunction = null;
+
+	@Parameter (
+		names = {"--num-iteration"},
 		description = "Limit the number of trees. Defaults to all trees",
-		order = 8
+		order = Parameters.BLOCK_MODEL + 2
 	)
 	private Integer numIteration = null;
 
 	@Parameter (
-		names = {"--help"},
-		description = "Show the list of configuration options and exit",
+		names = {TreeModelParameters.NAME_COMPACT},
+		description = TreeModelParameters.DESCRIPTION_COMPACT,
+		arity = 1,
+		order = Parameters.BLOCK_MODEL_OPTIONS + 1
+	)
+	private Boolean compact = null;
+
+	@Parameter (
+		names = {TreeModelParameters.NAME_FLAT},
+		description = TreeModelParameters.DESCRIPTION_FLAT,
+		arity = 1,
+		order = Parameters.BLOCK_MODEL_OPTIONS + 2
+	)
+	private Boolean flat = null;
+
+	@Parameter (
+		names = {TreeModelParameters.NAME_NODE_ID},
+		description = TreeModelParameters.DESCRIPTION_NODE_ID,
+		arity = 1,
+		order = Parameters.BLOCK_MODEL_OPTIONS + 3
+	)
+	private Boolean nodeId = null;
+
+	@Parameter (
+		names = {TreeModelParameters.NAME_NODE_RECORDCOUNT},
+		description = TreeModelParameters.DESCRIPTION_NODE_RECORDCOUNT,
+		arity = 1,
+		order = Parameters.BLOCK_MODEL_OPTIONS + 4
+	)
+	private Boolean nodeRecordCount = null;
+
+	@Parameter (
+		names = {TreeModelParameters.NAME_PRUNE},
+		description = TreeModelParameters.DESCRIPTION_PRUNE,
+		arity = 1,
+		order = Parameters.BLOCK_MODEL_OPTIONS + 5
+	)
+	private Boolean prune = null;
+
+	@Parameter (
+		names = {Parameters.NAME_HELP},
+		description = Parameters.DESCRIPTION_HELP,
 		help = true,
 		order = Integer.MAX_VALUE
 	)
 	private boolean help = false;
+
 
 	static
 	public void main(String... args) throws Exception {
@@ -174,15 +211,16 @@ public class Main {
 			gbdt.setObjectiveFunction(objectiveFunction);
 		}
 
-		Boolean compact = this.compact;
-		if(compact == null){
-			compact = !gbdt.hasLinearTree();
-		}
-
 		Map<String, Object> options = new LinkedHashMap<>();
-		options.put(HasLightGBMOptions.OPTION_COMPACT, compact);
 		options.put(HasLightGBMOptions.OPTION_NAN_AS_MISSING, this.nanAsMissing);
 		options.put(HasLightGBMOptions.OPTION_NUM_ITERATION, this.numIteration);
+		options.put(HasLightGBMOptions.OPTION_COMPACT, this.compact);
+		options.put(HasLightGBMOptions.OPTION_FLAT, this.flat);
+		options.put(HasLightGBMOptions.OPTION_NODE_ID, this.nodeId);
+		options.put(HasLightGBMOptions.OPTION_NODE_RECORDCOUNT, this.nodeRecordCount);
+		options.put(HasLightGBMOptions.OPTION_PRUNE, this.prune);
+
+		options.values().removeIf(Objects::isNull);
 
 		PMML pmml;
 

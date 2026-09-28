@@ -52,6 +52,7 @@ import org.jpmml.converter.Label;
 import org.jpmml.converter.ModelEncoder;
 import org.jpmml.converter.ModelTransformer;
 import org.jpmml.converter.Schema;
+import org.jpmml.converter.SchemaParameters;
 import org.jpmml.converter.SchemaUtil;
 import org.jpmml.converter.TypeUtil;
 import org.jpmml.converter.WildcardFeature;
@@ -189,7 +190,7 @@ public class GBDT {
 
 		{
 			if(targetName == null){
-				targetName = "_target";
+				targetName = SchemaParameters.DEFAULT_TARGET_NAME;
 			}
 
 			label = object_function_.encodeLabel(targetName, targetCategories, encoder);
@@ -456,7 +457,7 @@ public class GBDT {
 	}
 
 	public Schema configureSchema(Map<String, ?> options, Schema schema){
-		Boolean nanAsMissing = (Boolean)options.get(HasLightGBMOptions.OPTION_NAN_AS_MISSING);
+		Boolean nanAsMissing = (Boolean)((Map)options).getOrDefault(HasLightGBMOptions.OPTION_NAN_AS_MISSING, Boolean.TRUE);
 
 		Function<Feature, Feature> function = new Function<Feature, Feature>(){
 
@@ -505,12 +506,7 @@ public class GBDT {
 
 			@Override
 			protected Map<String, ?> getDefaults(){
-
-				if(hasLinearTree()){
-					return Collections.singletonMap(HasTreeModelOptions.OPTION_COMPACT, Boolean.FALSE);
-				}
-
-				return Collections.emptyMap();
+				return Collections.singletonMap(HasTreeModelOptions.OPTION_COMPACT, !hasLinearTree());
 			}
 		}
 			.putOptions(options)
