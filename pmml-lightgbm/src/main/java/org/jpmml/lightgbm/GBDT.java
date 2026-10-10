@@ -181,10 +181,7 @@ public class GBDT {
 	}
 
 	public Schema encodeSchema(String targetName, List<String> targetCategories, ModelEncoder encoder){
-		ObjectiveFunction object_function_ = getObjectiveFunction();
-		if(object_function_ == null){
-			throw new IllegalStateException();
-		}
+		ObjectiveFunction object_function_ = requireObjectiveFunction();
 
 		Label label;
 
@@ -445,10 +442,7 @@ public class GBDT {
 	}
 
 	public Model encodeModel(Integer numIterations, Schema schema){
-		ObjectiveFunction object_function_ = getObjectiveFunction();
-		if(object_function_ == null){
-			throw new IllegalStateException();
-		}
+		ObjectiveFunction object_function_ = requireObjectiveFunction();
 
 		Model model = object_function_.encodeModel(Arrays.asList(this.models_), numIterations, schema)
 			.setAlgorithmName("LightGBM");
@@ -527,6 +521,17 @@ public class GBDT {
 
 	public ObjectiveFunction getObjectiveFunction(){
 		return this.object_function_;
+	}
+
+	public ObjectiveFunction requireObjectiveFunction(){
+		ObjectiveFunction object_function_ = getObjectiveFunction();
+
+		if(object_function_ == null){
+			throw new LightGBMException("The booster object does not specify an objective function")
+				.setSolution("Supply the objective function using an " + ExceptionUtil.formatClass(ObjectiveFunction.class) + " subclass");
+		}
+
+		return object_function_;
 	}
 
 	public void setObjectiveFunction(ObjectiveFunction object_function_){

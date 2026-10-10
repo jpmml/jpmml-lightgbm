@@ -46,13 +46,16 @@ public class MultinomialLogisticRegression extends Classification {
 
 	@Override
 	public MiningModel encodeModel(List<Tree> trees, Integer numIteration, Schema schema){
+		int num_class = getNumClass();
+
+		CategoricalLabel categoricalLabel = schema.requireCategoricalLabel()
+			.expectCardinality(num_class);
+
 		Schema segmentSchema = schema.toAnonymousRegressorSchema(DataType.DOUBLE);
 
 		List<Model> models = new ArrayList<>();
 
-		CategoricalLabel categoricalLabel = schema.requireCategoricalLabel();
-
-		for(int i = 0, rows = categoricalLabel.size(), columns = (trees.size() / rows); i < rows; i++){
+		for(int i = 0, rows = num_class, columns = (trees.size() / rows); i < rows; i++){
 			Model model = encodeOutputGroup(FortranMatrixUtil.getRow(trees, rows, columns, i), numIteration, segmentSchema)
 				.setOutput(ModelUtil.createPredictedOutput(FieldNameUtil.create("lgbmValue", categoricalLabel.getValue(i)), OpType.CONTINUOUS, DataType.DOUBLE));
 
