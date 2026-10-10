@@ -105,4 +105,6 @@ public class ObjectiveFunction {
 
 	public static final String CONFIG_NAME = "name";
 	public static final String CONFIG_AVERAGE_OUTPUT = "average_output";
+
+	protected static final String FIELD_BOOSTED_VALUE = "lgbmValue";
 }

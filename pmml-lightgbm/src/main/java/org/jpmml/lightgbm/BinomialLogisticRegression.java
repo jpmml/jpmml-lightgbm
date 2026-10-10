@@ -45,7 +45,7 @@ public class BinomialLogisticRegression extends Classification {
 		Schema segmentSchema = schema.toAnonymousRegressorSchema(DataType.DOUBLE);
 
 		Model model = encodeOutputGroup(trees, numIteration, segmentSchema)
-			.setOutput(ModelUtil.createPredictedOutput("lgbmValue", OpType.CONTINUOUS, DataType.DOUBLE));
+			.setOutput(ModelUtil.createPredictedOutput(ObjectiveFunction.FIELD_BOOSTED_VALUE, OpType.CONTINUOUS, DataType.DOUBLE));
 
 		return MiningModelUtil.createBinaryLogisticClassification(model, BinomialLogisticRegression.this.sigmoid_, 0d, RegressionModel.NormalizationMethod.LOGIT, true, schema);
 	}

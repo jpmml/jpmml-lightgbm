@@ -57,7 +57,7 @@ public class MultinomialLogisticRegression extends Classification {
 
 		for(int i = 0, rows = num_class, columns = (trees.size() / rows); i < rows; i++){
 			Model model = encodeOutputGroup(FortranMatrixUtil.getRow(trees, rows, columns, i), numIteration, segmentSchema)
-				.setOutput(ModelUtil.createPredictedOutput(FieldNameUtil.create("lgbmValue", categoricalLabel.getValue(i)), OpType.CONTINUOUS, DataType.DOUBLE));
+				.setOutput(ModelUtil.createPredictedOutput(FieldNameUtil.create(ObjectiveFunction.FIELD_BOOSTED_VALUE, categoricalLabel.getValue(i)), OpType.CONTINUOUS, DataType.DOUBLE));
 
 			models.add(model);
 		}

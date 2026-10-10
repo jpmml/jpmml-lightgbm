@@ -40,7 +40,7 @@ public class PoissonRegression extends Regression {
 		Schema segmentSchema = schema.toAnonymousRegressorSchema(DataType.DOUBLE);
 
 		Model model = super.encodeModel(trees, numIteration, segmentSchema)
-			.setOutput(ModelUtil.createPredictedOutput("lgbmValue", OpType.CONTINUOUS, DataType.DOUBLE));
+			.setOutput(ModelUtil.createPredictedOutput(ObjectiveFunction.FIELD_BOOSTED_VALUE, OpType.CONTINUOUS, DataType.DOUBLE));
 
 		return MiningModelUtil.createRegression(model, RegressionModel.NormalizationMethod.EXP, schema);
 	}
