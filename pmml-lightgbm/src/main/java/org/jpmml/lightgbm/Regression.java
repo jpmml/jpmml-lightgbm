@@ -25,6 +25,7 @@ import org.dmg.pmml.DataType;
 import org.dmg.pmml.Model;
 import org.dmg.pmml.OpType;
 import org.jpmml.converter.ContinuousLabel;
+import org.jpmml.converter.ExceptionUtil;
 import org.jpmml.converter.InvalidLabelException;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.ModelEncoder;
@@ -40,7 +41,7 @@ public class Regression extends ObjectiveFunction {
 	public Label encodeLabel(String targetName, List<?> targetCategories, ModelEncoder encoder){
 
 		if(targetCategories != null && !targetCategories.isEmpty()){
-			throw new InvalidLabelException("Expected zero target categories, got " + targetCategories.size());
+			throw new InvalidLabelException("Expected " + ExceptionUtil.formatCount(0, "target category", "target categories") + " for continuous label " + ExceptionUtil.formatName(targetName) + ", got " + targetCategories.size());
 		}
 
 		DataField dataField = encoder.createDataField(targetName, OpType.CONTINUOUS, DataType.DOUBLE);

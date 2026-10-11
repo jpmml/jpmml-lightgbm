@@ -54,7 +54,7 @@ public class Classification extends ObjectiveFunction {
 
 		{
 			if(targetCategories.size() != this.num_class_){
-				throw new InvalidLabelException("Expected " + ExceptionUtil.formatCount(this.num_class_, "target category", "target categories") + ", got " + targetCategories.size());
+				throw new InvalidLabelException("Expected " + ExceptionUtil.formatCount(this.num_class_, "target category", "target categories") + " for categorical label " + ExceptionUtil.formatName(targetName) + ", got " + targetCategories.size());
 			}
 
 			dataField = encoder.createDataField(targetName, OpType.CATEGORICAL, DataType.STRING, targetCategories);
