@@ -51,6 +51,7 @@ import org.jpmml.converter.InvalidValueDecorator;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.ModelEncoder;
 import org.jpmml.converter.ModelTransformer;
+import org.jpmml.converter.PMMLEncodable;
 import org.jpmml.converter.Schema;
 import org.jpmml.converter.SchemaParameters;
 import org.jpmml.converter.SchemaUtil;
@@ -59,7 +60,7 @@ import org.jpmml.converter.WildcardFeature;
 import org.jpmml.converter.tree.HasTreeModelOptions;
 import org.jpmml.converter.tree.TreeModelTransformerBuilder;
 
-public class GBDT {
+public class GBDT implements PMMLEncodable {
 
 	private String version;
 
@@ -415,6 +416,11 @@ public class GBDT {
 		};
 
 		return schema.toTransformedSchema(function);
+	}
+
+	@Override
+	public PMML encodePMML(Map<String, ?> options){
+		return encodePMML(options, null, null);
 	}
 
 	public PMML encodePMML(Map<String, ?> options, String targetName, List<String> targetCategories){
