@@ -680,7 +680,7 @@ parameters:
 [data_sample_strategy: bagging]
 [data: ]
 [valid: ]
-[num_iterations: 31]
+[num_iterations: 14]
 [learning_rate: 0.1]
 [num_leaves: 31]
 [num_threads: 16]

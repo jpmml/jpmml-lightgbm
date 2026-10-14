@@ -70,8 +70,16 @@ def build_audit(name, objective = "binary", boosting_type = "gbdt", num_iteratio
 	X = df[["Age", "Employment", "Education", "Marital", "Occupation", "Income", "Gender", "Deductions", "Hours"]]
 	y = df["Adjusted"]
 
-	lgbm = LGBMClassifier(objective = objective, boosting_type = boosting_type, n_estimators = 31, **kwargs)
-	lgbm.fit(X, y)
+	if boosting_type == "gbdt":
+		init_lgbm = LGBMClassifier(objective = objective, boosting_type = boosting_type, n_estimators = 17, **kwargs)
+		init_lgbm.fit(X, y)
+
+		# Continue training from the initial model
+		lgbm = LGBMClassifier(objective = objective, boosting_type = boosting_type, n_estimators = (31 - 17), **kwargs)
+		lgbm.fit(X, y, init_model = init_lgbm.booster_)
+	else:
+		lgbm = LGBMClassifier(objective = objective, boosting_type = boosting_type, n_estimators = 31, **kwargs)
+		lgbm.fit(X, y)
 
 	func = format_func("Classification", boosting_type)
 
@@ -205,8 +213,16 @@ def build_auto(name, objective = "regression", boosting_type = "gbdt", num_itera
 	X = df[["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"]]
 	y = df["mpg"]
 
-	lgbm = LGBMRegressor(objective = objective, boosting_type = boosting_type, n_estimators = 31, **kwargs)
-	lgbm.fit(X, y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"])
+	if boosting_type == "gbdt":
+		init_lgbm = LGBMRegressor(objective = objective, boosting_type = boosting_type, n_estimators = 17, **kwargs)
+		init_lgbm.fit(X, y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"])
+
+		# Continue training from the initial model
+		lgbm = LGBMRegressor(objective = objective, boosting_type = boosting_type, n_estimators = (31 - 17), **kwargs)
+		lgbm.fit(X, y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"], init_model = init_lgbm.booster_)
+	else:
+		lgbm = LGBMRegressor(objective = objective, boosting_type = boosting_type, n_estimators = 31, **kwargs)
+		lgbm.fit(X, y, feature_name = ["cylinders", "displacement", "horsepower", "weight", "acceleration", "model_year", "origin"])
 
 	func = format_func("Regression", boosting_type)
 
