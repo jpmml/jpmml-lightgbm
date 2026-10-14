@@ -71,6 +71,16 @@ public class ClassificationTest extends ValidatingLightGBMEncoderBatchTest imple
 			}
 
 			@Override
+			public String getInputCsvPath(){
+				String path = super.getInputCsvPath();
+
+				path = path.replace("Dense", "Centered");
+				path = path.replace("ZeroAsMissing", "Centered");
+
+				return path;
+			}
+
+			@Override
 			public Table getInput() throws IOException {
 				Table table = super.getInput();
 
@@ -132,6 +142,16 @@ public class ClassificationTest extends ValidatingLightGBMEncoderBatchTest imple
 	@Test
 	public void evaluateAuditNALimit() throws Exception {
 		evaluate(CLASSIFICATION, AUDIT_NA_LIMIT);
+	}
+
+	@Test
+	public void evaluateAuditDenseNA() throws Exception {
+		evaluate(CLASSIFICATION, AUDIT_DENSE_NA, new RealNumberEquivalence(2));
+	}
+
+	@Test
+	public void evaluateAuditZeroAsMissingNA() throws Exception {
+		evaluate(CLASSIFICATION, AUDIT_ZERO_AS_MISSING_NA, new RealNumberEquivalence(2));
 	}
 
 	@Test

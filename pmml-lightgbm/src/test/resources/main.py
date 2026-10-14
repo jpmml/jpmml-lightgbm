@@ -12,8 +12,8 @@ def load_csv(name, categorical_columns = []):
 		df[categorical_column] = df[categorical_column].astype("category")
 	return df
 
-def store_csv(df, name):
-	df.to_csv("csv/" + name, index = False)
+def store_csv(df, name, **kwargs):
+	df.to_csv("csv/" + name, index = False, **kwargs)
 
 def store_lgbm(lgbm, name):
 	lgbm.booster_.save_model("lgbm/" + name)
@@ -140,6 +140,43 @@ def build_audit_bin(name, objective = "binary"):
 
 build_audit_bin("Audit")
 build_audit_bin("AuditNA")
+
+def build_audit_centered_na():
+	df = load_csv("AuditNA.csv", ["Employment", "Education", "Marital", "Occupation", "Gender", "Deductions"])
+
+	# Subtract (approximate-) mean values to make negative split values possible during training
+	df["Age"] = df["Age"] - 40
+	df["Income"] = df["Income"] - 85000
+	df["Hours"] = df["Hours"] - 40
+
+	store_csv(df, "AuditCenteredNA.csv", na_rep = "N/A")
+
+	X = df[["Age", "Employment", "Education", "Marital", "Occupation", "Income", "Gender", "Deductions", "Hours"]]
+	y = df["Adjusted"]
+
+	# Exclude rows with missing values, so that continuous splits fall back from the default NaN-as-NaN to NaN-as-zero missing value handling
+	X_dense = X.dropna()
+	y_dense = y[X_dense.index]
+
+	lgbm = LGBMClassifier(n_estimators = 31)
+	lgbm.fit(X_dense, y_dense)
+
+	store_lgbm(lgbm, "ClassificationAuditDenseNA.txt")
+
+	adjusted = DataFrame(lgbm.predict(X), columns = ["_target"])
+	adjusted_proba = DataFrame(lgbm.predict_proba(X), columns = ["probability(0)", "probability(1)"])
+	store_csv(pandas.concat((adjusted, adjusted_proba), axis = 1), "ClassificationAuditDenseNA.csv")
+
+	lgbm = LGBMClassifier(zero_as_missing = True, n_estimators = 31)
+	lgbm.fit(X, y)
+
+	store_lgbm(lgbm, "ClassificationAuditZeroAsMissingNA.txt")
+
+	adjusted = DataFrame(lgbm.predict(X), columns = ["_target"])
+	adjusted_proba = DataFrame(lgbm.predict_proba(X), columns = ["probability(0)", "probability(1)"])
+	store_csv(pandas.concat((adjusted, adjusted_proba), axis = 1), "ClassificationAuditZeroAsMissingNA.csv")
+
+build_audit_centered_na()
 
 def build_versicolor(name, objective = "binary", num_iteration = 0):
 	df = load_csv(name + ".csv")

@@ -24,9 +24,11 @@ public interface LightGBMDatasets extends Datasets {
 
 	String AUDIT_BIN = AUDIT + "Bin";
 	String AUDIT_BIN_NA = AUDIT_BIN + "NA";
+	String AUDIT_DENSE_NA = AUDIT + "DenseNA";
 	String AUDIT_INVALID = AUDIT + "Invalid";
 	String AUDIT_LIMIT = AUDIT + "@17";
 	String AUDIT_NA_LIMIT = AUDIT_NA + "@17";
+	String AUDIT_ZERO_AS_MISSING_NA = AUDIT + "ZeroAsMissingNA";
 	String AUTO_LIMIT = AUTO + "@17";
 	String AUTO_NA_LIMIT = AUTO_NA + "@17";
 	String HOUSING_LIMIT = HOUSING + "@31";

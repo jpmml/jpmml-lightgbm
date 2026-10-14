@@ -53,6 +53,7 @@ import org.jpmml.converter.ModelEncoder;
 import org.jpmml.converter.ModelTransformer;
 import org.jpmml.converter.PMMLEncodable;
 import org.jpmml.converter.Schema;
+import org.jpmml.converter.SchemaException;
 import org.jpmml.converter.SchemaParameters;
 import org.jpmml.converter.SchemaUtil;
 import org.jpmml.converter.TypeUtil;
@@ -461,13 +462,35 @@ public class GBDT implements PMMLEncodable {
 
 		Function<Feature, Feature> function = new Function<Feature, Feature>(){
 
+			private List<? extends Feature> features = schema.getFeatures();
+
+
 			@Override
 			public Feature apply(Feature feature){
+				int index = this.features.indexOf(feature);
+				if(index < 0){
+					throw new IllegalArgumentException();
+				}
 
 				if(feature instanceof NullFeature){
 					NullFeature nullFeature = (NullFeature)feature;
 
 					return nullFeature;
+				}
+
+				Boolean zeroAsMissing = isZeroAsMissing(index);
+				if(zeroAsMissing != null && zeroAsMissing){
+					Field<?> field = feature.getField();
+
+					if(field instanceof DataField){
+						DataField dataField = (DataField)field;
+
+						FieldUtil.addValue(dataField, Property.MISSING, 0);
+					} else
+
+					{
+						throw new SchemaException("Expected a data field, got " + ExceptionUtil.formatField(field));
+					}
 				}
 
 				nanAsMissing:
@@ -590,6 +613,26 @@ public class GBDT implements PMMLEncodable {
 			if(categorical != null){
 
 				if(!categorical.booleanValue()){
+					return Boolean.FALSE;
+				}
+
+				result = Boolean.TRUE;
+			}
+		}
+
+		return result;
+	}
+
+	private Boolean isZeroAsMissing(int feature){
+		Boolean result = null;
+
+		Tree[] trees = this.models_;
+		for(Tree tree : trees){
+			Boolean zeroAsMissing = tree.isZeroAsMissing(feature);
+
+			if(zeroAsMissing != null){
+
+				if(!zeroAsMissing.booleanValue()){
 					return Boolean.FALSE;
 				}
 

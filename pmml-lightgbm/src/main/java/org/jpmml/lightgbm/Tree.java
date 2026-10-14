@@ -204,6 +204,9 @@ public class Tree {
 					leftPredicate = predicateManager.createSimplePredicate(binaryCategoricalFeature, SimplePredicate.Operator.NOT_EQUAL, value);
 					rightPredicate = predicateManager.createSimplePredicate(binaryCategoricalFeature, SimplePredicate.Operator.EQUAL, value);
 
+					// LightGBM sends missing categorical values to the right (ie. "equal") branch.
+					// However, one-hot encoding turns missing categorical values into zero values,
+					// which justifies sending them to the left (ie. "not equal") branch instead.
 					defaultLeft = true;
 				} else
 
@@ -296,6 +299,18 @@ public class Tree {
 
 				leftPredicate = predicateManager.createSimplePredicate(continuousFeature, SimplePredicate.Operator.LESS_OR_EQUAL, value);
 				rightPredicate = predicateManager.createSimplePredicate(continuousFeature, SimplePredicate.Operator.GREATER_THAN, value);
+
+				int missingType = getMissingType(decision_type_);
+				switch(missingType){
+					case Tree.MISSING_TYPE_NONE:
+						defaultLeft = (0d <= threshold_);
+						break;
+					case Tree.MISSING_TYPE_ZERO:
+					case Tree.MISSING_TYPE_NAN:
+						break;
+					default:
+						throw new IllegalArgumentException();
+				}
 			}
 
 			Node leftChild = encodeNode(this.left_child_[index], leftPredicate, leftCategoryManager, predicateManager, schema);
@@ -452,6 +467,28 @@ public class Tree {
  		return result;
  	}
 
+	Boolean isZeroAsMissing(int feature){
+		Boolean result = null;
+
+		if(isEmpty()){
+			return result;
+		}
+
+		for(int i = 0; i < this.split_feature_real_.length; i++){
+
+			if(this.split_feature_real_[i] == feature){
+
+				if(getMissingType(this.decision_type_[i]) != Tree.MISSING_TYPE_ZERO){
+					return Boolean.FALSE;
+				}
+
+				result = Boolean.TRUE;
+			}
+		}
+
+		return result;
+	}
+
 	static
 	private boolean hasCategoricalMask(int decision_type){
 		return getDecisionType(decision_type, Tree.MASK_CATEGORICAL) == Tree.MASK_CATEGORICAL;
@@ -486,6 +523,10 @@ public class Tree {
 
 	private static final int MASK_CATEGORICAL = 1;
 	private static final int MASK_DEFAULT_LEFT = 2;
+
+	private static final int MISSING_TYPE_NONE = 0;
+	private static final int MISSING_TYPE_ZERO = 1;
+	private static final int MISSING_TYPE_NAN = 2;
 
 	private static final double THRESHOLD_ZERO = 1.0000000180025095E-35;
 }
