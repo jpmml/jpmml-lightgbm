@@ -35,15 +35,15 @@ import org.jpmml.lightgbm.GBDT;
 import org.jpmml.lightgbm.LightGBMEncoder;
 import org.junit.jupiter.api.Test;
 
-public class PandasDummiesTest extends SchemaBatchTest {
+public class BinaryFeatureTest extends SchemaBatchTest {
 
 	@Override
 	public SchemaBatch createBatch(String algorithm, String dataset, Predicate<ResultField> columnFilter, Equivalence<Object> equivalence){
 		SchemaBatch result = new SchemaBatch(algorithm, dataset, columnFilter, equivalence){
 
 			@Override
-			public PandasDummiesTest getArchiveBatchTest(){
-				return PandasDummiesTest.this;
+			public BinaryFeatureTest getArchiveBatchTest(){
+				return BinaryFeatureTest.this;
 			}
 
 			@Override
