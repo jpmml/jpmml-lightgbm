@@ -202,10 +202,6 @@ public class GBDT implements PMMLEncodable {
 
 		List<Feature> features = new ArrayList<>();
 
-		boolean hasPandasCategories = (this.pandas_categorical.size() > 0);
-
-		int pandasCategoryIndex = 0;
-
 		String[] featureNames = this.feature_names_;
 		String[] featureInfos = this.feature_infos_;
 
@@ -213,7 +209,7 @@ public class GBDT implements PMMLEncodable {
 			throw new IllegalArgumentException();
 		}
 
-		List<Integer> categoricalFeatures = getPandasCategoricalFeatures();
+		Map<Integer, List<?>> pandasCategories = getPandasCategories();
 
 		for(int i = 0; i < featureNames.length; i++){
 			String featureName = featureNames[i];
@@ -221,31 +217,6 @@ public class GBDT implements PMMLEncodable {
 
 			if(LightGBMUtil.isNone(featureInfo)){
 				features.add(new NullFeature(encoder, featureName, DataType.DOUBLE));
-
-				pandasCategorical:
-				if(hasPandasCategories){
-
-					if(categoricalFeatures != null){
-
-						// An unused categorical column
-						if(categoricalFeatures.contains(i)){
-							pandasCategoryIndex++;
-						}
-
-						break pandasCategorical;
-					} // End if
-
-					if(pandasCategoryIndex >= this.pandas_categorical.size()){
-						break pandasCategorical;
-					}
-
-					List<?> pandasCategoryValues = this.pandas_categorical.get(pandasCategoryIndex);
-
-					// A constant categorical column
-					if(pandasCategoryValues.size() == 1){
-						pandasCategoryIndex++;
-					}
-				}
 
 				continue;
 			}
@@ -279,14 +250,12 @@ public class GBDT implements PMMLEncodable {
 
 					boolean direct = true;
 
-					pandasCategorical:
-					if(hasPandasCategories){
-
-						if(pandasCategoryIndex >= this.pandas_categorical.size()){
+					if(pandasCategories != null){
+						List<?> pandasCategoryValues = pandasCategories.get(i);
+						if(pandasCategoryValues == null){
 							throw new LightGBMException("Conflicting categorical feature information between the header and " + ExceptionUtil.formatName("pandas_categorical") + " sections");
-						}
+						} // End if
 
-						List<?> pandasCategoryValues = this.pandas_categorical.get(pandasCategoryIndex);
 						if(pandasCategoryValues.size() < values.size()){
 							throw new InvalidFeatureException("Expected at least " + ExceptionUtil.formatCount(values.size(), "category level") + " for categorical feature " + ExceptionUtil.formatName(featureName) + ", got " + pandasCategoryValues.size());
 						}
@@ -296,8 +265,6 @@ public class GBDT implements PMMLEncodable {
 						dataType = TypeUtil.getDataType(pandasCategoryValues);
 
 						direct = false;
-
-						pandasCategoryIndex++;
 					}
 
 					dataField = encoder.createDataField(featureName, OpType.CATEGORICAL, dataType, values);
@@ -554,6 +521,46 @@ public class GBDT implements PMMLEncodable {
 
 			for(int i = 0; i < categoricalFeatures.size(); i++){
 				result.put(categoricalFeatures.get(i), this.pandas_categorical.get(i));
+			}
+		} else
+
+		{
+			String[] featureInfos = this.feature_infos_;
+
+			int pandasCategoryIndex = 0;
+
+			for(int i = 0; i < featureInfos.length; i++){
+				String featureInfo = featureInfos[i];
+
+				if(LightGBMUtil.isNone(featureInfo)){
+
+					if(pandasCategoryIndex < this.pandas_categorical.size()){
+						List<?> pandasCategoryValues = this.pandas_categorical.get(pandasCategoryIndex);
+
+						// A constant categorical column
+						if(pandasCategoryValues.size() == 1){
+							pandasCategoryIndex++;
+						}
+					}
+
+					continue;
+				}
+
+				Boolean categorical = isCategorical(i);
+				if(categorical == null){
+					categorical = LightGBMUtil.isValues(featureInfo);
+				} // End if
+
+				if(categorical){
+
+					if(pandasCategoryIndex >= this.pandas_categorical.size()){
+						throw new LightGBMException("Conflicting categorical feature information between the header and " + ExceptionUtil.formatName("pandas_categorical") + " sections");
+					}
+
+					result.put(i, this.pandas_categorical.get(pandasCategoryIndex));
+
+					pandasCategoryIndex++;
+				}
 			}
 		}
 
