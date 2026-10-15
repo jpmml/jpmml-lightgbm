@@ -5,6 +5,15 @@ import lightgbm
 import numpy
 import pandas
 import re
+import sys
+
+datasets = []
+
+if __name__ == "__main__":
+	if len(sys.argv) > 1:
+		datasets = (sys.argv[1]).split(",")
+	else:
+		datasets = ["Audit", "Auto", "Housing", "Iris", "Versicolor", "Visit"]
 
 def load_csv(name, categorical_columns = []):
 	df = pandas.read_csv("csv/" + name, na_values = ["N/A", "NA"])
@@ -55,11 +64,12 @@ def build_iris(name, objective = "multiclass", boosting_type = "gbdt", num_itera
 	species_proba = DataFrame(lgbm.predict_proba(X, num_iteration = num_iteration), columns = ["probability(0)", "probability(1)", "probability(2)"])
 	store_csv(pandas.concat((species, species_proba), axis = 1), format_name(func, name, num_iteration) + ".csv")
 
-build_iris("Iris")
-build_iris("Iris", num_iteration = 7)
-build_iris("Iris", boosting_type = "rf", bagging_freq = 3, bagging_fraction = 0.75)
-build_iris("IrisNA")
-build_iris("IrisNA", num_iteration = 7)
+if "Iris" in datasets:
+	build_iris("Iris")
+	build_iris("Iris", num_iteration = 7)
+	build_iris("Iris", boosting_type = "rf", bagging_freq = 3, bagging_fraction = 0.75)
+	build_iris("IrisNA")
+	build_iris("IrisNA", num_iteration = 7)
 
 #
 # Binary classification
@@ -90,11 +100,12 @@ def build_audit(name, objective = "binary", boosting_type = "gbdt", num_iteratio
 	adjusted_proba = DataFrame(lgbm.predict_proba(X, num_iteration = num_iteration), columns = ["probability(0)", "probability(1)"])
 	store_csv(pandas.concat((adjusted, adjusted_proba), axis = 1), format_name(func, name, num_iteration) + ".csv")
 
-build_audit("Audit")
-build_audit("Audit", num_iteration = 17)
-build_audit("Audit", boosting_type = "rf", bagging_freq = 10, bagging_fraction = 0.75)
-build_audit("AuditNA", objective = "cross_entropy")
-build_audit("AuditNA", objective = "cross_entropy", num_iteration = 17)
+if "Audit" in datasets:
+	build_audit("Audit")
+	build_audit("Audit", num_iteration = 17)
+	build_audit("Audit", boosting_type = "rf", bagging_freq = 10, bagging_fraction = 0.75)
+	build_audit("AuditNA", objective = "cross_entropy")
+	build_audit("AuditNA", objective = "cross_entropy", num_iteration = 17)
 
 def build_lineartree_audit(name):
 	df = load_csv(name + ".csv", ["Employment", "Education", "Marital", "Occupation", "Gender", "Deductions"])
@@ -110,8 +121,9 @@ def build_lineartree_audit(name):
 	adjusted_proba = DataFrame(lgbm.predict_proba(X), columns = ["probability(0)", "probability(1)"])
 	store_csv(pandas.concat((adjusted, adjusted_proba), axis = 1), "LinearTreeClassification" + name + ".csv")
 
-build_lineartree_audit("Audit")
-build_lineartree_audit("AuditNA")
+if "Audit" in datasets:
+	build_lineartree_audit("Audit")
+	build_lineartree_audit("AuditNA")
 
 def build_audit_invalid():
 	df = load_csv("AuditInvalid.csv", ["Employment", "Education", "Marital", "Occupation", "Gender", "Deductions"])
@@ -126,7 +138,8 @@ def build_audit_invalid():
 	adjusted_proba = DataFrame(numpy.vstack((1.0 - result, result)).transpose(), columns = ["probability(0)", "probability(1)"])
 	store_csv(pandas.concat((adjusted, adjusted_proba), axis = 1), "ClassificationAuditInvalid.csv")
 
-build_audit_invalid()
+if "Audit" in datasets:
+	build_audit_invalid()
 
 def build_audit_bin(name, objective = "binary"):
 	df = load_csv(name + ".csv")
@@ -146,8 +159,9 @@ def build_audit_bin(name, objective = "binary"):
 	adjusted_proba = DataFrame(lgbm.predict_proba(Xt), columns = ["probability(0)", "probability(1)"])
 	store_csv(pandas.concat((adjusted, adjusted_proba), axis = 1), "Classification" + name + ".csv")
 
-build_audit_bin("Audit")
-build_audit_bin("AuditNA")
+if "Audit" in datasets:
+	build_audit_bin("Audit")
+	build_audit_bin("AuditNA")
 
 def build_audit_centered_na():
 	df = load_csv("AuditNA.csv", ["Employment", "Education", "Marital", "Occupation", "Gender", "Deductions"])
@@ -184,7 +198,8 @@ def build_audit_centered_na():
 	adjusted_proba = DataFrame(lgbm.predict_proba(X), columns = ["probability(0)", "probability(1)"])
 	store_csv(pandas.concat((adjusted, adjusted_proba), axis = 1), "ClassificationAuditZeroAsMissingNA.csv")
 
-build_audit_centered_na()
+if "Audit" in datasets:
+	build_audit_centered_na()
 
 def build_versicolor(name, objective = "binary", num_iteration = 0):
 	df = load_csv(name + ".csv")
@@ -201,8 +216,9 @@ def build_versicolor(name, objective = "binary", num_iteration = 0):
 	versicolor_proba = DataFrame(lgbm.predict_proba(X, num_iteration = num_iteration), columns = ["probability(0)", "probability(1)"])
 	store_csv(pandas.concat((versicolor, versicolor_proba), axis = 1), format_name("Classification", name, num_iteration) + ".csv")
 
-build_versicolor("Versicolor")
-build_versicolor("Versicolor", num_iteration = 9)
+if "Versicolor" in datasets:
+	build_versicolor("Versicolor")
+	build_versicolor("Versicolor", num_iteration = 9)
 
 #
 # Regression
@@ -232,11 +248,12 @@ def build_auto(name, objective = "regression", boosting_type = "gbdt", num_itera
 	mpg = DataFrame(lgbm.predict(X, num_iteration = num_iteration), columns = ["_target"])
 	store_csv(mpg, format_name(func, name, num_iteration) + ".csv")
 
-build_auto("Auto", objective = custom_regression)
-build_auto("Auto", objective = custom_regression, num_iteration = 17)
-build_auto("Auto", boosting_type = "rf", bagging_freq = 5, bagging_fraction = 0.75)
-build_auto("AutoNA")
-build_auto("AutoNA", num_iteration = 17)
+if "Auto" in datasets:
+	build_auto("Auto", objective = custom_regression)
+	build_auto("Auto", objective = custom_regression, num_iteration = 17)
+	build_auto("Auto", boosting_type = "rf", bagging_freq = 5, bagging_fraction = 0.75)
+	build_auto("AutoNA")
+	build_auto("AutoNA", num_iteration = 17)
 
 def build_lineartree_auto(name):
 	df = load_csv(name + ".csv", ["cylinders", "model_year", "origin"])
@@ -251,8 +268,9 @@ def build_lineartree_auto(name):
 	mpg = DataFrame(lgbm.predict(X), columns = ["_target"])
 	store_csv(mpg, "LinearTreeRegression" + name + ".csv")
 
-build_lineartree_auto("Auto")
-build_lineartree_auto("AutoNA")
+if "Auto" in datasets:
+	build_lineartree_auto("Auto")
+	build_lineartree_auto("AutoNA")
 
 def build_housing(name, objective = "regression", num_iteration = 0):
 	df = load_csv(name + ".csv", ["CHAS"])
@@ -268,10 +286,11 @@ def build_housing(name, objective = "regression", num_iteration = 0):
 	medv = DataFrame(lgbm.predict(X, num_iteration = num_iteration), columns = ["_target"])
 	store_csv(medv, format_name("Regression", name, num_iteration) + ".csv")
 
-build_housing("Housing", objective = "mean_squared_error")
-build_housing("Housing", objective = "mean_squared_error", num_iteration = 31)
-build_housing("HousingNA", objective = "quantile")
-build_housing("HousingNA", objective = "quantile", num_iteration = 31)
+if "Housing" in datasets:
+	build_housing("Housing", objective = "mean_squared_error")
+	build_housing("Housing", objective = "mean_squared_error", num_iteration = 31)
+	build_housing("HousingNA", objective = "quantile")
+	build_housing("HousingNA", objective = "quantile", num_iteration = 31)
 
 #
 # Poisson regression
@@ -291,7 +310,8 @@ def build_visit(name, objective = "poisson", num_iteration = 0):
 	docvis = DataFrame(lgbm.predict(X, num_iteration = num_iteration), columns = ["_target"])
 	store_csv(docvis, format_name("Regression", name, num_iteration) + ".csv")
 
-build_visit("Visit")
-build_visit("Visit", num_iteration = 31)
-build_visit("VisitNA", objective = "tweedie")
-build_visit("VisitNA", objective = "tweedie", num_iteration = 31)
+if "Visit" in datasets:
+	build_visit("Visit")
+	build_visit("Visit", num_iteration = 31)
+	build_visit("VisitNA", objective = "tweedie")
+	build_visit("VisitNA", objective = "tweedie", num_iteration = 31)
