@@ -26,6 +26,7 @@ import com.google.common.base.Equivalence;
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
 import org.dmg.pmml.OpType;
+import org.jpmml.converter.ConstantFeature;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.Schema;
@@ -35,6 +36,7 @@ import org.jpmml.evaluator.ResultField;
 import org.jpmml.lightgbm.GBDT;
 import org.jpmml.lightgbm.LightGBMEncoder;
 import org.jpmml.lightgbm.LightGBMException;
+import org.jpmml.lightgbm.LightGBMUtil;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -55,10 +57,21 @@ public class WildcardFeatureTest extends SchemaBatchTest {
 				List<Feature> result = new ArrayList<>();
 
 				String[] featureNames = gbdt.getFeatureNames();
-				for(String featureName : featureNames){
-					DataField dataField = encoder.createDataField(featureName, OpType.CONTINUOUS, DataType.DOUBLE);
+				String[] featureInfos = gbdt.getFeatureInfos();
 
-					result.add(new WildcardFeature(encoder, dataField));
+				for(int i = 0; i < featureNames.length; i++){
+					String featureName = featureNames[i];
+					String featureInfo = featureInfos[i];
+
+					if(LightGBMUtil.isNone(featureInfo)){
+						result.add(new ConstantFeature(encoder, 0d));
+					} else
+
+					{
+						DataField dataField = encoder.createDataField(featureName, OpType.CONTINUOUS, DataType.DOUBLE);
+
+						result.add(new WildcardFeature(encoder, dataField));
+					}
 				}
 
 				return result;

@@ -397,25 +397,34 @@ public class GBDT implements PMMLEncodable {
 	public Schema configureSchema(Map<String, ?> options, Schema schema){
 		Boolean nanAsMissing = (Boolean)((Map)options).getOrDefault(HasLightGBMOptions.OPTION_NAN_AS_MISSING, Boolean.TRUE);
 
-		Function<Feature, Feature> function = new Function<Feature, Feature>(){
+		FeatureTransformer function = new DefaultFeatureTransformer(){
 
 			private List<? extends Feature> features = schema.getFeatures();
 
 
 			@Override
-			public Feature apply(Feature feature){
-				int index = this.features.indexOf(feature);
-				if(index < 0){
-					throw new IllegalArgumentException();
-				}
+			public int getSplitIndex(Feature feature){
+				return this.features.indexOf(feature);
+			}
 
-				if(feature instanceof NullFeature){
-					NullFeature nullFeature = (NullFeature)feature;
+			@Override
+			public Feature transformNumerical(Feature feature){
+				configureMissingValues(feature);
 
-					return nullFeature;
-				}
+				return super.transformNumerical(feature);
+			}
 
-				Boolean zeroAsMissing = isZeroAsMissing(index);
+			@Override
+			public Feature transformCategorical(Feature feature){
+				configureMissingValues(feature);
+
+				return super.transformCategorical(feature);
+			}
+
+			private void configureMissingValues(Feature feature){
+				int splitIndex = getSplitIndex(feature);
+
+				Boolean zeroAsMissing = isZeroAsMissing(splitIndex);
 				if(zeroAsMissing != null && zeroAsMissing){
 					Field<?> field = feature.getField();
 
@@ -453,8 +462,6 @@ public class GBDT implements PMMLEncodable {
 							break;
 					}
 				}
-
-				return feature;
 			}
 		};
 
