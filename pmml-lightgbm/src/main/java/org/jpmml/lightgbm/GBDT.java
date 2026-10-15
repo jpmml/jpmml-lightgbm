@@ -366,80 +366,33 @@ public class GBDT implements PMMLEncodable {
 	}
 
 	public Schema toLightGBMSchema(Schema schema){
-		String[] featureNames = this.feature_names_;
-		String[] featureInfos = this.feature_infos_;
-
-		Function<Feature, Feature> function = new Function<Feature, Feature>(){
+		FeatureTransformer function = new DefaultFeatureTransformer(){
 
 			private ModelEncoder encoder = schema.getEncoder();
 
 			private List<? extends Feature> features = schema.getFeatures();
 
+
 			{
-				SchemaUtil.checkSize(featureNames.length, this.features);
-				SchemaUtil.checkSize(featureInfos.length, this.features);
+				SchemaUtil.checkSize(GBDT.this.feature_names_.length, this.features);
+				SchemaUtil.checkSize(GBDT.this.feature_infos_.length, this.features);
+			}
+
+			@Override
+			public int getSplitIndex(Feature feature){
+				return this.features.indexOf(feature);
 			}
 
 			@Override
 			public Feature apply(Feature feature){
-				int index = this.features.indexOf(feature);
-				if(index < 0){
-					throw new IllegalArgumentException();
-				}
+				int splitIndex = getSplitIndex(feature);
 
-				String featureName = featureNames[index];
-				String featureInfo = featureInfos[index];
-
-				Double importance = getFeatureImportance(featureName);
+				Double importance = getFeatureImportance(GBDT.this.feature_names_[splitIndex]);
 				if(importance != null){
 					this.encoder.addFeatureImportance(feature, importance);
-				} // End if
-
-				if(feature instanceof BinaryFeature){
-					BinaryFeature binaryFeature = (BinaryFeature)feature;
-
-					Boolean binary = isBinary(index);
-					if(binary == null || binary.booleanValue()){
-						return binaryFeature;
-					}
-
-					Boolean categorical = isCategorical(index);
-					if(categorical != null && categorical.booleanValue()){
-						CategoricalFeature categoricalFeature = new BinaryCategoricalFeature(this.encoder, binaryFeature);
-
-						return categoricalFeature;
-					}
-				} else
-
-				if(feature instanceof DiscreteFeature){
-					DiscreteFeature discreteFeature = (DiscreteFeature)feature;
-
-					Boolean categorical = isCategorical(index);
-					if(categorical == null || categorical.booleanValue()){
-						return discreteFeature;
-					}
-				} else
-
-				if(feature instanceof NullFeature){
-					NullFeature nullFeature = (NullFeature)feature;
-
-					return nullFeature;
-				} else
-
-				if(feature instanceof WildcardFeature){
-					WildcardFeature wildcardFeature = (WildcardFeature)feature;
-
-					Boolean binary = isBinary(index);
-					if(binary != null && binary.booleanValue()){
-						wildcardFeature.toCategoricalFeature(Arrays.asList(0, 1));
-
-						BinaryFeature binaryFeature = new BinaryFeature(this.encoder, wildcardFeature, 1);
-
-						return binaryFeature;
-					}
 				}
 
-				return feature.toContinuousFeature();
+				return super.apply(feature);
 			}
 		};
 
@@ -841,6 +794,99 @@ public class GBDT implements PMMLEncodable {
 		}
 
 		return index;
+	}
+
+	abstract
+	private class FeatureTransformer implements Function<Feature, Feature> {
+
+		abstract
+		public int getSplitIndex(Feature feature);
+
+		abstract
+		public Feature transformNumerical(Feature feature);
+
+		abstract
+		public Feature transformCategorical(Feature feature);
+
+		@Override
+		public Feature apply(Feature feature){
+			int splitIndex = getSplitIndex(feature);
+			if(splitIndex < 0){
+				throw new IllegalArgumentException();
+			}
+
+			Boolean categorical = isCategorical(splitIndex);
+			if(categorical == null){
+				return feature;
+			} // End if
+
+			if(categorical){
+				return transformCategorical(feature);
+			} else
+
+			{
+				return transformNumerical(feature);
+			}
+		}
+	}
+
+	abstract
+	private class DefaultFeatureTransformer extends FeatureTransformer {
+
+		@Override
+		public Feature transformNumerical(Feature feature){
+			int splitIndex = getSplitIndex(feature);
+
+			if(feature instanceof BinaryFeature){
+				BinaryFeature binaryFeature = (BinaryFeature)feature;
+
+				Boolean binary = isBinary(splitIndex);
+				if(binary == null || binary.booleanValue()){
+					return binaryFeature;
+				}
+			} else
+
+			if(feature instanceof WildcardFeature){
+				WildcardFeature wildcardFeature = (WildcardFeature)feature;
+
+				Boolean binary = isBinary(splitIndex);
+				if(binary != null && binary.booleanValue()){
+					wildcardFeature.toCategoricalFeature(Arrays.asList(0, 1));
+
+					BinaryFeature binaryFeature = new BinaryFeature(wildcardFeature.getEncoder(), wildcardFeature, 1);
+
+					return binaryFeature;
+				}
+			}
+
+			return feature.toContinuousFeature();
+		}
+
+		@Override
+		public Feature transformCategorical(Feature feature){
+			int splitIndex = getSplitIndex(feature);
+
+			if(feature instanceof BinaryFeature){
+				BinaryFeature binaryFeature = (BinaryFeature)feature;
+
+				Boolean binary = isBinary(splitIndex);
+				if(binary == null || binary.booleanValue()){
+					return binaryFeature;
+				}
+
+				CategoricalFeature categoricalFeature = new BinaryCategoricalFeature(binaryFeature.getEncoder(), binaryFeature);
+
+				return categoricalFeature;
+			} else
+
+			if(feature instanceof DiscreteFeature){
+				DiscreteFeature discreteFeature = (DiscreteFeature)feature;
+
+				return discreteFeature;
+			}
+
+			return feature.toContinuousFeature();
+		}
 	}
 
 	private static final Integer CATEGORY_MISSING = -1;
