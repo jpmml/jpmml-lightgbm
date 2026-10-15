@@ -18,74 +18,37 @@
  */
 package org.jpmml.lightgbm.testing;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
 import com.google.common.base.Equivalence;
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.DataType;
-import org.dmg.pmml.Model;
 import org.dmg.pmml.OpType;
-import org.dmg.pmml.PMML;
 import org.jpmml.converter.BinaryFeature;
-import org.jpmml.converter.CategoricalLabel;
 import org.jpmml.converter.ContinuousFeature;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.FieldUtil;
-import org.jpmml.converter.Label;
-import org.jpmml.converter.Schema;
-import org.jpmml.converter.testing.ModelEncoderBatch;
-import org.jpmml.converter.testing.ModelEncoderBatchTest;
 import org.jpmml.evaluator.ResultField;
-import org.jpmml.evaluator.testing.RealNumberEquivalence;
 import org.jpmml.lightgbm.GBDT;
 import org.jpmml.lightgbm.LightGBMEncoder;
-import org.jpmml.lightgbm.LightGBMUtil;
 import org.junit.jupiter.api.Test;
 
-public class PandasDummiesTest extends ModelEncoderBatchTest implements LightGBMAlgorithms, LightGBMDatasets {
-
-	public PandasDummiesTest(){
-		super(new RealNumberEquivalence(2));
-	}
+public class PandasDummiesTest extends SchemaBatchTest {
 
 	@Override
-	public ModelEncoderBatch createBatch(String algorithm, String dataset, Predicate<ResultField> columnFilter, Equivalence<Object> equivalence){
-		ModelEncoderBatch result = new ModelEncoderBatch(algorithm, dataset, columnFilter, equivalence){
+	public SchemaBatch createBatch(String algorithm, String dataset, Predicate<ResultField> columnFilter, Equivalence<Object> equivalence){
+		SchemaBatch result = new SchemaBatch(algorithm, dataset, columnFilter, equivalence){
 
 			@Override
 			public PandasDummiesTest getArchiveBatchTest(){
 				return PandasDummiesTest.this;
 			}
 
-			public String getModelTxtPath(){
-				return "/lgbm/" + (getAlgorithm() + getDataset()) + ".txt";
-			}
-
 			@Override
-			public PMML getPMML() throws Exception {
-				GBDT gbdt;
-
-				try(InputStream is = open(getModelTxtPath())){
-					gbdt = LightGBMUtil.loadGBDT(is);
-				}
-
-				LightGBMEncoder encoder = new LightGBMEncoder();
-
-				Label label;
-
-				{
-					// XXX
-					DataField dataField = encoder.createDataField("_target", OpType.CATEGORICAL, DataType.STRING, Arrays.asList("0", "1"));
-
-					label = new CategoricalLabel(dataField);
-				}
-
-				List<Feature> features = new ArrayList<>();
+			public List<Feature> createFeatures(GBDT gbdt, LightGBMEncoder encoder){
+				List<Feature> result = new ArrayList<>();
 
 				String[] featureNames = gbdt.getFeatureNames();
 				for(String featureName : featureNames){
@@ -94,7 +57,7 @@ public class PandasDummiesTest extends ModelEncoderBatchTest implements LightGBM
 					if(index < 0){
 						DataField dataField = encoder.createDataField(featureName, OpType.CONTINUOUS, DataType.DOUBLE);
 
-						features.add(new ContinuousFeature(encoder, dataField));
+						result.add(new ContinuousFeature(encoder, dataField));
 					} else
 
 					{
@@ -108,17 +71,11 @@ public class PandasDummiesTest extends ModelEncoderBatchTest implements LightGBM
 
 						FieldUtil.addValue(dataField, value);
 
-						features.add(new BinaryFeature(encoder, dataField, value));
+						result.add(new BinaryFeature(encoder, dataField, value));
 					}
 				}
 
-				Schema schema = new Schema(encoder, label, features);
-
-				Schema lgbmSchema = gbdt.toLightGBMSchema(schema);
-
-				Model model = gbdt.encodeModel(Collections.emptyMap(), lgbmSchema);
-
-				return encoder.encodePMML(model);
+				return result;
 			}
 
 			@Override

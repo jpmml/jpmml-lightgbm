@@ -58,6 +58,7 @@ import org.jpmml.converter.SchemaException;
 import org.jpmml.converter.SchemaParameters;
 import org.jpmml.converter.SchemaUtil;
 import org.jpmml.converter.TypeUtil;
+import org.jpmml.converter.UnsupportedFeatureException;
 import org.jpmml.converter.WildcardFeature;
 import org.jpmml.converter.tree.HasTreeModelOptions;
 import org.jpmml.converter.tree.TreeModelTransformerBuilder;
@@ -212,18 +213,7 @@ public class GBDT implements PMMLEncodable {
 			throw new IllegalArgumentException();
 		}
 
-		List<Integer> categoricalFeatures = (hasPandasCategories ? getCategoricalFeatures() : null);
-
-		if(categoricalFeatures != null){
-
-			if(categoricalFeatures.size() != this.pandas_categorical.size()){
-				List<String> categoricalFeatureNames = categoricalFeatures.stream()
-					.map(index -> featureNames[index])
-					.collect(Collectors.toList());
-
-				throw new LightGBMException("Expected " + ExceptionUtil.formatCount(categoricalFeatures.size(), ExceptionUtil.formatName("pandas_categorical") + " element") + " (one for each categorical feature " + ExceptionUtil.formatNameList(categoricalFeatureNames) + "), got " + this.pandas_categorical.size());
-			}
-		}
+		List<Integer> categoricalFeatures = getPandasCategoricalFeatures();
 
 		for(int i = 0; i < featureNames.length; i++){
 			String featureName = featureNames[i];
@@ -551,6 +541,48 @@ public class GBDT implements PMMLEncodable {
 		return Objects.equals("1", this.linear_tree);
 	}
 
+	private Map<Integer, List<?>> getPandasCategories(){
+
+		if(this.pandas_categorical.isEmpty()){
+			return null;
+		}
+
+		Map<Integer, List<?>> result = new LinkedHashMap<>();
+
+		List<Integer> categoricalFeatures = getPandasCategoricalFeatures();
+		if(categoricalFeatures != null){
+
+			for(int i = 0; i < categoricalFeatures.size(); i++){
+				result.put(categoricalFeatures.get(i), this.pandas_categorical.get(i));
+			}
+		}
+
+		return result;
+	}
+
+	private List<Integer> getPandasCategoricalFeatures(){
+		String[] featureNames = this.feature_names_;
+
+		if(this.pandas_categorical.isEmpty()){
+			return null;
+		}
+
+		List<Integer> result = getCategoricalFeatures();
+
+		if(result != null){
+
+			if(result.size() != this.pandas_categorical.size()){
+				List<String> categoricalFeatureNames = result.stream()
+					.map(index -> featureNames[index])
+					.collect(Collectors.toList());
+
+				throw new LightGBMException("Expected " + ExceptionUtil.formatCount(result.size(), ExceptionUtil.formatName("pandas_categorical") + " element") + " (one for each categorical feature " + ExceptionUtil.formatNameList(categoricalFeatureNames) + "), got " + this.pandas_categorical.size());
+			}
+		}
+
+		return result;
+	}
+
 	private List<Integer> getCategoricalFeatures(){
 		String categoricalFeature = this.categorical_feature;
 
@@ -833,6 +865,9 @@ public class GBDT implements PMMLEncodable {
 	abstract
 	private class DefaultFeatureTransformer extends FeatureTransformer {
 
+		private Map<Integer, List<?>> pandasCategories = getPandasCategories();
+
+
 		@Override
 		public Feature transformNumerical(Feature feature){
 			int splitIndex = getSplitIndex(feature);
@@ -883,9 +918,35 @@ public class GBDT implements PMMLEncodable {
 				DiscreteFeature discreteFeature = (DiscreteFeature)feature;
 
 				return discreteFeature;
+			} else
+
+			if(feature instanceof WildcardFeature){
+				WildcardFeature wildcardFeature = (WildcardFeature)feature;
+
+				if(this.pandasCategories != null){
+					List<?> values = this.pandasCategories.get(splitIndex);
+
+					if(values != null){
+						DataField dataField = wildcardFeature.getField();
+						dataField.setDataType(TypeUtil.getDataType(values));
+
+						return wildcardFeature.toCategoricalFeature(values);
+					}
+				} else
+
+				{
+					List<?> values = LightGBMUtil.parseValues(GBDT.this.feature_infos_[splitIndex]).stream()
+						.filter(value -> value != GBDT.CATEGORY_MISSING)
+						.sorted()
+						.collect(Collectors.toList());
+
+					wildcardFeature.toCategoricalFeature(values);
+
+					return new DirectCategoricalFeature(wildcardFeature.getEncoder(), wildcardFeature.getField());
+				}
 			}
 
-			return feature.toContinuousFeature();
+			throw new UnsupportedFeatureException("Expected a discrete feature, got " + ExceptionUtil.formatFeature(feature));
 		}
 	}
 
