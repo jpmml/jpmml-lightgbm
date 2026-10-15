@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>jpmml-lightgbm</artifactId>
-	<version>1.6.8</version>
+	<version>1.6-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>JPMML-LightGBM</name>
@@ -25,7 +25,7 @@
 		<connection>scm:git:git@github.com:jpmml/jpmml-lightgbm.git</connection>
 		<developerConnection>scm:git:git@github.com:jpmml/jpmml-lightgbm.git</developerConnection>
 		<url>https://github.com/jpmml/jpmml-lightgbm</url>
-		<tag>1.6.8</tag>
+		<tag>1.4.7</tag>
 	</scm>
 	<issueManagement>
 		<system>GitHub</system>
@@ -35,7 +35,7 @@
 	<properties>
 		<jpmml-converter.version>1.6.11</jpmml-converter.version>
 		<jpmml-evaluator.version>1.7.8</jpmml-evaluator.version>
-		<project.build.outputTimestamp>2026-10-15T19:45:01Z</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2026-10-15T19:45:29Z</project.build.outputTimestamp>
 	</properties>
 
 	<dependencyManagement>
@@ -43,12 +43,12 @@
 			<dependency>
 				<groupId>org.jpmml</groupId>
 				<artifactId>pmml-lightgbm</artifactId>
-				<version>1.6.8</version>
+				<version>1.6-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.jpmml</groupId>
 				<artifactId>pmml-lightgbm-example</artifactId>
-				<version>1.6.8</version>
+				<version>1.6-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
