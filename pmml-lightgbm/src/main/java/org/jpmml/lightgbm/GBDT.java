@@ -47,6 +47,7 @@ import org.jpmml.converter.DiscreteFeature;
 import org.jpmml.converter.ExceptionUtil;
 import org.jpmml.converter.Feature;
 import org.jpmml.converter.FieldUtil;
+import org.jpmml.converter.InvalidFeatureException;
 import org.jpmml.converter.InvalidValueDecorator;
 import org.jpmml.converter.Label;
 import org.jpmml.converter.ModelEncoder;
@@ -80,6 +81,8 @@ public class GBDT implements PMMLEncodable {
 	private Map<String, String> feature_importances = Collections.emptyMap();
 
 	private String linear_tree;
+
+	private String categorical_feature;
 
 	private List<List<?>> pandas_categorical = Collections.emptyList();
 
@@ -162,6 +165,7 @@ public class GBDT implements PMMLEncodable {
 			}
 
 			this.linear_tree = section.get("linear_tree", false);
+			this.categorical_feature = section.get("categorical_feature", false);
 
 			index++;
 
@@ -208,6 +212,19 @@ public class GBDT implements PMMLEncodable {
 			throw new IllegalArgumentException();
 		}
 
+		List<Integer> categoricalFeatures = (hasPandasCategories ? getCategoricalFeatures() : null);
+
+		if(categoricalFeatures != null){
+
+			if(categoricalFeatures.size() != this.pandas_categorical.size()){
+				List<String> categoricalFeatureNames = categoricalFeatures.stream()
+					.map(index -> featureNames[index])
+					.collect(Collectors.toList());
+
+				throw new LightGBMException("Expected " + ExceptionUtil.formatCount(categoricalFeatures.size(), ExceptionUtil.formatName("pandas_categorical") + " element") + " (one for each categorical feature " + ExceptionUtil.formatNameList(categoricalFeatureNames) + "), got " + this.pandas_categorical.size());
+			}
+		}
+
 		for(int i = 0; i < featureNames.length; i++){
 			String featureName = featureNames[i];
 			String featureInfo = featureInfos[i];
@@ -217,6 +234,16 @@ public class GBDT implements PMMLEncodable {
 
 				pandasCategorical:
 				if(hasPandasCategories){
+
+					if(categoricalFeatures != null){
+
+						// An unused categorical column
+						if(categoricalFeatures.contains(i)){
+							pandasCategoryIndex++;
+						}
+
+						break pandasCategorical;
+					} // End if
 
 					if(pandasCategoryIndex >= this.pandas_categorical.size()){
 						break pandasCategorical;
@@ -271,7 +298,7 @@ public class GBDT implements PMMLEncodable {
 
 						List<?> pandasCategoryValues = this.pandas_categorical.get(pandasCategoryIndex);
 						if(pandasCategoryValues.size() < values.size()){
-							throw new LightGBMException("Expected at least " + ExceptionUtil.formatCount(values.size(), "category level") + ", got " + pandasCategoryValues.size());
+							throw new InvalidFeatureException("Expected at least " + ExceptionUtil.formatCount(values.size(), "category level") + " for categorical feature " + ExceptionUtil.formatName(featureName) + ", got " + pandasCategoryValues.size());
 						}
 
 						values = pandasCategoryValues;
@@ -569,6 +596,27 @@ public class GBDT implements PMMLEncodable {
 
 	public boolean hasLinearTree(){
 		return Objects.equals("1", this.linear_tree);
+	}
+
+	private List<Integer> getCategoricalFeatures(){
+		String categoricalFeature = this.categorical_feature;
+
+		if(categoricalFeature == null){
+			return null;
+		} // End if
+
+		if(categoricalFeature.isEmpty()){
+			return Collections.emptyList();
+		}
+
+		List<Integer> result = new ArrayList<>();
+
+		String[] values = categoricalFeature.split(",");
+		for(String value : values){
+			result.add(Integer.parseInt(value));
+		}
+
+		return result;
 	}
 
 	private Boolean isBinary(int feature){

@@ -1,5 +1,5 @@
 from lightgbm import LGBMClassifier, LGBMRegressor
-from pandas import DataFrame
+from pandas import CategoricalDtype, DataFrame
 
 import lightgbm
 import numpy
@@ -162,6 +162,39 @@ def build_audit_bin(name, objective = "binary"):
 if "Audit" in datasets:
 	build_audit_bin("Audit")
 	build_audit_bin("AuditNA")
+
+def build_audit_cat(name, ordered_categories = {}, train_mask_func = None, with_predictions = True, **fit_params):
+	df = load_csv("Audit.csv", ["Employment", "Education", "Marital", "Occupation", "Gender", "Deductions"])
+
+	for column, categories in ordered_categories.items():
+		df[column] = df[column].astype(CategoricalDtype(categories = categories, ordered = True))
+
+	X = df[["Age", "Employment", "Education", "Marital", "Occupation", "Income", "Gender", "Deductions", "Hours"]]
+	y = df["Adjusted"]
+
+	lgbm = LGBMClassifier(n_estimators = 31)
+	if train_mask_func is not None:
+		train_mask = train_mask_func(X)
+		lgbm.fit(X[train_mask], y[train_mask], **fit_params)
+	else:
+		lgbm.fit(X, y, **fit_params)
+
+	store_lgbm(lgbm, "Classification" + name + ".txt")
+
+	if with_predictions:
+		adjusted = DataFrame(lgbm.predict(X), columns = ["_target"])
+		adjusted_proba = DataFrame(lgbm.predict_proba(X), columns = ["probability(0)", "probability(1)"])
+		store_csv(pandas.concat((adjusted, adjusted_proba), axis = 1), "Classification" + name + ".csv")
+
+if "Audit" in datasets:
+	# Employment is constant during training, and therefore unused
+	build_audit_cat("AuditConstantCat", train_mask_func = lambda X: (X["Employment"] == "Private"))
+
+	# Education is ordered, and therefore split as continuous category codes
+	build_audit_cat("AuditOrderedCat", ordered_categories = {"Education" : ["Preschool", "Yr1t4", "Yr5t6", "Yr7t8", "Yr9", "Yr10", "Yr11", "Yr12", "HSgrad", "Vocational", "Associate", "College", "Bachelor", "Master", "Professional", "Doctorate"]}, with_predictions = False)
+
+	# Education, Occupation, Gender and Deductions are not listed, and therefore split as continuous category codes
+	build_audit_cat("AuditUnlistedCat", categorical_feature = ["Employment", "Marital"], with_predictions = False)
 
 def build_audit_centered_na():
 	df = load_csv("AuditNA.csv", ["Employment", "Education", "Marital", "Occupation", "Gender", "Deductions"])

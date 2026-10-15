@@ -32,7 +32,10 @@ import org.jpmml.evaluator.ResultField;
 import org.jpmml.evaluator.Table;
 import org.jpmml.evaluator.testing.RealNumberEquivalence;
 import org.jpmml.lightgbm.HasLightGBMOptions;
+import org.jpmml.lightgbm.LightGBMException;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ClassificationTest extends ValidatingLightGBMEncoderBatchTest implements LightGBMAlgorithms, LightGBMDatasets {
 
@@ -73,6 +76,8 @@ public class ClassificationTest extends ValidatingLightGBMEncoderBatchTest imple
 			@Override
 			public String getInputCsvPath(){
 				String path = super.getInputCsvPath();
+
+				path = path.replace("ConstantCat", "");
 
 				path = path.replace("Dense", "Centered");
 				path = path.replace("ZeroAsMissing", "Centered");
@@ -127,6 +132,21 @@ public class ClassificationTest extends ValidatingLightGBMEncoderBatchTest imple
 	@Test
 	public void evaluateAuditInvalid() throws Exception {
 		evaluate(CLASSIFICATION, AUDIT_INVALID, new RealNumberEquivalence(2 + 2));
+	}
+
+	@Test
+	public void evaluateAuditConstantCat() throws Exception {
+		evaluate(CLASSIFICATION, AUDIT_CONSTANT_CAT, new RealNumberEquivalence(2));
+	}
+
+	@Test
+	public void evaluateAuditOrderedCat() throws Exception {
+		assertThrows(LightGBMException.class, () -> evaluate(CLASSIFICATION, AUDIT_ORDERED_CAT));
+	}
+
+	@Test
+	public void evaluateAuditUnlistedCat() throws Exception {
+		assertThrows(LightGBMException.class, () -> evaluate(CLASSIFICATION, AUDIT_UNLISTED_CAT));
 	}
 
 	@Test
